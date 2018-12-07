@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "allowJs": true,
+    "noUnusedLocals": true,
+    "noEmit": true
+  }
+}
