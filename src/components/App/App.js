@@ -1,7 +1,7 @@
-import React from "react";
-import { observable } from "mobx";
-import { observer } from "mobx-react";
-import "./App.scss";
+import React from 'react';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
+import './App.scss';
 
 @observer
 export default class App extends React.Component {
