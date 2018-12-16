@@ -1,11 +1,15 @@
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import SignUp from './SignUp';
+import Login from './Login';
 
 export const App = () => {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path="/signup" component={SignUp} />
+        <Route path="/login" component={Login} />
 
         {/* 404 */}
         <Route>
