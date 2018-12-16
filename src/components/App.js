@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import SignUp from './SignUp';
 import Login from './Login';
+import Album from './Album';
 
 export const App = () => {
   return (
@@ -10,6 +11,7 @@ export const App = () => {
       <Switch>
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={Login} />
+        <Route path="/album" component={Album} />
 
         {/* 404 */}
         <Route>
