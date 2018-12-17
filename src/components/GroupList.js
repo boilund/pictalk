@@ -13,7 +13,8 @@ const styles = theme => ({
     alignItems: 'center',
     padding: `${theme.spacing.unit}px ${theme.spacing.unit}px ${
       theme.spacing.unit
-    }px`
+    }px`,
+    cursor: 'pointer'
   }
 });
 
