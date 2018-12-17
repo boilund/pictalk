@@ -14,6 +14,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import CreateGroup from './CreateGroup';
+import GroupList from './GroupList';
 
 const styles = theme => ({
   appBar: {
@@ -81,6 +82,7 @@ const Album = props => {
       </AppBar>
       <main>
         <CreateGroup />
+        <GroupList />
         {/* Hero unit */}
         <div className={classes.heroUnit}>
           <div className={classes.heroContent}>
