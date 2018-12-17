@@ -1,30 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
 import ImageAvatar from './ImageAvatar';
+import CreateGroup from './CreateGroup';
 
 const styles = theme => ({
-  paper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit}px ${
-      theme.spacing.unit
-    }px`,
-    cursor: 'pointer'
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper
   }
 });
 
 const GroupList = props => {
   const { classes } = props;
   return (
-    <Paper className={classes.paper}>
-      <ImageAvatar />
-      <Typography variant={'subtitle1'}>group name</Typography>
-    </Paper>
+    <List dense className={classes.root}>
+      <ListItem button>
+        <ListItemAvatar>
+          <ImageAvatar />
+        </ListItemAvatar>
+        <ListItemText>
+          <Typography variant={'subtitle1'}>group name</Typography>
+        </ListItemText>
+      </ListItem>
+      <CreateGroup />
+    </List>
   );
 };
 
