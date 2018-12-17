@@ -13,6 +13,7 @@ import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import Header from './Header';
 import CreateGroup from './CreateGroup';
 import GroupList from './GroupList';
 
@@ -72,16 +73,8 @@ const Album = props => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <AppBar position="static" className={classes.appBar}>
-        <Toolbar>
-          <CameraIcon className={classes.icon} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Album layout
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <Header />
       <main>
-        <CreateGroup />
         <GroupList />
         {/* Hero unit */}
         <div className={classes.heroUnit}>
