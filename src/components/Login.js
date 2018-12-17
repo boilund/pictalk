@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { Link } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -12,7 +12,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = theme => ({
   main: {
@@ -55,7 +54,6 @@ const Login = props => {
 
   return (
     <main className={classes.main}>
-      <CssBaseline />
       <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockIcon />
