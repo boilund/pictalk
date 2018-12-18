@@ -29,7 +29,7 @@ const Header = props => {
             gutterBottom
             className={classes.grow}
           >
-            Talkalbum
+            PicTalk
           </Typography>
           {/* show this icon when user login */}
           <Settings />
