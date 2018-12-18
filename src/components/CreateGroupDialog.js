@@ -7,22 +7,15 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import Avatar from '@material-ui/core/Avatar';
-import Checkbox from '@material-ui/core/Checkbox';
 
 import GroupImageName from './GroupImageName';
 import SeletedMembers from './SeletedMembers';
 import SearchUserForm from './SearchUserForm';
+import UserList from './UserList';
 
 class CreateGroupDialog extends React.Component {
   state = {
-    open: false,
-    checked: [1]
+    open: false
   };
 
   componentDidMount = () => {
@@ -33,22 +26,6 @@ class CreateGroupDialog extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false });
-  };
-
-  handleToggle = value => () => {
-    const { checked } = this.state;
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    this.setState({
-      checked: newChecked
-    });
   };
 
   render() {
@@ -66,6 +43,7 @@ class CreateGroupDialog extends React.Component {
           <GroupImageName />
           <SeletedMembers />
           <SearchUserForm />
+          <UserList />
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary" autoFocus>
