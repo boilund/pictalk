@@ -61,7 +61,9 @@ class CreateGroupDialog extends React.Component {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">Make new group</DialogTitle>
-        <DialogContent />
+        <DialogContent>
+          <GroupImageName />
+        </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary" autoFocus>
             Save
