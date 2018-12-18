@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -33,6 +34,9 @@ const styles = theme => ({
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing.unit * 3
+  },
+  noLinkColor: {
+    color: 'inherit'
   }
 });
 
@@ -46,24 +50,32 @@ const BottomMenuBar = props => {
             <div aria-label="Open drawer">
               <ToggleMenu />
             </div>
-            <IconButton color="inherit">
-              <ChatBubbleOutline />
-            </IconButton>
+            <Link to="/comment" className={classes.noLinkColor}>
+              <IconButton color="inherit">
+                <ChatBubbleOutline />
+              </IconButton>
+            </Link>
             <div>
               <Fab
                 color="secondary"
                 aria-label="Add"
                 className={classes.fabButton}
               >
-                <AddIcon />
+                <Link to="/post" className={classes.noLinkColor}>
+                  <AddIcon />
+                </Link>
               </Fab>
             </div>
-            <IconButton color="inherit">
-              <FavoriteBorder />
-            </IconButton>
-            <IconButton color="inherit">
-              <PersonOutline />
-            </IconButton>
+            <Link to="/favorite" className={classes.noLinkColor}>
+              <IconButton color="inherit">
+                <FavoriteBorder />
+              </IconButton>
+            </Link>
+            <Link to="/myphoto" className={classes.noLinkColor}>
+              <IconButton color="inherit">
+                <PersonOutline />
+              </IconButton>
+            </Link>
           </Toolbar>
         </AppBar>
       </footer>

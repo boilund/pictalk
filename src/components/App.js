@@ -5,6 +5,11 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import SignUp from './SignUp';
 import Login from './Login';
 import Album from './Album';
+import CommentPage from './CommentPage';
+import PostPage from './PostPage';
+import FavoritePage from './FavoritePage';
+import MyphotoPage from './MyphotoPage';
+import Settings from './Settings';
 
 export const App = () => {
   return (
@@ -14,7 +19,13 @@ export const App = () => {
       <Switch>
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={Login} />
-        <Route path="/album" component={Album} />
+          <Route path={'/album'} component={Album} />
+          <Route path={'/comment'} component={CommentPage} />
+          <Route path={'/post'} component={PostPage} />
+          <Route path={'/favorite'} component={FavoritePage} />
+          <Route path={'/myphoto'} component={MyphotoPage} />
+          <Route path={'/favorite'} component={FavoritePage} />
+          <Route path={'/Settings'} component={Settings} />
 
         {/* 404 */}
         <Route>

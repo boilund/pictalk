@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { Link } from 'react-router-dom';
 import Hidden from '@material-ui/core/Hidden';
 import Grid from '@material-ui/core/Grid';
 import MenuList from '@material-ui/core/MenuList';
@@ -33,6 +34,9 @@ const styles = theme => ({
   primary: {},
   icon: {
     marginRight: theme.spacing.unit * 2
+  },
+  noUnderLine: {
+    textDecoration: 'none'
   }
 });
 
@@ -50,46 +54,54 @@ const SideMenu = props => {
           </div>
           <Paper>
             <MenuList>
-              <MenuItem className={classes.menuItem}>
-                <ListItemIcon className={classes.icon}>
-                  <AddIcon />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.primary }}
-                  inset
-                  primary="Add photo"
-                />
-              </MenuItem>
-              <MenuItem className={classes.menuItem}>
-                <ListItemIcon className={classes.icon}>
-                  <ChatBubbleOutline />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.primary }}
-                  inset
-                  primary="Comment"
-                />
-              </MenuItem>
-              <MenuItem className={classes.menuItem}>
-                <ListItemIcon className={classes.icon}>
-                  <FavoriteBorder />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.primary }}
-                  inset
-                  primary="Favorite"
-                />
-              </MenuItem>
-              <MenuItem className={classes.menuItem}>
-                <ListItemIcon className={classes.icon}>
-                  <PersonOutline />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{ primary: classes.primary }}
-                  inset
-                  primary="You"
-                />
-              </MenuItem>
+              <Link to="/post" className={classes.noUnderLine}>
+                <MenuItem className={classes.menuItem}>
+                  <ListItemIcon className={classes.icon}>
+                    <AddIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    classes={{ primary: classes.primary }}
+                    inset
+                    primary="Add photo"
+                  />
+                </MenuItem>
+              </Link>
+              <Link to="/comment" className={classes.noUnderLine}>
+                <MenuItem className={classes.menuItem}>
+                  <ListItemIcon className={classes.icon}>
+                    <ChatBubbleOutline />
+                  </ListItemIcon>
+                  <ListItemText
+                    classes={{ primary: classes.primary }}
+                    inset
+                    primary="Comment"
+                  />
+                </MenuItem>
+              </Link>
+              <Link to="/favorite" className={classes.noUnderLine}>
+                <MenuItem className={classes.menuItem}>
+                  <ListItemIcon className={classes.icon}>
+                    <FavoriteBorder />
+                  </ListItemIcon>
+                  <ListItemText
+                    classes={{ primary: classes.primary }}
+                    inset
+                    primary="Favorite"
+                  />
+                </MenuItem>
+              </Link>
+              <Link to="/myphoto" className={classes.noUnderLine}>
+                <MenuItem className={classes.menuItem}>
+                  <ListItemIcon className={classes.icon}>
+                    <PersonOutline />
+                  </ListItemIcon>
+                  <ListItemText
+                    classes={{ primary: classes.primary }}
+                    inset
+                    primary="My photo"
+                  />
+                </MenuItem>
+              </Link>
             </MenuList>
           </Paper>
         </aside>
