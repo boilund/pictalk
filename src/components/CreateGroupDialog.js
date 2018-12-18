@@ -17,6 +17,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import GroupImageName from './GroupImageName';
 import SeletedMembers from './SeletedMembers';
+import SearchUserForm from './SearchUserForm';
 
 class CreateGroupDialog extends React.Component {
   state = {
@@ -64,6 +65,7 @@ class CreateGroupDialog extends React.Component {
         <DialogContent>
           <GroupImageName />
           <SeletedMembers />
+          <SearchUserForm />
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary" autoFocus>
