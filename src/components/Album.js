@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Header from './Header';
 import BottomMenuBar from './BottomMenuBar';
 import SideMenu from './SideMenu';
+import CreateGroupDialog from './CreateGroupDialog';
 
 const styles = theme => ({
   layout: {
@@ -49,6 +50,8 @@ const Album = props => {
     <React.Fragment>
       <Header />
       <main>
+        {/* if you don't have any group, show this dialog */}
+        <CreateGroupDialog openDialog={true} />
         <div className={classNames(classes.layout, classes.cardGrid)}>
           <Grid container spacing={40}>
             <Grid item xs={12} md={9}>
