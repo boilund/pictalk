@@ -4,9 +4,13 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import Settings from '@material-ui/icons/Settings';
 
 const styles = {
   root: {
+    flexGrow: 1
+  },
+  grow: {
     flexGrow: 1
   }
 };
@@ -23,9 +27,12 @@ const Header = props => {
             align="inherit"
             color="textPrimary"
             gutterBottom
+            className={classes.grow}
           >
             Talkalbum
           </Typography>
+          {/* show this icon when user login */}
+          <Settings />
         </Toolbar>
       </AppBar>
     </header>
