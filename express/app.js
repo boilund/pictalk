@@ -7,7 +7,10 @@ const bodyParser = require('body-parser');
 
 // Connect to mongoose
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/pictalk');
+mongoose.connect(
+  'mongodb://localhost/pictalk',
+  { useNewUrlParser: true }
+);
 const db = mongoose.connection;
 db.on('error', e => {
   console.error(e);
