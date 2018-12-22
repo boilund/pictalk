@@ -2,7 +2,8 @@
   The express app is a global called app
   It can respond on all routes under /api
 */
-let app = global.expressApp;
+const app = global.expressApp;
+const bodyParser = require('body-parser');
 
 // Connect to mongoose
 const mongoose = require('mongoose');
@@ -14,22 +15,15 @@ db.on('error', e => {
 db.once('open', () => {
   console.info('db connected');
 });
-// Set up socket.io
-const io = require('socket.io')(
-  global.httpServer, 
-  {
-    path: global.production ? '/api/socket' : '/socket',
-    serveClient: false
-  }
-);
 
-// Basic test of socket.io connectivity
-io.on('connection', function(socket){
-  socket.on('chat message', function(msg){
-    console.log('message: ' + msg);
-  });
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
+// apply body-parser to get json from frontend correctly
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.post('/user', (req, res) => {
+  console.log('recieve POST');
+  console.log(req.body);
+  res.status(200).send();
   });
 });
 

@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -50,39 +51,94 @@ const styles = theme => ({
   }
 });
 
-const SignUp = props => {
-  const { classes } = props;
+class SignUp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: ''
+    };
+  }
 
-  return (
-    <Fragment>
-      <Header />
-      <main className={classes.main}>
-        <Paper className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <form className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input id="email" name="email" autoComplete="email" autoFocus />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+  handleEmailChange = e => {
+    this.setState({
+      email: e.target.value
+    });
+  };
+
+  handlePasswordChange = e => {
+    this.setState({
+      password: e.target.value
+    });
+  };
+
+  handleSignUpSubmit = e => {
+    console.log('call!');
+    e.preventdefault();
+    const { email, password } = this.state;
+    console.log('e', email, 'p', password);
+
+    fetch
+      .post('/api/user', {
+        credentials: 'include',
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+        this.setState({
+          email: '',
+          password: ''
+        }).catch(err => {
+          console.error(new Error(err));
+        });
+      });
+  };
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <Fragment>
+        <Header />
+        <main className={classes.main}>
+          <Paper className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign up
+            </Typography>
+            <form
+              className={classes.form}
+              onSubmit={e => this.handleSignUpSubmit(e)}
+            >
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="email">Email Address</InputLabel>
+                <Input
+                  id="email"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  onChange={e => this.handleEmailChange(e)}
+                />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <Input
+                  name="password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={e => this.handlePasswordChange(e)}
+                />
+              </FormControl>
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
               />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Link to="/album" className={classes.noUnderLine}>
               <Button
                 type="submit"
                 fullWidth
@@ -92,13 +148,13 @@ const SignUp = props => {
               >
                 Sign up
               </Button>
-            </Link>
-          </form>
-        </Paper>
-      </main>
-    </Fragment>
-  );
-};
+            </form>
+          </Paper>
+        </main>
+      </Fragment>
+    );
+  }
+}
 
 SignUp.propTypes = {
   classes: PropTypes.object.isRequired
