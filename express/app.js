@@ -4,6 +4,16 @@
 */
 let app = global.expressApp;
 
+// Connect to mongoose
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/pictalk');
+const db = mongoose.connection;
+db.on('error', e => {
+  console.error(e);
+});
+db.once('open', () => {
+  console.info('db connected');
+});
 // Set up socket.io
 const io = require('socket.io')(
   global.httpServer, 

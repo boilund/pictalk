@@ -15,6 +15,7 @@ process.on('unhandledRejection', err => {
 require('../config/env');
 
 const fs = require('fs');
+const path = require('path');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
@@ -24,12 +25,17 @@ const {
   choosePort,
   createCompiler,
   prepareProxy,
-  prepareUrls,
+  prepareUrls
 } = require('react-dev-utils/WebpackDevServerUtils');
 const openBrowser = require('react-dev-utils/openBrowser');
 const paths = require('../config/paths');
+const basePath = __dirname
+  .split(path.sep)
+  .slice(0, -1)
+  .join(path.sep);
 const config = require('../config/webpack.config.dev');
 const createDevServerConfig = require('../config/webpackDevServer.config');
+const expressStart = require('react-warp-core/express-starter');
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
@@ -57,6 +63,9 @@ if (process.env.HOST) {
   console.log(`Learn more here: ${chalk.yellow('http://bit.ly/2mwWSwH')}`);
   console.log();
 }
+
+// express start
+expressStart(basePath);
 
 // We attempt to use the default port but if it is busy, we offer the user to
 // run on a different port. `choosePort()` Promise resolves to the next free port.
