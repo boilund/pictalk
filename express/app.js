@@ -23,9 +23,7 @@ db.once('open', () => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.post('/user', (req, res) => {
-  console.log('recieve POST');
-  console.log(req.body);
+app.post('/user/signup', (req, res) => {
   res.status(200).send();
   });
 });

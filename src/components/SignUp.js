@@ -51,13 +51,15 @@ const styles = theme => ({
   }
 });
 
+const initialState = {
+  email: '',
+  password: ''
+};
+
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      email: '',
-      password: ''
-    };
+    this.state = initialState;
   }
 
   handleEmailChange = e => {
@@ -73,32 +75,28 @@ class SignUp extends React.Component {
   };
 
   handleSignUpSubmit = e => {
-    console.log('call!');
-    e.preventdefault();
+    e.preventDefault();
     const { email, password } = this.state;
-    console.log('e', email, 'p', password);
 
-    fetch
-      .post('/api/user', {
+    axios
+      .post('/api/user/signup', {
         credentials: 'include',
         method: 'POST',
         body: JSON.stringify({ email, password }),
         headers: { 'Content-Type': 'application/json' }
       })
-      .then(res => res.json())
       .then(res => {
         console.log(res);
-        this.setState({
-          email: '',
-          password: ''
-        }).catch(err => {
-          console.error(new Error(err));
-        });
+        this.setState(initialState);
+      })
+      .catch(err => {
+        console.error(new Error(err));
       });
   };
 
   render() {
     const { classes } = this.props;
+    const { email, password } = this.state;
 
     return (
       <Fragment>
@@ -122,6 +120,7 @@ class SignUp extends React.Component {
                   name="email"
                   autoComplete="email"
                   autoFocus
+                  value={email}
                   onChange={e => this.handleEmailChange(e)}
                 />
               </FormControl>
@@ -132,6 +131,7 @@ class SignUp extends React.Component {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  value={password}
                   onChange={e => this.handlePasswordChange(e)}
                 />
               </FormControl>
