@@ -80,13 +80,11 @@ class SignUp extends React.Component {
 
     axios
       .post('/api/user/signup', {
-        credentials: 'include',
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-        headers: { 'Content-Type': 'application/json' }
+        email,
+        password
       })
       .then(res => {
-        console.log(res);
+        console.log(res.data.user);
         this.setState(initialState);
       })
       .catch(err => {

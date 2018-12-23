@@ -23,8 +23,10 @@ db.once('open', () => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.post('/user/signup', (req, res) => {
-  res.status(200).send();
+// Add requires of different routes here
+app.use(bodyParser.json({extended: false}));
+require('./routes/signup')(app);
+
   });
 });
 
