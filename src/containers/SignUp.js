@@ -66,6 +66,10 @@ class SignUp extends React.Component {
     this.state = initialState;
   }
 
+  comoponentWillUnmount() {
+    this.setState(initialState);
+  }
+
   handleEmailChange = e => {
     this.setState({
       email: e.target.value
@@ -88,10 +92,9 @@ class SignUp extends React.Component {
         password
       })
       .then(res => {
-        console.log(res.data.user);
         this.props.setUser(res.data.user);
-        this.props.history.push(`/${res.data.user.nickname}`);
-        this.setState(initialState);
+        this.props.history.push('/album');
+        // this.props.history.push(`/${res.data.user.nickname}`);
       })
       .catch(err => {
         console.error(new Error(err));
@@ -161,16 +164,18 @@ class SignUp extends React.Component {
 }
 
 SignUp.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  setUser: PropTypes.func.isRequired
 };
 
 const mapDispatchToProps = dispatch => {
-  return { setUser: () => dispatch(actions.setUser()) };
+  return { setUser: user => dispatch(actions.setUser(user)) };
 };
 
 const connected = connect(
-  {},
+  null,
   mapDispatchToProps
-)(withRouter(SignUp));
+)(withStyles(styles)(SignUp));
 
-export default withStyles(styles)(connected);
+export default withRouter(connected);

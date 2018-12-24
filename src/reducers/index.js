@@ -24,7 +24,14 @@ const userReducer = (state = initialState.user, action) => {
   const { type, user } = action;
   switch (type) {
     case SET_USER:
-      return { ...state, user };
+      return {
+        ...state,
+        nickname: user.nickname,
+        image: user.image,
+        favorites: user.favorites,
+        groups: user.groups,
+        photos: user.photos
+      };
     default:
       return state;
   }

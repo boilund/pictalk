@@ -15,7 +15,7 @@ exports.signup = async (req, res) => {
     const newUser = new User({
       email,
       password,
-      nickname: 'your nickname'
+      nickname: email
     });
     newUser.save().then(user => {
       console.log(user);
@@ -24,8 +24,7 @@ exports.signup = async (req, res) => {
       // .redirect('/album');
     });
   } else {
-    res.status(500).json({ success: false, email });
-    // .redirect('back')
+    res.redirect('back');
   }
 };
 
