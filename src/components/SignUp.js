@@ -79,7 +79,7 @@ class SignUp extends React.Component {
     const { email, password } = this.state;
 
     axios
-      .post('/api/user/signup', {
+      .post('/api/signup', {
         email,
         password
       })
