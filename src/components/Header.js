@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,6 +13,9 @@ const styles = {
   },
   grow: {
     flexGrow: 1
+  },
+  noLinkColor: {
+    color: 'inherit'
   }
 };
 
@@ -32,7 +36,9 @@ const Header = props => {
             PicTalk
           </Typography>
           {/* show this icon when user login */}
-          <Settings />
+          <Link to="/settings" className={classes.noLinkColor}>
+            <Settings />
+          </Link>
         </Toolbar>
       </AppBar>
     </header>
