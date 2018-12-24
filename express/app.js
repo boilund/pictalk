@@ -36,7 +36,7 @@ const loginCheck = (req, res, next) => {
 // Add requires of different routes here
 const routes = require('./routes/index');
 app.get('/', loginCheck, routes.index);
-app.get('/login', routes.login);
+app.post('/login', routes.login);
 app.post('/signup', routes.signup);
 app.get('/logout', function(req, res) {
   req.session.destroy();

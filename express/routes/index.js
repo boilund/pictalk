@@ -6,7 +6,6 @@ exports.index = (req, res) => {
   console.log(req.session.user);
 };
 
-// signup(register user)
 exports.signup = async (req, res) => {
   const { email, password } = req.body;
   const isUser = await User.findOne({ email });
@@ -28,20 +27,19 @@ exports.signup = async (req, res) => {
   }
 };
 
-// login function
 exports.login = (req, res) => {
-  const email = req.query.email;
-  const password = req.query.password;
-  const query = { email: email, password: password };
-  User.find(query, (err, data) => {
-    if (err) {
+  const { email, password } = req.body;
+  User.findOne({ email })
+    .then(user => {
+      if (!user) {
+        res.status(500).redirect('back');
+      } else {
+        // req.session.user = email;
+        res.status(200).json({ success: true, user });
+        // res.redirect('/');
+      }
+    })
+    .catch(err => {
       console.log(err);
-    }
-    if (data === '') {
-      res.render('login');
-    } else {
-      req.session.user = email;
-      res.redirect('/');
-    }
-  });
+    });
 };
