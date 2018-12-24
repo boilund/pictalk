@@ -13,7 +13,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Header from './Header';
+import Header from '../components/Header';
+
+import * as actions from '../actions';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 const styles = theme => ({
   main: {
@@ -85,6 +89,8 @@ class SignUp extends React.Component {
       })
       .then(res => {
         console.log(res.data.user);
+        this.props.setUser(res.data.user);
+        this.props.history.push(`/${res.data.user.nickname}`);
         this.setState(initialState);
       })
       .catch(err => {
@@ -158,4 +164,13 @@ SignUp.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SignUp);
+const mapDispatchToProps = dispatch => {
+  return { setUser: () => dispatch(actions.setUser()) };
+};
+
+const connected = connect(
+  {},
+  mapDispatchToProps
+)(withRouter(SignUp));
+
+export default withStyles(styles)(connected);
