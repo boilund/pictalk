@@ -6,8 +6,8 @@ import { Router } from './Router';
 
 export const App = () => {
   return (
-    <Provider>
-      <Router store={store} />
+    <Provider store={store}>
+      <Router />
     </Provider>
   );
 };

@@ -13,7 +13,6 @@ import Settings from './Settings';
 export const Router = () => {
   return (
     <Fragment>
-      <div store={store}>
         <CssBaseline />
         <BrowserRouter>
           <Switch>
@@ -31,14 +30,11 @@ export const Router = () => {
             <Route>
               <Fragment>
                 <h1>This is not the page you are looking for</h1>
-                <p>
-                  Use the force to find the right page, or type a correct URL
-                </p>
+              <p>Use the force to find the right page, or type a correct URL</p>
               </Fragment>
             </Route>
           </Switch>
         </BrowserRouter>
-      </div>
     </Fragment>
   );
 };
