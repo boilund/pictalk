@@ -49,10 +49,12 @@ const cards = [1, 2, 3, 4, 5];
 
 const Album = props => {
   const { classes, isFetching } = props;
-  console.log('isFetching', isFetching);
+
+  if (isFetching) {
+    return <Loading />;
+  }
 
   return (
-    // {isFetching ? <Loading /> :
     <React.Fragment>
       <Header />
       <main>
@@ -94,13 +96,12 @@ const Album = props => {
       </main>
       <BottomMenuBar />
     </React.Fragment>
-    // }
   );
 };
 
 Album.propTypes = {
-  classes: PropTypes.object.isRequired
-  // isFetching: PropTypes.func
+  classes: PropTypes.object.isRequired,
+  isFetching: PropTypes.bool
 };
 
 const mapStateToProps = state => {
