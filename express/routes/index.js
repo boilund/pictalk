@@ -18,8 +18,7 @@ exports.signup = async (req, res) => {
       nickname: email
     });
     newUser.save().then(user => {
-      console.log(user);
-      // req.session.userId = user._id;
+      req.session.userId = user._id;
       res.status(200).json({ success: true, user });
       // .redirect('/album');
     });
@@ -40,7 +39,8 @@ exports.login = (req, res) => {
           algorithm: 'sha512'
         });
         if (user.password === hash) {
-          // req.session.userId = user._id;
+          console.log(req); // undefined
+          req.session.userId = user._id;
           res.status(200).json({ success: true, user });
         } else {
           res.status(500).json({ success: false });

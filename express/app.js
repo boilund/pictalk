@@ -1,4 +1,4 @@
-/* 
+/*
   The express app is a global called app
   It can respond on all routes under /api
 */
@@ -34,6 +34,24 @@ const loginCheck = (req, res, next) => {
   }
 };
 
+// user sessions for tracking logins
+const expressSession = require('express-session');
+const connectMongo = require('connect-mongo')(expressSession);
+const session = expressSession({
+  secret: 'work hard',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000
+  },
+  // Spara session i databasen, lever i 30 dagar
+  store: new connectMongo({
+    mongooseConnection: mongoose.connection,
+    ttl: 30 * 24 * 60 * 60
+  })
+});
+app.use(session);
+
 // Add requires of different routes here
 const routes = require('./routes/index');
 app.get('/', loginCheck, routes.index);
@@ -44,7 +62,3 @@ app.get('/logout', function(req, res) {
   console.log('deleted sesstion');
   res.redirect('/');
 });
-
-  });
-});
-
