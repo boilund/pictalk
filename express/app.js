@@ -3,6 +3,7 @@
   It can respond on all routes under /api
 */
 const app = global.expressApp;
+global.passwordSalt = 'aasölkjadgöl}]23%#¤#%(&';
 
 // Connect to mongoose
 const mongoose = require('mongoose');

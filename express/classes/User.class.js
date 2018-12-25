@@ -31,15 +31,16 @@ const UserSchema = new Schema({
   }
 });
 
-// UserSchema.pre('save', function(next) {
-//   // hash the password  - but only if it has been modified (or is new)
-//   if (this.isModified('password')) {
-//     this.password = hasha(this.password + global.passwordSalt, {
-//       encoding: 'base64',
-//       algorithm: 'sha512'
-//     });
-//   }
-//   next();
-// });
+// hashing a password before saving it to the database
+// - but only if it has been modified (or is new)
+UserSchema.pre('save', function(next) {
+  if (this.isModified('password')) {
+    this.password = hasha(this.password + global.passwordSalt, {
+      encoding: 'base64',
+      algorithm: 'sha512'
+    });
+  }
+  next();
+});
 
 module.exports = mongoose.model('User', UserSchema);
