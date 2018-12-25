@@ -1,4 +1,5 @@
 const User = require('../classes/User.class');
+const hasha = require('hasha');
 
 // after login
 exports.index = (req, res) => {
@@ -34,9 +35,16 @@ exports.login = (req, res) => {
       if (!user) {
         res.status(500).redirect('back');
       } else {
-        // req.session.user = email;
-        res.status(200).json({ success: true, user });
-        // res.redirect('/');
+        const hash = hasha(password + global.passwordSalt, {
+          encoding: 'base64',
+          algorithm: 'sha512'
+        });
+        if (user.password === hash) {
+          // req.session.userId = user._id;
+          res.status(200).json({ success: true, user });
+        } else {
+          res.status(500).json({ success: false });
+        }
       }
     })
     .catch(err => {
