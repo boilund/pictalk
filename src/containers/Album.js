@@ -9,10 +9,14 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Header from './Header';
-import BottomMenuBar from './BottomMenuBar';
-import SideMenu from './SideMenu';
-import CreateGroupDialog from './CreateGroupDialog';
+import Header from '../components/Header';
+import BottomMenuBar from '../components/BottomMenuBar';
+import SideMenu from '../components/SideMenu';
+import CreateGroupDialog from '../components/CreateGroupDialog';
+import Loading from '../components/Loading';
+
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 const styles = theme => ({
   layout: {
@@ -44,9 +48,11 @@ const styles = theme => ({
 const cards = [1, 2, 3, 4, 5];
 
 const Album = props => {
-  const { classes } = props;
+  const { classes, isFetching } = props;
+  console.log('isFetching', isFetching);
 
   return (
+    // {isFetching ? <Loading /> :
     <React.Fragment>
       <Header />
       <main>
@@ -88,11 +94,24 @@ const Album = props => {
       </main>
       <BottomMenuBar />
     </React.Fragment>
+    // }
   );
 };
 
 Album.propTypes = {
   classes: PropTypes.object.isRequired
+  // isFetching: PropTypes.func
 };
 
-export default withStyles(styles)(Album);
+const mapStateToProps = state => {
+  return {
+    isFetching: state.app.isFetching
+  };
+};
+
+const connected = connect(
+  mapStateToProps,
+  null
+)(withStyles(styles)(Album));
+
+export default withRouter(connected);

@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import SignUp from '../containers/SignUp';
 import Login from '../containers/Login';
-import Album from './Album';
+import Album from '../containers/Album';
 import CommentPage from './CommentPage';
 import PostPage from './PostPage';
 import FavoritePage from './FavoritePage';
