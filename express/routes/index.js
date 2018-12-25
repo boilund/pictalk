@@ -39,7 +39,6 @@ exports.login = (req, res) => {
           algorithm: 'sha512'
         });
         if (user.password === hash) {
-          console.log(req); // undefined
           req.session.userId = user._id;
           res.status(200).json({ success: true, user });
         } else {
