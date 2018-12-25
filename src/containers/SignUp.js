@@ -85,6 +85,7 @@ class SignUp extends React.Component {
   handleSignUpSubmit = e => {
     e.preventDefault();
     const { email, password } = this.state;
+    this.props.requestData();
 
     axios
       .post('/api/signup', {
@@ -93,10 +94,12 @@ class SignUp extends React.Component {
       })
       .then(res => {
         this.props.setUser(res.data.user);
+        this.props.receiveRequestData();
         this.props.history.push('/album');
         // this.props.history.push(`/${res.data.user.nickname}`);
       })
       .catch(err => {
+        this.props.receiveDataFailed();
         console.error(new Error(err));
       });
   };
@@ -166,11 +169,19 @@ class SignUp extends React.Component {
 SignUp.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  setUser: PropTypes.func.isRequired
+  setUser: PropTypes.func.isRequired,
+  requestData: PropTypes.func,
+  receiveRequestData: PropTypes.func,
+  receiveDataFailed: PropTypes.func
 };
 
 const mapDispatchToProps = dispatch => {
-  return { setUser: user => dispatch(actions.setUser(user)) };
+  return {
+    setUser: user => dispatch(actions.setUser(user)),
+    requestData: () => dispatch(actions.requestData()),
+    receiveRequestData: () => dispatch(actions.receiveRequestData()),
+    receiveDataFailed: () => diapatch(actions.receiveDataFailed())
+  };
 };
 
 const connected = connect(
