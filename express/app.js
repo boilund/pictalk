@@ -62,3 +62,12 @@ app.get('/logout', function(req, res) {
   console.log('deleted sesstion');
   res.redirect('/');
 });
+
+// TODO: need to send only neccesary data
+// const userProperty = [_id, nickname, image, favorites, groups, photos];
+const User = require('./classes/User.class');
+app.get('/users', (req, res) => {
+  User.find().then(user => {
+    return res.json(user);
+  });
+});
