@@ -8,6 +8,7 @@ import {
 
 const initialState = {
   user: {
+    _id: '',
     nickname: '',
     image: '',
     favorites: [],
@@ -26,6 +27,7 @@ const userReducer = (state = initialState.user, action) => {
     case SET_USER:
       return {
         ...state,
+        _id: user._id,
         nickname: user.nickname,
         image: user.image,
         favorites: user.favorites,
