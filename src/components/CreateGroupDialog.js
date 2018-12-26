@@ -9,9 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 
 import GroupImageName from './GroupImageName';
-import SeletedMembers from './SeletedMembers';
-import SearchUserForm from './SearchUserForm';
-import UserList from '../containers/UserList';
+import SelectMembers from '../containers/SelectMembers';
 
 class CreateGroupDialog extends React.Component {
   state = {
@@ -41,9 +39,7 @@ class CreateGroupDialog extends React.Component {
         <DialogTitle id="responsive-dialog-title">Make new group</DialogTitle>
         <DialogContent>
           <GroupImageName />
-          <SeletedMembers />
-          <SearchUserForm />
-          <UserList />
+          <SelectMembers />
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary" autoFocus>
