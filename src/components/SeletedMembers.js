@@ -13,19 +13,20 @@ const styles = theme => ({
 });
 
 const SeletedMembers = props => {
-  const { classes } = props;
+  const { classes, checked } = props;
 
   return (
     <div className={classes.container}>
-      {[0, 1, 2, 3, 4].map(value => {
-        return <ImageAvatar key={value} />;
+      {checked.map((user, i) => {
+        return <ImageAvatar key={i} image={user.image} />;
       })}
     </div>
   );
 };
 
 SeletedMembers.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  checked: PropTypes.array.isRequired
 };
 
 export default withStyles(styles)(SeletedMembers);

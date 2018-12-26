@@ -16,11 +16,12 @@ const styles = theme => ({
 });
 
 const ImageAvatar = props => {
-  const { classes, size } = props;
+  const { classes, size, key, image } = props;
   return (
     <Avatar
+      key={key}
       alt="raichu"
-      src="/imgs/raichu.png"
+      src={image || '/imgs/raichu.png'}
       className={size === 'Lg' ? `${classes.Lg}` : `${classes.avatar}`}
     />
   );
@@ -28,7 +29,9 @@ const ImageAvatar = props => {
 
 ImageAvatar.propTypes = {
   classes: PropTypes.object.isRequired,
-  size: PropTypes.string
+  size: PropTypes.string,
+  key: PropTypes.string,
+  image: PropTypes.string
 };
 
 export default withStyles(styles)(ImageAvatar);
