@@ -50,7 +50,7 @@ const cards = [1, 2, 3, 4, 5];
 
 class Album extends React.Component {
   componentDidMount() {
-    this.props.fetchUsers();
+    this.props.fetchUsers(this.props.user._id);
   }
 
   render() {
@@ -121,7 +121,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchUsers: () => dispatch(actions.fetchUsers())
+    fetchUsers: userId => dispatch(actions.fetchUsers(userId))
   };
 };
 

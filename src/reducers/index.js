@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import {
   SET_USER,
-  FETCH_USERS,
+  FETCH_CANDIDATES,
   REQUEST_DATA,
   RECEIVE_REQUEST_DATA,
   RECEIVE_DATA_FAILED
@@ -18,7 +18,7 @@ const initialState = {
   },
   app: {
     isFetching: false,
-    users: []
+    candidates: []
   }
 };
 
@@ -43,10 +43,10 @@ const userReducer = (state = initialState.user, action) => {
 const appReducer = (state = initialState.app, action) => {
   const { type } = action;
   switch (type) {
-    case FETCH_USERS:
+    case FETCH_CANDIDATES:
       return {
         ...state,
-        users: action.users
+        candidates: action.candidates
       };
     case REQUEST_DATA:
       return {

@@ -41,24 +41,24 @@ class UserList extends React.Component {
   };
 
   render() {
-    const { classes, isFetching, users } = this.props;
+    const { classes, isFetching, user, candidates } = this.props;
 
     if (isFetching) {
       return <Loading />;
     }
     return (
       <List dense className={classes.root}>
-        {users.map((user, i) => {
+        {candidates.map((candidate, i) => {
           return (
             <ListItem key={i} button>
               <ListItemAvatar>
                 <ImageAvatar />
               </ListItemAvatar>
-              <ListItemText primary={user.nickname} />
+              <ListItemText primary={candidate.nickname} />
               <ListItemSecondaryAction>
                 <Checkbox
-                  onChange={this.handleToggle(user)}
-                  checked={this.state.checked.indexOf(user) !== -1}
+                  onChange={this.handleToggle(candidate)}
+                  checked={this.state.checked.indexOf(candidate) !== -1}
                 />
               </ListItemSecondaryAction>
             </ListItem>
@@ -72,13 +72,15 @@ class UserList extends React.Component {
 UserList.propTypes = {
   classes: PropTypes.object.isRequired,
   isFetching: PropTypes.bool,
-  users: PropTypes.array
+  user: PropTypes.object.isRequired,
+  candidates: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => {
   return {
     isFetching: state.app.isFetching,
-    users: state.app.users
+    user: state.user,
+    candidates: state.app.candidates
   };
 };
 
