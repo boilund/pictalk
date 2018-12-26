@@ -11,7 +11,7 @@ import withMobileDialog from '@material-ui/core/withMobileDialog';
 import GroupImageName from './GroupImageName';
 import SeletedMembers from './SeletedMembers';
 import SearchUserForm from './SearchUserForm';
-import UserList from './UserList';
+import UserList from '../containers/UserList';
 
 class CreateGroupDialog extends React.Component {
   state = {
