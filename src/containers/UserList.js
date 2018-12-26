@@ -21,10 +21,10 @@ const styles = theme => ({
 
 class UserList extends React.Component {
   state = {
-    checked: [1]
+    checked: []
   };
 
-  handleToggle = value => () => {
+  handleCheckboxToggle = value => {
     const { checked } = this.state;
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -42,6 +42,7 @@ class UserList extends React.Component {
 
   render() {
     const { classes, isFetching, user, candidates } = this.props;
+    const { checked } = this.state;
 
     if (isFetching) {
       return <Loading />;
@@ -57,8 +58,8 @@ class UserList extends React.Component {
               <ListItemText primary={candidate.nickname} />
               <ListItemSecondaryAction>
                 <Checkbox
-                  onChange={this.handleToggle(candidate)}
-                  checked={this.state.checked.indexOf(candidate) !== -1}
+                  onChange={() => this.handleCheckboxToggle(candidate)}
+                  checked={checked.indexOf(candidate) !== -1}
                 />
               </ListItemSecondaryAction>
             </ListItem>
