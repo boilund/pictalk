@@ -18,11 +18,11 @@ const styles = theme => ({
 });
 
 const ImageAvatar = props => {
-  const { classes, size, key, image, name } = props;
+  const { classes, size, key, image, alt } = props;
   return (
     <Avatar
       key={key}
-      alt={name ? `${name}` : 'default image'}
+      alt={alt ? `${alt}` : 'default image'}
       src={image || '/imgs/default-group.svg'}
       className={size === 'Lg' ? `${classes.Lg}` : `${classes.md}`}
     />
@@ -34,7 +34,7 @@ ImageAvatar.propTypes = {
   size: PropTypes.string,
   key: PropTypes.string,
   image: PropTypes.string,
-  name: PropTypes.string
+  alt: PropTypes.string
 };
 
 export default withStyles(styles)(ImageAvatar);

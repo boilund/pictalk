@@ -20,7 +20,7 @@ const SeletedMembers = props => {
     <div className={classes.container}>
       {checked.map((user, i) => {
         return user.image ? (
-          <ImageAvatar key={i} image={user.image} />
+          <ImageAvatar key={i} image={user.image} alt={user.nickname} />
         ) : (
           <LetterAvatar key={i} nickname={user.nickname} />
         );

@@ -18,7 +18,7 @@ const styles = theme => ({
 
 class GroupImageName extends React.Component {
   state = {
-    name: ''
+    groupname: ''
   };
 
   handleChange = (e, title) => {
@@ -29,18 +29,17 @@ class GroupImageName extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { name } = this.state;
 
     return (
       <div className={classes.container}>
-        <ImageAvatar size="Lg" />
+        <ImageAvatar size="Lg" alt={this.state.groupname} />
         <form noValidate autoComplete="off">
           <TextField
             id="outlined-name"
             label="Group name"
             className={classes.textField}
-            value={name}
-            onChange={e => this.handleChange(e, 'name')}
+            value={this.state.groupname}
+            onChange={e => this.handleChange(e, 'groupname')}
             margin="normal"
             variant="outlined"
           />

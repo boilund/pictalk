@@ -60,7 +60,11 @@ class SelectMembers extends React.Component {
               <ListItem key={i} button>
                 <ListItemAvatar>
                   {candidate.image ? (
-                    <ImageAvatar key={i} image={user.image} />
+                    <ImageAvatar
+                      key={i}
+                      image={user.image}
+                      alt={user.nickname}
+                    />
                   ) : (
                     <LetterAvatar key={i} nickname={candidate.nickname} />
                   )}
