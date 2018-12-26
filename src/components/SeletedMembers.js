@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ImageAvatar from './ImageAvatar';
+import LetterAvatar from './LetterAvatar';
 
 const styles = theme => ({
   container: {
@@ -18,7 +19,11 @@ const SeletedMembers = props => {
   return (
     <div className={classes.container}>
       {checked.map((user, i) => {
-        return <ImageAvatar key={i} image={user.image} />;
+        return user.image ? (
+          <ImageAvatar key={i} image={user.image} />
+        ) : (
+          <LetterAvatar key={i} nickname={user.nickname} />
+        );
       })}
     </div>
   );

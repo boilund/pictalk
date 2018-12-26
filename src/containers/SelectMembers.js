@@ -13,6 +13,7 @@ import SearchUserForm from '../components/SearchUserForm';
 
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import LetterAvatar from '../components/LetterAvatar';
 
 const styles = theme => ({
   root: {
@@ -58,7 +59,11 @@ class SelectMembers extends React.Component {
             return (
               <ListItem key={i} button>
                 <ListItemAvatar>
-                  <ImageAvatar />
+                  {candidate.image ? (
+                    <ImageAvatar key={i} image={user.image} />
+                  ) : (
+                    <LetterAvatar key={i} nickname={candidate.nickname} />
+                  )}
                 </ListItemAvatar>
                 <ListItemText primary={candidate.nickname} />
                 <ListItemSecondaryAction>
