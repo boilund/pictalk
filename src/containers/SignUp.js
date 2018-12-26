@@ -66,7 +66,7 @@ class SignUp extends React.Component {
     this.state = initialState;
   }
 
-  comoponentWillUnmount() {
+  componentWillUnmount() {
     this.setState(initialState);
   }
 

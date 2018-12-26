@@ -55,16 +55,18 @@ const styles = theme => ({
   }
 });
 
+const initialState = {
+  email: '',
+  password: ''
+};
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      email: '',
-      password: ''
-    };
+    this.state = initialState;
   }
 
-  comoponentWillUnmount() {
+  componentWillUnmount() {
     this.setState(initialState);
   }
 
