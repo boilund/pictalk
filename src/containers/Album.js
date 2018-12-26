@@ -64,7 +64,7 @@ class Album extends React.Component {
         <Header />
         <main>
           {/* if you don't have any group, show this dialog */}
-          <CreateGroupDialog openDialog={user.groups.length ? true : false} />
+          <CreateGroupDialog openDialog={user.groups.length ? false : true} />
           <div className={classNames(classes.layout, classes.cardGrid)}>
             <Grid container spacing={40}>
               <Grid item xs={12} md={9}>
