@@ -21,14 +21,15 @@ class GroupImageName extends React.Component {
     name: ''
   };
 
-  handleChange = name => event => {
+  handleChange = (e, title) => {
     this.setState({
-      [name]: event.target.value
+      [title]: e.target.value
     });
   };
 
   render() {
     const { classes } = this.props;
+    const { name } = this.state;
 
     return (
       <div className={classes.container}>
@@ -38,8 +39,8 @@ class GroupImageName extends React.Component {
             id="outlined-name"
             label="Group name"
             className={classes.textField}
-            value={this.state.name}
-            onChange={this.handleChange('name')}
+            value={name}
+            onChange={e => this.handleChange(e, 'name')}
             margin="normal"
             variant="outlined"
           />
