@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Header from '../components/Header';
 import BottomMenuBar from '../components/BottomMenuBar';
 import SideMenu from '../components/SideMenu';
-import CreateGroupDialog from '../components/CreateGroupDialog';
+import CreateGroupDialog from './CreateGroupDialog';
 import Loading from '../components/Loading';
 
 import * as actions from '../actions';

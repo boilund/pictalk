@@ -7,9 +7,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
+import GroupImageName from '../components/GroupImageName';
+import SelectMembers from './SelectMembers';
 
-import GroupImageName from './GroupImageName';
-import SelectMembers from '../containers/SelectMembers';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 class CreateGroupDialog extends React.Component {
   state = {
@@ -26,8 +28,12 @@ class CreateGroupDialog extends React.Component {
     this.setState({ open: false });
   };
 
+  createGroup = () => {
+    console.log('create group');
+  };
+
   render() {
-    const { fullScreen, openDialog } = this.props;
+    const { fullScreen, openDialog, user } = this.props;
 
     return (
       <Dialog
@@ -38,11 +44,14 @@ class CreateGroupDialog extends React.Component {
       >
         <DialogTitle id="responsive-dialog-title">Make new group</DialogTitle>
         <DialogContent>
-          <GroupImageName />
-          <SelectMembers />
+          <GroupImageName user={user} />
+          <SelectMembers user={user} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} color="primary" autoFocus>
+          <Button onClick={() => this.handleClose()} autoFocus>
+            Cancel
+          </Button>
+          <Button onClick={() => this.createGroup()} color="primary" autoFocus>
             Save
           </Button>
         </DialogActions>
@@ -53,7 +62,20 @@ class CreateGroupDialog extends React.Component {
 
 CreateGroupDialog.propTypes = {
   fullScreen: PropTypes.bool.isRequired,
-  openDialog: PropTypes.bool.isRequired
+  openDialog: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired
 };
 
-export default withMobileDialog()(CreateGroupDialog);
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+const connected = connect(
+  mapStateToProps,
+  null
+)(CreateGroupDialog);
+
+const routed = withRouter(connected);
+export default withMobileDialog()(routed);
