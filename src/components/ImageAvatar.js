@@ -6,11 +6,9 @@ import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
   md: {
-    margin: theme.spacing.unit,
     border: '1px solid lightgray'
   },
   Lg: {
-    margin: theme.spacing.unit,
     width: 90,
     height: 90,
     border: '1px solid lightgray'
