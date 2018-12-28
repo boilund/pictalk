@@ -5,6 +5,7 @@ export const FETCH_CANDIDATES = 'FETCH_CANDIDATES';
 export const REQUEST_DATA = 'REQUEST_DATA';
 export const RECEIVE_REQUEST_DATA = 'RECEIVE_REQUEST_DATA';
 export const RECEIVE_DATA_FAILED = 'RECEIVE_DATA_FAILED';
+export const SET_GROUP_MEMBERS = 'SET_GROUP_MEMBERS';
 
 export const setUser = user => {
   return {
@@ -39,3 +40,10 @@ export const receiveRequestData = () => ({
 export const receiveDataFailed = () => ({
   type: RECEIVE_DATA_FAILED
 });
+
+export const setGroupMembers = members => {
+  return {
+    type: SET_GROUP_MEMBERS,
+    members
+  };
+};

@@ -11,6 +11,7 @@ import ImageAvatar from '../components/ImageAvatar';
 import SeletedMembers from '../components/SeletedMembers';
 import SearchUserForm from '../components/SearchUserForm';
 
+import * as actions from '../actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import LetterAvatar from '../components/LetterAvatar';
@@ -22,13 +23,18 @@ const styles = theme => ({
   }
 });
 
-class SelectMembers extends React.Component {
-  state = {
-    checked: []
-  };
+const SelectMembers = props => {
+  const {
+    classes,
+    isFetching,
+    user,
+    candidates,
+    members,
+    setGroupMembers
+  } = props;
 
-  handleCheckboxToggle = value => {
-    const { checked } = this.state;
+  const handleCheckboxToggle = value => {
+    const { members: checked } = props;
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -37,72 +43,68 @@ class SelectMembers extends React.Component {
     } else {
       newChecked.splice(currentIndex, 1);
     }
-
-    this.setState({
-      checked: newChecked
-    });
+    setGroupMembers(newChecked);
   };
 
-  render() {
-    const { classes, isFetching, user, candidates } = this.props;
-    const { checked } = this.state;
-
-    if (isFetching) {
-      return <Loading />;
-    }
-    return (
-      <Fragment>
-        <SeletedMembers checked={checked} />
-        <SearchUserForm />
-        <List dense className={classes.root}>
-          {candidates.map((candidate, i) => {
-            return (
-              <ListItem key={i} button>
-                <ListItemAvatar>
-                  {candidate.image ? (
-                    <ImageAvatar
-                      key={i}
-                      image={user.image}
-                      alt={user.nickname}
-                    />
-                  ) : (
-                    <LetterAvatar key={i} nickname={candidate.nickname} />
-                  )}
-                </ListItemAvatar>
-                <ListItemText primary={candidate.nickname} />
-                <ListItemSecondaryAction>
-                  <Checkbox
-                    onChange={() => this.handleCheckboxToggle(candidate)}
-                    checked={checked.indexOf(candidate) !== -1}
-                  />
-                </ListItemSecondaryAction>
-              </ListItem>
-            );
-          })}
-        </List>
-      </Fragment>
-    );
+  if (isFetching) {
+    return <Loading />;
   }
-}
+  return (
+    <Fragment>
+      <SeletedMembers checked={members} />
+      <SearchUserForm />
+      <List dense className={classes.root}>
+        {candidates.map((candidate, i) => {
+          return (
+            <ListItem key={i} button>
+              <ListItemAvatar>
+                {candidate.image ? (
+                  <ImageAvatar key={i} image={user.image} alt={user.nickname} />
+                ) : (
+                  <LetterAvatar key={i} nickname={candidate.nickname} />
+                )}
+              </ListItemAvatar>
+              <ListItemText primary={candidate.nickname} />
+              <ListItemSecondaryAction>
+                <Checkbox
+                  onChange={() => handleCheckboxToggle(candidate)}
+                  checked={members.indexOf(candidate) !== -1}
+                />
+              </ListItemSecondaryAction>
+            </ListItem>
+          );
+        })}
+      </List>
+    </Fragment>
+  );
+};
 
 SelectMembers.propTypes = {
   classes: PropTypes.object.isRequired,
   isFetching: PropTypes.bool,
   user: PropTypes.object.isRequired,
-  candidates: PropTypes.array.isRequired
+  candidates: PropTypes.array.isRequired,
+  setGroupMembers: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
   return {
     isFetching: state.app.isFetching,
     user: state.user,
-    candidates: state.app.candidates
+    candidates: state.app.candidates,
+    members: state.group.members
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setGroupMembers: members => dispatch(actions.setGroupMembers(members))
   };
 };
 
 const connected = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(SelectMembers));
 
 export default withRouter(connected);

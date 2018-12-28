@@ -4,7 +4,7 @@ import {
   FETCH_CANDIDATES,
   REQUEST_DATA,
   RECEIVE_REQUEST_DATA,
-  RECEIVE_DATA_FAILED
+  SET_GROUP_MEMBERS
 } from '../actions';
 
 const initialState = {
@@ -19,6 +19,9 @@ const initialState = {
   app: {
     isFetching: false,
     candidates: []
+  },
+  group: {
+    members: []
   }
 };
 
@@ -68,9 +71,23 @@ const appReducer = (state = initialState.app, action) => {
   }
 };
 
+const groupReducer = (state = initialState.group, action) => {
+  const { type } = action;
+  switch (type) {
+    case SET_GROUP_MEMBERS:
+      return {
+        ...state,
+        members: action.members
+      };
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   user: userReducer,
-  app: appReducer
+  app: appReducer,
+  group: groupReducer
 });
 
 export default rootReducer;
