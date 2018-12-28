@@ -9,7 +9,9 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Checkbox from '@material-ui/core/Checkbox';
 import ImageAvatar from '../components/ImageAvatar';
 import SeletedMembers from '../components/SeletedMembers';
-import SearchUserForm from '../components/SearchUserForm';
+import InputBase from '@material-ui/core/InputBase';
+import SearchIcon from '@material-ui/icons/Search';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 
 import * as actions from '../actions';
 import { connect } from 'react-redux';
@@ -17,6 +19,47 @@ import { withRouter } from 'react-router-dom';
 import LetterAvatar from '../components/LetterAvatar';
 
 const styles = theme => ({
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25)
+    },
+    marginRight: theme.spacing.unit * 2,
+    marginLeft: 0,
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing.unit * 3,
+      width: 'auto'
+    }
+  },
+  searchIcon: {
+    width: theme.spacing.unit,
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  inputRoot: {
+    color: 'inherit',
+    width: '100%'
+  },
+  inputInput: {
+    paddingTop: theme.spacing.unit,
+    paddingRight: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit,
+    paddingLeft: theme.spacing.unit * 4,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: 200
+    }
+  },
   root: {
     display: 'flex',
     flexDirection: 'column'
@@ -52,7 +95,18 @@ const SelectMembers = props => {
   return (
     <Fragment>
       <SeletedMembers checked={members} />
-      <SearchUserForm />
+      <div className={classes.search}>
+        <div className={classes.searchIcon}>
+          <SearchIcon />
+        </div>
+        <InputBase
+          placeholder="Search…"
+          classes={{
+            root: classes.inputRoot,
+            input: classes.inputInput
+          }}
+        />
+      </div>
       <List dense className={classes.root}>
         {candidates.map((candidate, i) => {
           return (
