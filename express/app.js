@@ -63,11 +63,5 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-// TODO: need to send only neccesary data
-// const userProperty = [_id, nickname, image, favorites, groups, photos];
-const User = require('./classes/User.class');
-app.get('/users', (req, res) => {
-  User.find().then(users => {
-    res.status(200).json({ success: true, users });
-  });
-});
+const userRoutes = require('./routes/user');
+app.get('/users', userRoutes.users);
