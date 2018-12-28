@@ -65,3 +65,6 @@ app.get('/logout', function(req, res) {
 
 const userRoutes = require('./routes/user');
 app.get('/users', userRoutes.users);
+
+const groupRoutes = require('./routes/group');
+app.post('/:userId/creategroup', groupRoutes.creategroup);

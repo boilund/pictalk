@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -7,7 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
-import GroupImageName from '../components/GroupImageName';
+import GroupImageName from './GroupImageName';
 import SelectMembers from './SelectMembers';
 
 import { connect } from 'react-redux';
@@ -29,7 +30,23 @@ class CreateGroupDialog extends React.Component {
   };
 
   createGroup = () => {
-    console.log('create group');
+    const { user, groupimage: image, groupname, members } = this.props;
+    // TODO: if image is not defined, use default image
+    axios
+      .post(`/api/${user._id}/creategroup`, {
+        // image,
+        groupname,
+        members
+      })
+      .then(res => {
+        console.log(res);
+        if (res.success) {
+          this.setState({ open: false });
+        }
+      })
+      .catch(err => {
+        console.error(new Error(err));
+      });
   };
 
   render() {
@@ -63,18 +80,28 @@ class CreateGroupDialog extends React.Component {
 CreateGroupDialog.propTypes = {
   fullScreen: PropTypes.bool.isRequired,
   openDialog: PropTypes.bool.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  groupname: PropTypes.string.isRequired,
+  // groupimage: PropTypes.object, //TODO: warning
+  members: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    groupname: state.group.name,
+    groupimage: state.group.image,
+    members: state.group.members
   };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {};
 };
 
 const connected = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(CreateGroupDialog);
 
 const routed = withRouter(connected);
