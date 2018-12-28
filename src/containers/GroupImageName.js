@@ -2,11 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
-import ImageAvatar from './ImageAvatar';
+import ImageAvatar from '../components/ImageAvatar';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import EditIcon from '@material-ui/icons/Edit';
+
+import * as actions from '../actions';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 const defaultImg = '/imgs/default-group.svg';
 
@@ -53,14 +57,12 @@ const styles = theme => ({
 
 class GroupImageName extends React.Component {
   state = {
-    groupname: '',
-    imgPath: this.props.user.image || defaultImg,
-    formData: ''
+    imgPath: this.props.user.image || defaultImg
   };
 
   onFileChange = e => {
-    const { user } = this.props;
-    const { imgPath } = this.state;
+    const { user, setGroupImage } = this.props;
+
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.onload = e => {
@@ -73,21 +75,18 @@ class GroupImageName extends React.Component {
       const formData = new FormData();
       formData.append('id', user._id);
       formData.append('file', e.target.files[0]);
-      this.setState({
-        formData
-      });
+      console.log(formData);
+      setGroupImage(formData);
     }
   };
 
-  handleChange = (e, title) => {
-    this.setState({
-      [title]: e.target.value
-    });
+  handleNameChange = e => {
+    this.props.setGroupName(e.target.value);
   };
 
   render() {
-    const { classes } = this.props;
-    const { groupname, imgPath } = this.state;
+    const { classes, groupname } = this.props;
+    const { imgPath } = this.state;
 
     return (
       <div className={classes.container}>
@@ -124,7 +123,7 @@ class GroupImageName extends React.Component {
             label="Group name"
             className={classes.textField}
             value={groupname}
-            onChange={e => this.handleChange(e, 'groupname')}
+            onChange={e => this.handleNameChange(e)}
             margin="normal"
             variant="outlined"
           />
@@ -136,7 +135,29 @@ class GroupImageName extends React.Component {
 
 GroupImageName.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  groupname: PropTypes.string.isRequired,
+  setGroupName: PropTypes.func.isRequired,
+  setGroupImage: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(GroupImageName);
+const mapStateToProps = state => {
+  return {
+    user: state.user,
+    groupname: state.group.name
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setGroupName: groupname => dispatch(actions.setGroupName(groupname)),
+    setGroupImage: image => dispatch(actions.setGroupImage(image))
+  };
+};
+
+const connected = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(GroupImageName));
+
+export default withRouter(connected);

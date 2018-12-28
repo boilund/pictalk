@@ -4,6 +4,9 @@ import {
   FETCH_CANDIDATES,
   REQUEST_DATA,
   RECEIVE_REQUEST_DATA,
+  RECEIVE_DATA_FAILED,
+  SET_GROUP_NAME,
+  SET_GROUP_IMAGE,
   SET_GROUP_MEMBERS
 } from '../actions';
 
@@ -21,6 +24,8 @@ const initialState = {
     candidates: []
   },
   group: {
+    name: '',
+    image: '',
     members: []
   }
 };
@@ -74,6 +79,16 @@ const appReducer = (state = initialState.app, action) => {
 const groupReducer = (state = initialState.group, action) => {
   const { type } = action;
   switch (type) {
+    case SET_GROUP_NAME:
+      return {
+        ...state,
+        name: action.groupname
+      };
+    case SET_GROUP_IMAGE:
+      return {
+        ...state,
+        image: action.image
+      };
     case SET_GROUP_MEMBERS:
       return {
         ...state,

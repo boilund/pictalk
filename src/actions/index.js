@@ -5,12 +5,14 @@ export const FETCH_CANDIDATES = 'FETCH_CANDIDATES';
 export const REQUEST_DATA = 'REQUEST_DATA';
 export const RECEIVE_REQUEST_DATA = 'RECEIVE_REQUEST_DATA';
 export const RECEIVE_DATA_FAILED = 'RECEIVE_DATA_FAILED';
+export const SET_GROUP_NAME = 'SET_GROUP_NAME';
+export const SET_GROUP_IMAGE = 'SET_GROUP_IMAGE';
 export const SET_GROUP_MEMBERS = 'SET_GROUP_MEMBERS';
 
 export const setUser = user => {
   return {
     type: SET_USER,
-    user: user
+    user
   };
 };
 
@@ -40,6 +42,20 @@ export const receiveRequestData = () => ({
 export const receiveDataFailed = () => ({
   type: RECEIVE_DATA_FAILED
 });
+
+export const setGroupName = groupname => {
+  return {
+    type: SET_GROUP_NAME,
+    groupname
+  };
+};
+
+export const setGroupImage = image => {
+  return {
+    type: SET_GROUP_IMAGE,
+    image
+  };
+};
 
 export const setGroupMembers = members => {
   return {
