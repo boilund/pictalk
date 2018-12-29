@@ -1,5 +1,12 @@
 const User = require('../classes/User.class');
 const hasha = require('hasha');
+const alternativeColor = [
+  'default',
+  'orangeAvatar',
+  'purpleAvatar',
+  'pink',
+  'green'
+];
 
 // after login
 exports.index = (req, res) => {
@@ -10,12 +17,16 @@ exports.index = (req, res) => {
 exports.signup = async (req, res) => {
   const { email, password } = req.body;
   const isUser = await User.findOne({ email });
+  // pick random index (0 ~ 4) for avatarColor
+  const index = Math.floor(Math.random() * Math.floor(5));
+  const color = alternativeColor[index];
 
   if (!isUser) {
     const newUser = new User({
       email,
       password,
-      nickname: email
+      nickname: email,
+      avatarColor: color
     });
     newUser.save().then(user => {
       req.session.userId = user._id;

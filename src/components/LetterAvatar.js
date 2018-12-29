@@ -33,19 +33,8 @@ const styles = {
   }
 };
 
-const alternativeColor = [
-  'default',
-  'orangeAvatar',
-  'purpleAvatar',
-  'pink',
-  'green'
-];
-
 const LetterAvatar = props => {
-  const { classes, nickname } = props;
-  // pick random index
-  const index = Math.floor(Math.random() * Math.floor(4));
-  const color = alternativeColor[index];
+  const { classes, nickname, color } = props;
   // make initialLetter
   const initialLetter = nickname.substring(0, 1);
 
@@ -54,7 +43,8 @@ const LetterAvatar = props => {
 
 LetterAvatar.propTypes = {
   classes: PropTypes.object.isRequired,
-  nickname: PropTypes.string.isRequired
+  nickname: PropTypes.string.isRequired,
+  color: PropTypes.string
 };
 
 export default withStyles(styles)(LetterAvatar);

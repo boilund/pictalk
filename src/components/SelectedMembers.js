@@ -13,7 +13,7 @@ const styles = theme => ({
   }
 });
 
-const SeletedMembers = props => {
+const SelectedMembers = props => {
   const { classes, checked } = props;
 
   return (
@@ -22,16 +22,20 @@ const SeletedMembers = props => {
         return user.image ? (
           <ImageAvatar key={i} image={user.image} alt={user.nickname} />
         ) : (
-          <LetterAvatar key={i} nickname={user.nickname} />
+          <LetterAvatar
+            key={i}
+            nickname={user.nickname}
+            color={user.avatarColor}
+          />
         );
       })}
     </div>
   );
 };
 
-SeletedMembers.propTypes = {
+SelectedMembers.propTypes = {
   classes: PropTypes.object.isRequired,
   checked: PropTypes.array.isRequired
 };
 
-export default withStyles(styles)(SeletedMembers);
+export default withStyles(styles)(SelectedMembers);

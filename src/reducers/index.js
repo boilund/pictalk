@@ -15,6 +15,7 @@ const initialState = {
     _id: '',
     nickname: '',
     image: '',
+    avatarColor: '',
     favorites: [],
     groups: [],
     photos: []
@@ -39,6 +40,7 @@ const userReducer = (state = initialState.user, action) => {
         _id: user._id,
         nickname: user.nickname,
         image: user.image,
+        avatarColor: user.avatarColor,
         favorites: user.favorites,
         groups: user.groups,
         photos: user.photos

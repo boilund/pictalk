@@ -7,6 +7,7 @@ const UserSchema = new Schema({
   nickname: String,
   email: String,
   image: String,
+  avatarColor: String,
   groups: [
     {
       type: Schema.Types.ObjectId,

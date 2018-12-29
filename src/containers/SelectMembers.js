@@ -8,7 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Checkbox from '@material-ui/core/Checkbox';
 import ImageAvatar from '../components/ImageAvatar';
-import SeletedMembers from '../components/SeletedMembers';
+import SeletedMembers from '../components/SelectedMembers';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -144,7 +144,11 @@ class SelectMembers extends React.Component {
                         alt={user.nickname}
                       />
                     ) : (
-                      <LetterAvatar key={i} nickname={candidate.nickname} />
+                      <LetterAvatar
+                        key={i}
+                        nickname={candidate.nickname}
+                        color={candidate.avatarColor}
+                      />
                     )}
                   </ListItemAvatar>
                   <ListItemText primary={candidate.nickname} />
