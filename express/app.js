@@ -57,10 +57,9 @@ const routes = require('./routes/index');
 app.get('/', loginCheck, routes.index);
 app.post('/login', routes.login);
 app.post('/signup', routes.signup);
-app.get('/logout', function(req, res) {
+app.get('/logout', (req, res) => {
   req.session.destroy();
-  console.log('deleted sesstion');
-  res.redirect('/');
+  res.status(200).json({ success: true });
 });
 
 const userRoutes = require('./routes/user');
