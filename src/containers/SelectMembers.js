@@ -66,18 +66,17 @@ const styles = theme => ({
   }
 });
 
-const SelectMembers = props => {
-  const {
-    classes,
-    isFetching,
-    user,
-    candidates,
-    members,
-    setGroupMembers
-  } = props;
+class SelectMembers extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchText: '',
+      searchedCandidates: []
+    };
+  }
 
-  const handleCheckboxToggle = value => {
-    const { members: checked } = props;
+  handleCheckboxToggle = value => {
+    const { members: checked, setGroupMembers } = this.props;
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -89,49 +88,81 @@ const SelectMembers = props => {
     setGroupMembers(newChecked);
   };
 
-  if (isFetching) {
-    return <Loading />;
-  }
-  return (
-    <Fragment>
-      <SeletedMembers checked={members} />
-      <div className={classes.search}>
-        <div className={classes.searchIcon}>
-          <SearchIcon />
+  handleSearchTextChange = e => {
+    const regex = new RegExp(e.target.value, 'i');
+    const searchedGroupCandidates = this.props.candidates.filter(user => {
+      return regex.test(user.nickname) || regex.test(user.email);
+    });
+    this.setState({
+      searchText: e.target.value,
+      searchedCandidates: searchedGroupCandidates
+    });
+  };
+
+  render() {
+    const {
+      classes,
+      isFetching,
+      user,
+      candidates,
+      members,
+      setGroupMembers
+    } = this.props;
+    const { searchText, searchedCandidates } = this.state;
+
+    if (isFetching) {
+      return <Loading />;
+    }
+
+    return (
+      <Fragment>
+        <SeletedMembers checked={members} />
+        <div className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
+          </div>
+          <InputBase
+            placeholder="Search…"
+            onChange={e => this.handleSearchTextChange(e)}
+            value={searchText}
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput
+            }}
+          />
         </div>
-        <InputBase
-          placeholder="Search…"
-          classes={{
-            root: classes.inputRoot,
-            input: classes.inputInput
-          }}
-        />
-      </div>
-      <List dense className={classes.root}>
-        {candidates.map((candidate, i) => {
-          return (
-            <ListItem key={i} button>
-              <ListItemAvatar>
-                {candidate.image ? (
-                  <ImageAvatar key={i} image={user.image} alt={user.nickname} />
-                ) : (
-                  <LetterAvatar key={i} nickname={candidate.nickname} />
-                )}
-              </ListItemAvatar>
-              <ListItemText primary={candidate.nickname} />
-              <ListItemSecondaryAction>
-                <Checkbox
-                  onChange={() => handleCheckboxToggle(candidate)}
-                  checked={members.indexOf(candidate) !== -1}
-                />
-              </ListItemSecondaryAction>
-            </ListItem>
-          );
-        })}
-      </List>
-    </Fragment>
-  );
-};
+        <List dense className={classes.root}>
+          {(searchedCandidates.length ? searchedCandidates : candidates).map(
+            (candidate, i) => {
+              return (
+                <ListItem key={i} button>
+                  <ListItemAvatar>
+                    {candidate.image ? (
+                      <ImageAvatar
+                        key={i}
+                        image={user.image}
+                        alt={user.nickname}
+                      />
+                    ) : (
+                      <LetterAvatar key={i} nickname={candidate.nickname} />
+                    )}
+                  </ListItemAvatar>
+                  <ListItemText primary={candidate.nickname} />
+                  <ListItemSecondaryAction>
+                    <Checkbox
+                      onChange={() => this.handleCheckboxToggle(candidate)}
+                      checked={members.indexOf(candidate) !== -1}
+                    />
+                  </ListItemSecondaryAction>
+                </ListItem>
+              );
+            }
+          )}
+        </List>
+      </Fragment>
+    );
+  }
+}
 
 SelectMembers.propTypes = {
   classes: PropTypes.object.isRequired,
