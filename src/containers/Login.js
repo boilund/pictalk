@@ -188,7 +188,7 @@ const mapDispatchToProps = dispatch => {
     setUser: user => dispatch(actions.setUser(user)),
     requestData: () => dispatch(actions.requestData()),
     receiveRequestData: () => dispatch(actions.receiveRequestData()),
-    receiveDataFailed: () => diapatch(actions.receiveDataFailed())
+    receiveDataFailed: () => dispatch(actions.receiveDataFailed())
   };
 };
 
