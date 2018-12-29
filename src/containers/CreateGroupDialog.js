@@ -11,6 +11,7 @@ import withMobileDialog from '@material-ui/core/withMobileDialog';
 import GroupImageName from './GroupImageName';
 import SelectMembers from './SelectMembers';
 
+import * as actions from '../actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -23,6 +24,8 @@ class CreateGroupDialog extends React.Component {
     this.setState({
       open: this.props.openDialog
     });
+    // Set user as group members at first
+    this.props.setGroupMembers([this.props.user]);
   };
 
   handleClose = () => {
@@ -96,7 +99,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    setGroupMembers: members => dispatch(actions.setGroupMembers(members))
+  };
 };
 
 const connected = connect(
