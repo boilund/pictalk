@@ -26,14 +26,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Returns middleware that only parses json
 app.use(bodyParser.json());
 
-const loginCheck = (req, res, next) => {
-  if (req.session.user) {
-    next();
-  } else {
-    res.redirect('/login');
-  }
-};
-
 // user sessions for tracking logins
 const expressSession = require('express-session');
 const connectMongo = require('connect-mongo')(expressSession);
@@ -52,6 +44,16 @@ const session = expressSession({
 });
 app.use(session);
 
+const loginCheck = (req, res, next) => {
+  if (req.session && req.session.userId) {
+    return next();
+  } else {
+    const err = new Error('You must be logged in to view this page.');
+    err.status = 401;
+    res.redirect('/login');
+  }
+};
+
 // Add requires of different routes here
 const routes = require('./routes/index');
 app.get('/', loginCheck, routes.index);
@@ -63,7 +65,7 @@ app.get('/logout', (req, res) => {
 });
 
 const userRoutes = require('./routes/user');
-app.get('/users', userRoutes.users);
+app.get('/users', loginCheck, userRoutes.users);
 
 const groupRoutes = require('./routes/group');
 app.post('/:userId/creategroup', groupRoutes.creategroup);
