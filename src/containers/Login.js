@@ -95,7 +95,7 @@ class Login extends React.Component {
       .then(res => {
         this.props.setUser(res.data.user);
         this.props.receiveRequestData();
-        this.props.history.push('/album');
+        this.props.history.push('/');
         // this.props.history.push(`/${res.data.user.nickname}`);
       })
       .catch(err => {
