@@ -9,32 +9,42 @@ import PostPage from './PostPage';
 import FavoritePage from './FavoritePage';
 import MyphotoPage from './MyphotoPage';
 import Settings from '../containers/Settings';
+import axios from 'axios';
 
-export const Router = () => {
-  return (
-    <Fragment>
-      <CssBaseline />
-      <BrowserRouter>
-        <Switch>
-          <Route path="/signup" component={SignUp} />
-          <Route path="/login" component={Login} />
+export class Router extends React.Component {
+  componentDidMount() {
+    axios.get('/api/loggedin').then(res => {
+      console.log('mount', res.data.user);
+    });
+  }
+  render() {
+    return (
+      <Fragment>
+        <CssBaseline />
+        <BrowserRouter>
+          <Switch>
+            <Route path="/signup" component={SignUp} />
+            <Route path="/login" component={Login} />
             <Route exact path={'/'} component={Album} />
-          <Route path={'/comment'} component={CommentPage} />
-          <Route path={'/post'} component={PostPage} />
-          <Route path={'/favorite'} component={FavoritePage} />
-          <Route path={'/myphoto'} component={MyphotoPage} />
-          <Route path={'/favorite'} component={FavoritePage} />
-          <Route path={'/settings'} component={Settings} />
+            <Route path={'/comment'} component={CommentPage} />
+            <Route path={'/post'} component={PostPage} />
+            <Route path={'/favorite'} component={FavoritePage} />
+            <Route path={'/myphoto'} component={MyphotoPage} />
+            <Route path={'/favorite'} component={FavoritePage} />
+            <Route path={'/settings'} component={Settings} />
 
-          {/* 404 */}
-          <Route>
-            <Fragment>
-              <h1>This is not the page you are looking for</h1>
-              <p>Use the force to find the right page, or type a correct URL</p>
-            </Fragment>
-          </Route>
-        </Switch>
-      </BrowserRouter>
-    </Fragment>
-  );
-};
+            {/* 404 */}
+            <Route>
+              <Fragment>
+                <h1>This is not the page you are looking for</h1>
+                <p>
+                  Use the force to find the right page, or type a correct URL
+                </p>
+              </Fragment>
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </Fragment>
+    );
+  }
+}

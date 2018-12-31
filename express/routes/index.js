@@ -10,8 +10,7 @@ const alternativeColor = [
 
 // after login
 exports.index = (req, res) => {
-  res.render('index', { user: req.session.user });
-  console.log(req.session.user);
+  res.json({ user: req.session.userId });
 };
 
 exports.signup = async (req, res) => {

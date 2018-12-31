@@ -46,7 +46,7 @@ app.use(session);
 
 const loginCheck = (req, res, next) => {
   if (req.session && req.session.userId) {
-    return next();
+    next();
   } else {
     const err = new Error('You must be logged in to view this page.');
     err.status = 401;
@@ -56,7 +56,7 @@ const loginCheck = (req, res, next) => {
 
 // Add requires of different routes here
 const routes = require('./routes/index');
-app.get('/', loginCheck, routes.index);
+app.get('/loggedin', loginCheck, routes.index);
 app.post('/login', routes.login);
 app.post('/signup', routes.signup);
 app.get('/logout', (req, res) => {
