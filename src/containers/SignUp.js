@@ -14,6 +14,7 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Header from '../components/Header';
+import Alert from '../components/Alert';
 
 import * as actions from '../actions';
 import { connect } from 'react-redux';
@@ -57,7 +58,8 @@ const styles = theme => ({
 
 const initialState = {
   email: '',
-  password: ''
+  password: '',
+  alertForSamePassword: false
 };
 
 class SignUp extends React.Component {
@@ -84,7 +86,7 @@ class SignUp extends React.Component {
 
   handleSignUpSubmit = e => {
     e.preventDefault();
-    const { email, password } = this.state;
+    const { email, password, alertForSamePassword } = this.state;
     this.props.requestData();
 
     axios
@@ -96,9 +98,9 @@ class SignUp extends React.Component {
         this.props.setUser(res.data.user);
         this.props.receiveRequestData();
         this.props.history.push('/');
-        // this.props.history.push(`/${res.data.user.nickname}`);
       })
       .catch(err => {
+        this.setState({ alertForSamePassword: true });
         this.props.receiveDataFailed();
         console.error(new Error(err));
       });
@@ -106,7 +108,7 @@ class SignUp extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { email, password } = this.state;
+    const { email, password, alertForSamePassword } = this.state;
 
     return (
       <Fragment>
@@ -149,6 +151,12 @@ class SignUp extends React.Component {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
+              {alertForSamePassword && (
+                <Alert
+                  variant="error"
+                  message="You cannot use this email address!"
+                />
+              )}
               <Button
                 type="submit"
                 fullWidth

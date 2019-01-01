@@ -30,10 +30,10 @@ exports.signup = async (req, res) => {
     newUser.save().then(user => {
       req.session.userId = user._id;
       res.status(200).json({ success: true, user });
-      // .redirect('/album');
     });
   } else {
-    res.redirect('back');
+    res.status(500).json({ success: false });
+    // res.redirect('back');
   }
 };
 
