@@ -37,7 +37,7 @@ class ToggleMenu extends React.Component {
 
   render() {
     const { anchorEl } = this.state;
-    const { classes } = this.props;
+    const { classes, user } = this.props;
     const open = Boolean(anchorEl);
 
     return (
@@ -63,13 +63,13 @@ class ToggleMenu extends React.Component {
             }
           }}
         >
-          {options.map(option => (
+          {user.groups.map((group, index) => (
             <MenuItem
-              key={option}
-              selected={option === 'Pyxis'}
+              key={index}
+              selected={group === 'Pyxis'}
               onClick={this.handleClose}
             >
-              <GroupListContent />
+              <GroupListContent group={group} />
             </MenuItem>
           ))}
           <MenuItem>
@@ -82,7 +82,8 @@ class ToggleMenu extends React.Component {
 }
 
 ToggleMenu.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => {

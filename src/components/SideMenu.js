@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
-import ToggleMenu from './ToggleMenu';
+import ToggleMenu from '../containers/ToggleMenu';
 import AddIcon from '@material-ui/icons/Add';
 import ChatBubbleOutline from '@material-ui/icons/ChatBubbleOutline';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';

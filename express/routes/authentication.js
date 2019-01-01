@@ -50,7 +50,13 @@ exports.login = (req, res) => {
         });
         if (user.password === hash) {
           req.session.userId = user._id;
-          res.status(200).json({ success: true, user });
+          // set 'groups' data
+          User.findOne({ _id: user._id })
+            .populate('groups')
+            .exec((err, user) => {
+              if (err) console.error(new Error(err));
+              res.status(200).json({ success: true, user });
+            });
         } else {
           res.status(500).json({ success: false });
         }

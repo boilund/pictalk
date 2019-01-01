@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ChatBubbleOutline from '@material-ui/icons/ChatBubbleOutline';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import PersonOutline from '@material-ui/icons/PersonOutline';
-import ToggleMenu from './ToggleMenu';
+import ToggleMenu from '../containers/ToggleMenu';
 
 const styles = theme => ({
   appBar: {
