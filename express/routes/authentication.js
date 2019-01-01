@@ -9,7 +9,7 @@ const alternativeColor = [
 ];
 
 // after login
-exports.index = (req, res) => {
+exports.loggedin = (req, res) => {
   res.json({ user: req.session.userId });
 };
 

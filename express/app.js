@@ -55,8 +55,8 @@ const loginCheck = (req, res, next) => {
 };
 
 // Add requires of different routes here
-const routes = require('./routes/index');
-app.get('/loggedin', loginCheck, routes.index);
+const routes = require('./routes/authentication');
+app.get('/loggedin', loginCheck, routes.loggedin);
 app.post('/login', routes.login);
 app.post('/signup', routes.signup);
 app.get('/logout', (req, res) => {
