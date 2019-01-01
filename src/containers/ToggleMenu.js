@@ -5,9 +5,12 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import ImageAvatar from './ImageAvatar';
-import CreateGroupContent from './CreateGroupContent';
-import GroupListContent from './GroupListContent';
+import ImageAvatar from '../components/ImageAvatar';
+import CreateGroupContent from '../components/CreateGroupContent';
+import GroupListContent from '../components/GroupListContent';
+
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 // temporary
 const options = [1, 2, 3, 4, 5];
@@ -82,4 +85,15 @@ ToggleMenu.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ToggleMenu);
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+const connected = connect(
+  mapStateToProps,
+  null
+)(withStyles(styles)(ToggleMenu));
+
+export default withRouter(connected);
