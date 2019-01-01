@@ -12,13 +12,13 @@ import GroupListContent from '../components/GroupListContent';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-// temporary
-const options = [1, 2, 3, 4, 5];
 const ITEM_HEIGHT = 48;
 
 const styles = theme => ({
   avatarButton: {
-    padding: 0
+    padding: 0,
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit
   }
 });
 
