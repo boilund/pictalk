@@ -14,6 +14,7 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Header from '../components/Header';
+import Alert from '../components/Alert';
 
 import * as actions from '../actions';
 import { connect } from 'react-redux';
@@ -57,7 +58,8 @@ const styles = theme => ({
 
 const initialState = {
   email: '',
-  password: ''
+  password: '',
+  alert: false
 };
 
 class Login extends React.Component {
@@ -96,9 +98,9 @@ class Login extends React.Component {
         this.props.setUser(res.data.user);
         this.props.receiveRequestData();
         this.props.history.push('/');
-        // this.props.history.push(`/${res.data.user.nickname}`);
       })
       .catch(err => {
+        this.setState({ alert: true });
         this.props.receiveDataFailed();
         console.error(new Error(err));
       });
@@ -106,6 +108,7 @@ class Login extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { alert } = this.state;
 
     return (
       <Fragment>
@@ -146,6 +149,12 @@ class Login extends React.Component {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
+              {alert && (
+                <Alert
+                  variant="error"
+                  message="Email or password is incorrect!"
+                />
+              )}
               <Button
                 type="submit"
                 fullWidth
