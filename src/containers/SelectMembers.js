@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Checkbox from '@material-ui/core/Checkbox';
 import ImageAvatar from '../components/ImageAvatar';
+import LetterAvatar from '../components/LetterAvatar';
 import SeletedMembers from '../components/SelectedMembers';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
@@ -16,7 +17,6 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import * as actions from '../actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import LetterAvatar from '../components/LetterAvatar';
 
 const styles = theme => ({
   search: {

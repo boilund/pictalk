@@ -6,6 +6,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ImageAvatar from '../components/ImageAvatar';
+import LetterAvatar from '../components/LetterAvatar';
+
 import CreateGroupContent from '../components/CreateGroupContent';
 import GroupListContent from '../components/GroupListContent';
 
@@ -37,7 +39,7 @@ class ToggleMenu extends React.Component {
 
   render() {
     const { anchorEl } = this.state;
-    const { classes, user } = this.props;
+    const { classes, user, group } = this.props;
     const open = Boolean(anchorEl);
 
     return (
@@ -49,7 +51,11 @@ class ToggleMenu extends React.Component {
           onClick={this.handleClick}
           className={classes.avatarButton}
         >
-          <ImageAvatar />
+          {group.image ? (
+            <ImageAvatar image={group.image} alt={group.name} />
+          ) : (
+            <LetterAvatar nickname={group.name} color={'default'} />
+          )}
         </IconButton>
         <Menu
           id="long-menu"
@@ -83,12 +89,14 @@ class ToggleMenu extends React.Component {
 
 ToggleMenu.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  group: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    group: state.group
   };
 };
 

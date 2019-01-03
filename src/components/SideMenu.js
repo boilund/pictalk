@@ -41,7 +41,7 @@ const styles = theme => ({
 });
 
 const SideMenu = props => {
-  const { classes } = props;
+  const { classes, group } = props;
   return (
     <Hidden only={['xs', 'sm']}>
       <Grid item md={3} lg={3}>
@@ -49,7 +49,7 @@ const SideMenu = props => {
           <div className={classes.currentGroup}>
             <ToggleMenu />
             <Typography component="h1" variant="h6">
-              group name
+              {group.name}
             </Typography>
           </div>
           <Paper>
@@ -111,7 +111,8 @@ const SideMenu = props => {
 };
 
 SideMenu.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  group: PropTypes.object
 };
 
 export default withStyles(styles)(SideMenu);
