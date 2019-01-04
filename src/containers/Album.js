@@ -63,7 +63,12 @@ class Album extends React.Component {
       <React.Fragment>
         <Header />
         <main>
-          {/* if you don't have any group, show this dialog */}
+          {/* if user desn't have any group, show this dialog */}
+          {user.groups.length ? (
+            <CreateGroupDialog open={false} />
+          ) : (
+            <CreateGroupDialog open={true} />
+          )}
           <CreateGroupDialog />
           <div className={classNames(classes.layout, classes.cardGrid)}>
             <Grid container spacing={40}>
@@ -116,6 +121,7 @@ Album.propTypes = {
 const mapStateToProps = state => {
   return {
     isFetching: state.app.isFetching,
+    user: state.user,
     openDialog: state.app.openDialog
   };
 };

@@ -17,8 +17,13 @@ import { withRouter } from 'react-router-dom';
 
 class CreateGroupDialog extends React.Component {
   componentDidMount = () => {
+    const { setGroupMembers, user, open, openCreateGroupDialog } = this.props;
     // Set user as group members at first
-    this.props.setGroupMembers([this.props.user]);
+    setGroupMembers([user]);
+    // if user has no group, open the dialog to create a group
+    if (open) {
+      openCreateGroupDialog(true);
+    }
   };
 
   createGroup = () => {
@@ -76,7 +81,8 @@ CreateGroupDialog.propTypes = {
   groupname: PropTypes.string.isRequired,
   // groupimage: PropTypes.object, //TODO: warning
   setGroupMembers: PropTypes.func.isRequired,
-  openCreateGroupDialog: PropTypes.func.isRequired
+  openCreateGroupDialog: PropTypes.func.isRequired,
+  open: PropTypes.bool
 };
 
 const mapStateToProps = state => {
