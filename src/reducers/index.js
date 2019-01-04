@@ -5,6 +5,7 @@ import {
   REQUEST_DATA,
   RECEIVE_REQUEST_DATA,
   RECEIVE_DATA_FAILED,
+  OPEN_CREATE_GROUP_DIALOG,
   SET_GROUP_NAME,
   SET_GROUP_IMAGE,
   SET_GROUP_MEMBERS
@@ -22,7 +23,8 @@ const initialState = {
   },
   app: {
     isFetching: false,
-    candidates: []
+    candidates: [],
+    openDialog: false
   },
   group: {
     name: '',
@@ -72,6 +74,11 @@ const appReducer = (state = initialState.app, action) => {
       return {
         ...state,
         isFetching: false
+      };
+    case OPEN_CREATE_GROUP_DIALOG:
+      return {
+        ...state,
+        openDialog: action.openDialog
       };
     default:
       return state;

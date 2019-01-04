@@ -5,6 +5,7 @@ export const FETCH_CANDIDATES = 'FETCH_CANDIDATES';
 export const REQUEST_DATA = 'REQUEST_DATA';
 export const RECEIVE_REQUEST_DATA = 'RECEIVE_REQUEST_DATA';
 export const RECEIVE_DATA_FAILED = 'RECEIVE_DATA_FAILED';
+export const OPEN_CREATE_GROUP_DIALOG = 'OPEN_CREATE_GROUP_DIALOG';
 export const SET_GROUP_NAME = 'SET_GROUP_NAME';
 export const SET_GROUP_IMAGE = 'SET_GROUP_IMAGE';
 export const SET_GROUP_MEMBERS = 'SET_GROUP_MEMBERS';
@@ -63,3 +64,8 @@ export const setGroupMembers = members => {
     members
   };
 };
+
+export const openCreateGroupDialog = boolean => ({
+  type: OPEN_CREATE_GROUP_DIALOG,
+  openDialog: boolean
+});

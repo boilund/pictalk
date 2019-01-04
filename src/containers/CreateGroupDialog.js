@@ -16,20 +16,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 class CreateGroupDialog extends React.Component {
-  state = {
-    open: false
-  };
-
   componentDidMount = () => {
-    this.setState({
-      open: this.props.openDialog
-    });
     // Set user as group members at first
     this.props.setGroupMembers([this.props.user]);
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
   };
 
   createGroup = () => {
@@ -53,12 +42,12 @@ class CreateGroupDialog extends React.Component {
   };
 
   render() {
-    const { fullScreen, openDialog, user } = this.props;
+    const { fullScreen, user, openDialog, openCreateGroupDialog } = this.props;
 
     return (
       <Dialog
         fullScreen={fullScreen}
-        open={this.state.open}
+        open={openDialog}
         onClose={this.handleClose}
         aria-labelledby="responsive-dialog-title"
       >
@@ -68,7 +57,7 @@ class CreateGroupDialog extends React.Component {
           <SelectMembers user={user} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => this.handleClose()} autoFocus>
+          <Button onClick={() => openCreateGroupDialog(false)} autoFocus>
             Cancel
           </Button>
           <Button onClick={() => this.createGroup()} color="primary" autoFocus>
@@ -86,7 +75,8 @@ CreateGroupDialog.propTypes = {
   user: PropTypes.object.isRequired,
   groupname: PropTypes.string.isRequired,
   // groupimage: PropTypes.object, //TODO: warning
-  members: PropTypes.array.isRequired
+  setGroupMembers: PropTypes.func.isRequired,
+  openCreateGroupDialog: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -94,13 +84,16 @@ const mapStateToProps = state => {
     user: state.user,
     groupname: state.group.name,
     groupimage: state.group.image,
-    members: state.group.members
+    members: state.group.members,
+    openDialog: state.app.openDialog
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setGroupMembers: members => dispatch(actions.setGroupMembers(members))
+    setGroupMembers: members => dispatch(actions.setGroupMembers(members)),
+    openCreateGroupDialog: boolean =>
+      dispatch(actions.openCreateGroupDialog(boolean))
   };
 };
 

@@ -11,6 +11,7 @@ import LetterAvatar from '../components/LetterAvatar';
 import CreateGroupContent from '../components/CreateGroupContent';
 import GroupListContent from '../components/GroupListContent';
 
+import * as actions from '../actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -39,7 +40,7 @@ class ToggleMenu extends React.Component {
 
   render() {
     const { anchorEl } = this.state;
-    const { classes, user, group } = this.props;
+    const { classes, user, group, openCreateGroupDialog } = this.props;
     const open = Boolean(anchorEl);
 
     return (
@@ -78,7 +79,7 @@ class ToggleMenu extends React.Component {
               <GroupListContent group={group} />
             </MenuItem>
           ))}
-          <MenuItem>
+          <MenuItem onClick={() => openCreateGroupDialog(true)}>
             <CreateGroupContent />
           </MenuItem>
         </Menu>
@@ -90,7 +91,8 @@ class ToggleMenu extends React.Component {
 ToggleMenu.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  group: PropTypes.object.isRequired
+  group: PropTypes.object.isRequired,
+  openCreateGroupDialog: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -100,9 +102,16 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    openCreateGroupDialog: boolean =>
+      dispatch(actions.openCreateGroupDialog(boolean))
+  };
+};
+
 const connected = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(ToggleMenu));
 
 export default withRouter(connected);

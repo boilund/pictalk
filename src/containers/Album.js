@@ -64,7 +64,7 @@ class Album extends React.Component {
         <Header />
         <main>
           {/* if you don't have any group, show this dialog */}
-          <CreateGroupDialog openDialog={user.groups.length ? false : true} />
+          <CreateGroupDialog />
           <div className={classNames(classes.layout, classes.cardGrid)}>
             <Grid container spacing={40}>
               <Grid item xs={12} md={9}>
@@ -109,13 +109,14 @@ Album.propTypes = {
   classes: PropTypes.object.isRequired,
   isFetching: PropTypes.bool,
   user: PropTypes.object.isRequired,
-  fetchUsers: PropTypes.func.isRequired
+  fetchUsers: PropTypes.func.isRequired,
+  openDialog: PropTypes.bool
 };
 
 const mapStateToProps = state => {
   return {
     isFetching: state.app.isFetching,
-    user: state.user
+    openDialog: state.app.openDialog
   };
 };
 
