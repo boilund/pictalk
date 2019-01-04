@@ -54,7 +54,7 @@ class Album extends React.Component {
   }
 
   render() {
-    const { classes, isFetching, user } = this.props;
+    const { classes, isFetching, user, group } = this.props;
 
     if (isFetching) {
       return <Loading />;
@@ -100,7 +100,7 @@ class Album extends React.Component {
                   </Card>
                 ))}
               </Grid>
-              <SideMenu />
+              <SideMenu group={group} />
             </Grid>
           </div>
         </main>
@@ -122,6 +122,7 @@ const mapStateToProps = state => {
   return {
     isFetching: state.app.isFetching,
     user: state.user,
+    group: state.group,
     openDialog: state.app.openDialog
   };
 };
