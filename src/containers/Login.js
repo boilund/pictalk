@@ -95,7 +95,12 @@ class Login extends React.Component {
         password
       })
       .then(res => {
+        const sortedGroup = res.data.user.groups.sort((a, b) => {
+          return b.latestUpdateTime - a.latestUpdateTime;
+        });
+        const latestGroup = sortedGroup.slice(0, 1)[0];
         this.props.setUser(res.data.user);
+        this.props.changeGroup(latestGroup);
         this.props.receiveRequestData();
         this.props.history.push('/');
       })
@@ -189,7 +194,8 @@ Login.propTypes = {
   setUser: PropTypes.func.isRequired,
   requestData: PropTypes.func,
   receiveRequestData: PropTypes.func,
-  receiveDataFailed: PropTypes.func
+  receiveDataFailed: PropTypes.func,
+  changeGroup: PropTypes.func
 };
 
 const mapDispatchToProps = dispatch => {
@@ -197,7 +203,8 @@ const mapDispatchToProps = dispatch => {
     setUser: user => dispatch(actions.setUser(user)),
     requestData: () => dispatch(actions.requestData()),
     receiveRequestData: () => dispatch(actions.receiveRequestData()),
-    receiveDataFailed: () => dispatch(actions.receiveDataFailed())
+    receiveDataFailed: () => dispatch(actions.receiveDataFailed()),
+    changeGroup: groupObj => dispatch(actions.changeGroup(groupObj))
   };
 };
 

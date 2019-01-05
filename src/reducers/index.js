@@ -8,7 +8,8 @@ import {
   OPEN_CREATE_GROUP_DIALOG,
   SET_GROUP_NAME,
   SET_GROUP_IMAGE,
-  SET_GROUP_MEMBERS
+  SET_GROUP_MEMBERS,
+  CHANGE_GROUP
 } from '../actions';
 
 const initialState = {
@@ -102,6 +103,13 @@ const groupReducer = (state = initialState.group, action) => {
       return {
         ...state,
         members: action.members
+      };
+    case CHANGE_GROUP:
+      return {
+        ...state,
+        name: action.group.name,
+        image: action.group.image,
+        members: action.group.members
       };
     default:
       return state;
