@@ -44,6 +44,11 @@ export const receiveDataFailed = () => ({
   type: RECEIVE_DATA_FAILED
 });
 
+export const openCreateGroupDialog = boolean => ({
+  type: OPEN_CREATE_GROUP_DIALOG,
+  openDialog: boolean
+});
+
 export const setGroupName = groupname => {
   return {
     type: SET_GROUP_NAME,
@@ -65,7 +70,3 @@ export const setGroupMembers = members => {
   };
 };
 
-export const openCreateGroupDialog = boolean => ({
-  type: OPEN_CREATE_GROUP_DIALOG,
-  openDialog: boolean
-});

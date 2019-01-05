@@ -89,6 +89,7 @@ CreateGroupDialog.propTypes = {
   user: PropTypes.object.isRequired,
   groupname: PropTypes.string.isRequired,
   // groupimage: PropTypes.object, //TODO: warning
+  members: PropTypes.array.isRequired,
   setGroupMembers: PropTypes.func.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
   open: PropTypes.bool
