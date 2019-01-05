@@ -76,13 +76,13 @@ class ToggleMenu extends React.Component {
             }
           }}
         >
-          {user.groups.map((group, index) => (
+          {user.groups.map((g, index) => (
             <MenuItem
               key={index}
-              selected={group === 'Pyxis'}
-              onClick={() => changeGroup(group)}
+              selected={g.name === group.name}
+              onClick={() => changeGroup(g)}
             >
-              <GroupListContent group={group} />
+              <GroupListContent group={g} />
             </MenuItem>
           ))}
           <MenuItem onClick={() => openCreateGroupDialog(true)}>
