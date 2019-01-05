@@ -40,7 +40,13 @@ class ToggleMenu extends React.Component {
 
   render() {
     const { anchorEl } = this.state;
-    const { classes, user, group, openCreateGroupDialog } = this.props;
+    const {
+      classes,
+      user,
+      group,
+      openCreateGroupDialog,
+      changeGroup
+    } = this.props;
     const open = Boolean(anchorEl);
 
     return (
@@ -74,7 +80,7 @@ class ToggleMenu extends React.Component {
             <MenuItem
               key={index}
               selected={group === 'Pyxis'}
-              onClick={this.handleClose}
+              onClick={() => changeGroup(group)}
             >
               <GroupListContent group={group} />
             </MenuItem>
@@ -92,7 +98,8 @@ ToggleMenu.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
-  openCreateGroupDialog: PropTypes.func.isRequired
+  openCreateGroupDialog: PropTypes.func.isRequired,
+  changeGroup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -105,7 +112,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     openCreateGroupDialog: boolean =>
-      dispatch(actions.openCreateGroupDialog(boolean))
+      dispatch(actions.openCreateGroupDialog(boolean)),
+    changeGroup: groupObj => dispatch(actions.changeGroup(groupObj))
   };
 };
 
