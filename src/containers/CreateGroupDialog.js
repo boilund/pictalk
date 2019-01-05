@@ -27,18 +27,27 @@ class CreateGroupDialog extends React.Component {
   };
 
   createGroup = () => {
-    const { user, groupimage: image, groupname, members } = this.props;
+    const {
+      user,
+      groupimage,
+      groupname,
+      members,
+      openCreateGroupDialog
+    } = this.props;
+
     // TODO: if image is not defined, use default image
+    const milliseconds = Date.now();
     axios
       .post(`/api/${user._id}/creategroup`, {
-        // image,
+        groupimage,
         groupname,
-        members
+        members,
+        latestUpdateTime: milliseconds
       })
       .then(res => {
         console.log(res);
         if (res.success) {
-          this.setState({ open: false });
+          openCreateGroupDialog(false);
         }
       })
       .catch(err => {

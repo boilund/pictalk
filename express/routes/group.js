@@ -2,13 +2,13 @@ const User = require('../classes/User.class');
 const Group = require('../classes/Group.class');
 
 exports.creategroup = (req, res) => {
-  const { groupname, members } = req.body;
+  const { groupname, groupimage, members, latestUpdateTime } = req.body;
 
   const newGroup = new Group({
     name: groupname,
-    // image:
     members: members,
-    open: true
+    open: true,
+    latestUpdateTime: latestUpdateTime
   });
 
   newGroup

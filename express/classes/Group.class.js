@@ -11,7 +11,8 @@ const GroupSchema = new Schema({
     }
   ],
   places: [String],
-  open: Boolean
+  open: Boolean,
+  latestUpdateTime: Number
 });
 
 module.exports = mongoose.model('Group', GroupSchema);
