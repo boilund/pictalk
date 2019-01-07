@@ -12,7 +12,7 @@ import * as actions from '../actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-const defaultImg = '/imgs/default-group.svg';
+const defaultImg = '/images/default-group.svg';
 
 const styles = theme => ({
   container: {
@@ -57,7 +57,7 @@ const styles = theme => ({
 
 class GroupImageName extends React.Component {
   state = {
-    imgPath: this.props.user.image || defaultImg
+    imgPath: defaultImg
   };
 
   onFileChange = e => {
@@ -75,7 +75,6 @@ class GroupImageName extends React.Component {
       const formData = new FormData();
       formData.append('id', user._id);
       formData.append('file', e.target.files[0]);
-      console.log(formData);
       setGroupImage(formData);
     }
   };

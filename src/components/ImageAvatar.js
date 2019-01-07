@@ -21,7 +21,7 @@ const ImageAvatar = props => {
     <Avatar
       key={key}
       alt={alt ? `${alt}` : 'default image'}
-      src={image || '/imgs/default-group.svg'}
+      src={image || '/images/default-group.svg'}
       className={size === 'Lg' ? `${classes.Lg}` : `${classes.md}`}
     />
   );
