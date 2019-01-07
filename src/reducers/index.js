@@ -40,7 +40,7 @@ const userReducer = (state = initialState.user, action) => {
     case SET_USER:
       return {
         ...state,
-        _id: user._id,
+        _id: undefined || user._id,
         nickname: user.nickname,
         image: user.image,
         avatarColor: user.avatarColor,

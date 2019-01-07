@@ -1,21 +1,28 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import SignUp from '../containers/SignUp';
-import Login from '../containers/Login';
-import Album from '../containers/Album';
-import CommentPage from './CommentPage';
-import PostPage from './PostPage';
-import FavoritePage from './FavoritePage';
-import MyphotoPage from './MyphotoPage';
-import Settings from '../containers/Settings';
+import SignUp from './SignUp';
+import Login from './Login';
+import Album from './Album';
+import CommentPage from '../components/CommentPage';
+import PostPage from '../components/PostPage';
+import FavoritePage from '../components/FavoritePage';
+import MyphotoPage from '../components/MyphotoPage';
+import Settings from './Settings';
 import axios from 'axios';
 
+import * as actions from '../actions';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
 export class Router extends React.Component {
-  componentDidMount() {
-    axios.get('/api/loggedin').then(res => {
-      console.log('mount', res.data.user);
-    });
+  componentDidUpdate(prevProps) {
+    // console.log('Props', this.props);
+    // if (this.props.setUser !== prevProps.setUser) {
+    //   console.log(this.props);
+    //   this.props.setUser();
+    // }
   }
   render() {
     return (
@@ -48,3 +55,20 @@ export class Router extends React.Component {
     );
   }
 }
+
+Router.propTypes = {
+  setUser: PropTypes.func
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setUser: user => dispatch(actions.setUser(user))
+  };
+};
+
+const connected = connect(
+  null,
+  mapDispatchToProps
+)(Router);
+
+export default withRouter(connected);

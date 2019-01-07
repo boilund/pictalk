@@ -7,3 +7,11 @@ exports.users = (req, res) => {
     res.status(200).json({ success: true, users });
   });
 };
+
+exports.user = (req, res) => {
+  console.log('request');
+  User.findOne({ _id: req.params._id }).then(user => {
+    console.log('user', user);
+    res.status(200).json({ success: true, user });
+  });
+};

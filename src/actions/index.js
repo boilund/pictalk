@@ -11,11 +11,27 @@ export const SET_GROUP_IMAGE = 'SET_GROUP_IMAGE';
 export const SET_GROUP_MEMBERS = 'SET_GROUP_MEMBERS';
 export const CHANGE_GROUP = 'CHANGE_GROUP';
 
-export const setUser = user => {
-  return {
-    type: SET_USER,
-    user
-  };
+export const setUser = (user = {}) => {
+  if (user === {}) {
+    console.log('user', user);
+    // get session id
+    axios.get('/api/loggedin').then(res => {
+      console.log('res', res);
+      // find user
+      axios.get(`/api/user/${res.data.user}`).then(result => {
+        console.log(result.data.user);
+        return {
+          type: SET_USER,
+          user: result.data.user
+        };
+      });
+    });
+  } else {
+    return {
+      type: SET_USER,
+      user
+    };
+  }
 };
 
 export const fetchUsers = userId => dispatch => {
