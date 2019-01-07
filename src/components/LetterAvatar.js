@@ -43,7 +43,7 @@ const LetterAvatar = props => {
 
 LetterAvatar.propTypes = {
   classes: PropTypes.object.isRequired,
-  nickname: PropTypes.string.isRequired,
+  nickname: PropTypes.string,
   color: PropTypes.string
 };
 
