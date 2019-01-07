@@ -69,4 +69,5 @@ app.get('/users', loginCheck, userRoutes.users);
 app.get('/user/:_id', userRoutes.user);
 
 const groupRoutes = require('./routes/group');
-app.post('/:userId/creategroup', groupRoutes.creategroup);
+app.post('/:userId/creategroup', loginCheck, groupRoutes.creategroup);
+app.post('/upload', loginCheck, groupRoutes.upload);

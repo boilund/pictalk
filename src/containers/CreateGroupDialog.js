@@ -35,11 +35,9 @@ class CreateGroupDialog extends React.Component {
       openCreateGroupDialog
     } = this.props;
 
-    // TODO: if image is not defined, use default image
     const milliseconds = Date.now();
     axios
       .post(`/api/${user._id}/creategroup`, {
-        groupimage,
         groupname,
         members,
         latestUpdateTime: milliseconds
@@ -47,7 +45,19 @@ class CreateGroupDialog extends React.Component {
       .then(res => {
         console.log(res);
         if (res.success) {
-          openCreateGroupDialog(false);
+          console.log('image', groupimage.get('id'));
+          // TODO: if image is not defined, use default image
+          if (groupimage) {
+            axios
+              .post('/api/upload', {
+                groupimage
+              })
+              .then(res => {
+                console.log(res.path);
+                openCreateGroupDialog(false);
+                // this.props.updateProfile("image", res.path);
+              });
+          }
         }
       })
       .catch(err => {
