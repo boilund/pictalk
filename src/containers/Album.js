@@ -9,7 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Header from '../components/Header';
+import Header from './Header';
 import BottomMenuBar from '../components/BottomMenuBar';
 import SideMenu from '../components/SideMenu';
 import CreateGroupDialog from './CreateGroupDialog';

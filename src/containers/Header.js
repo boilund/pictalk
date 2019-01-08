@@ -7,12 +7,16 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Settings from '@material-ui/icons/Settings';
 
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
 const styles = {
   root: {
     flexGrow: 1
   },
   grow: {
-    flexGrow: 1
+    flexGrow: 1,
+    cursor: 'pointer'
   },
   noLinkColor: {
     color: 'inherit'
@@ -20,7 +24,11 @@ const styles = {
 };
 
 const Header = props => {
-  const { classes } = props;
+  const { classes, user } = props;
+
+  const handleClick = () => {
+    props.history.push('/');
+  };
 
   return (
     <header className={classes.root}>
@@ -32,13 +40,16 @@ const Header = props => {
             color="textPrimary"
             gutterBottom
             className={classes.grow}
+            onClick={() => handleClick()}
           >
             PicTalk
           </Typography>
           {/* show this icon when user login */}
-          <Link to="/settings" className={classes.noLinkColor}>
-            <Settings />
-          </Link>
+          {user.nickname && (
+            <Link to="/settings" className={classes.noLinkColor}>
+              <Settings />
+            </Link>
+          )}
         </Toolbar>
       </AppBar>
     </header>
@@ -46,7 +57,20 @@ const Header = props => {
 };
 
 Header.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  user: PropTypes.object
 };
 
-export default withStyles(styles)(Header);
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+const connected = connect(
+  mapStateToProps,
+  null
+)(withStyles(styles)(Header));
+
+export default withRouter(connected);
