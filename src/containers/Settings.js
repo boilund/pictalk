@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import axios from 'axios';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
@@ -10,6 +9,7 @@ import Tab from '@material-ui/core/Tab';
 import PersonPinIcon from '@material-ui/icons/PersonPin';
 import Header from '../components/Header';
 import ProfileTable from '../components/ProfileTable';
+import GroupTable from '../components/GroupTable';
 
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -80,7 +80,7 @@ class Settings extends React.Component {
               <Tab icon={<PersonPinIcon />} label="Group" />
             </Tabs>
             {value === 0 && <ProfileTable user={user} />}
-            {value === 1 && <Typography>Group settings</Typography>}
+            {value === 1 && <GroupTable groups={user.groups} />}
           </Paper>
         </main>
       </Fragment>

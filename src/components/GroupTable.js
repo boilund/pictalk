@@ -19,38 +19,26 @@ const styles = theme => ({
   }
 });
 
-let id = 0;
-const createData = (title, value) => {
-  id += 1;
-  return { id, title, value };
-};
-
-const ProfileTable = props => {
-  const { classes, user } = props;
-  const rows = [
-    createData('Nickname', user.nickname),
-    createData('Image', user.image),
-    createData('E-mail', user.email),
-    createData('Password', user.password)
-  ];
+const GroupTable = props => {
+  const { classes, groups } = props;
 
   return (
     <Paper className={classes.root}>
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell>title</TableCell>
-            <TableCell align="right">Value</TableCell>
+            <TableCell>Group Name</TableCell>
+            <TableCell align="right">Members</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => {
+          {groups.map((group, index) => {
             return (
-              <TableRow key={row.id}>
+              <TableRow key={index}>
                 <TableCell component="th" scope="row">
-                  {row.title}
+                  {group.name}
                 </TableCell>
-                <TableCell align="right">{row.value}</TableCell>
+                <TableCell align="right">{group.members}</TableCell>
               </TableRow>
             );
           })}
@@ -60,8 +48,8 @@ const ProfileTable = props => {
   );
 };
 
-ProfileTable.propTypes = {
+GroupTable.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ProfileTable);
+export default withStyles(styles)(GroupTable);
