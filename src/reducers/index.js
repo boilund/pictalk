@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import {
   SET_USER,
+  RESET_USER,
   FETCH_CANDIDATES,
   REQUEST_DATA,
   RECEIVE_REQUEST_DATA,
@@ -48,6 +49,8 @@ const userReducer = (state = initialState.user, action) => {
         groups: user.groups,
         photos: user.photos
       };
+    case RESET_USER:
+      return initialState.user;
     default:
       return state;
   }

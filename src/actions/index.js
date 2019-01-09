@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const SET_USER = 'SET_USER';
+export const RESET_USER = 'RESET_USER';
 export const FETCH_CANDIDATES = 'FETCH_CANDIDATES';
 export const REQUEST_DATA = 'REQUEST_DATA';
 export const RECEIVE_REQUEST_DATA = 'RECEIVE_REQUEST_DATA';
@@ -33,6 +34,10 @@ export const setUser = (user = {}) => {
     };
   }
 };
+
+export const resetUser = () => ({
+  type: RESET_USER
+});
 
 export const fetchUsers = userId => dispatch => {
   axios

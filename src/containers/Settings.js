@@ -11,6 +11,7 @@ import Header from './Header';
 import ProfileTable from '../components/ProfileTable';
 import GroupTable from '../components/GroupTable';
 
+import * as actions from '../actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -45,6 +46,7 @@ class Settings extends React.Component {
   logout = () => {
     axios.get('/api/logout').then(res => {
       if (res.data.success) {
+        this.props.resetUser();
         this.props.history.push('/login');
       }
     });
@@ -100,9 +102,14 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    resetUser: () => dispatch(actions.resetUser())
+  };
+};
 const connected = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(Settings));
 
 export default withRouter(connected);
