@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,12 +9,21 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
-import GroupImageName from './GroupImageName';
+import UploadImage from './UploadImage';
+import GroupNameInput from './GroupNameInput';
 import SelectMembers from './SelectMembers';
 
 import * as actions from '../actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+
+const styles = () => ({
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  }
+});
 
 class CreateGroupDialog extends React.Component {
   componentDidMount = () => {
@@ -66,7 +76,13 @@ class CreateGroupDialog extends React.Component {
   };
 
   render() {
-    const { fullScreen, user, openDialog, openCreateGroupDialog } = this.props;
+    const {
+      classes,
+      fullScreen,
+      user,
+      openDialog,
+      openCreateGroupDialog
+    } = this.props;
 
     return (
       <Dialog
@@ -77,7 +93,10 @@ class CreateGroupDialog extends React.Component {
       >
         <DialogTitle id="responsive-dialog-title">Make new group</DialogTitle>
         <DialogContent>
-          <GroupImageName user={user} />
+          <div className={classes.row}>
+            <UploadImage />
+            <GroupNameInput user={user} />
+          </div>
           <SelectMembers user={user} />
         </DialogContent>
         <DialogActions>
@@ -94,6 +113,7 @@ class CreateGroupDialog extends React.Component {
 }
 
 CreateGroupDialog.propTypes = {
+  classes: PropTypes.object.isRequired,
   fullScreen: PropTypes.bool.isRequired,
   openDialog: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
@@ -126,7 +146,7 @@ const mapDispatchToProps = dispatch => {
 const connected = connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateGroupDialog);
+)(withStyles(styles)(CreateGroupDialog));
 
 const routed = withRouter(connected);
 export default withMobileDialog()(routed);
