@@ -10,7 +10,8 @@ import {
   SET_GROUP_NAME,
   SET_GROUP_IMAGE,
   SET_GROUP_MEMBERS,
-  CHANGE_GROUP
+  CHANGE_GROUP,
+  SET_PHOTO
 } from '../actions';
 
 const initialState = {
@@ -31,7 +32,8 @@ const initialState = {
   group: {
     name: '',
     image: '',
-    members: []
+    members: [],
+    post: {}
   }
 };
 
@@ -113,6 +115,11 @@ const groupReducer = (state = initialState.group, action) => {
         name: action.group.name,
         image: action.group.image,
         members: action.group.members
+      };
+    case SET_PHOTO:
+      return {
+        ...state,
+        post: action.photo
       };
     default:
       return state;
