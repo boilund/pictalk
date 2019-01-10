@@ -55,17 +55,15 @@ const BottomMenuBar = props => {
                 <ChatBubbleOutline />
               </IconButton>
             </Link>
-            <div>
+            <Link to="/post" className={classes.noLinkColor}>
               <Fab
                 color="secondary"
                 aria-label="Add"
                 className={classes.fabButton}
               >
-                <Link to="/post" className={classes.noLinkColor}>
-                  <AddIcon />
-                </Link>
+                <AddIcon />
               </Fab>
-            </div>
+            </Link>
             <Link to="/favorite" className={classes.noLinkColor}>
               <IconButton color="inherit">
                 <FavoriteBorder />

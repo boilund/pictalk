@@ -1,16 +1,10 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Header from '../containers/Header';
-import AddPhotoStep from './AddPhotoStep';
+import Steps from './Steps';
+import StepAddPhoto from './StepAddPhoto';
+import Loading from './Loading';
+import Album from '../containers/Album';
 
 const styles = theme => ({
   root: {
@@ -36,26 +30,35 @@ const getSteps = () => {
   return ['Select a photo', 'Write description', 'Submit'];
 };
 
-const getStepContent = stepIndex => {
-  switch (stepIndex) {
-    case 0:
-      return <AddPhotoStep />;
-    case 1:
-      return 'What is an ad group anyways?';
-    case 2:
-      return 'This is the bit I really care about!';
-    default:
-      return 'Unknown stepIndex';
-  }
-};
-
 class PostPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeStep: 0
+      activeStep: 0,
+      uploading: false,
+      file: null,
+      images: []
     };
+    this.handleChange = this.handleChange.bind(this);
   }
+
+  getStepContent = stepIndex => {
+    switch (stepIndex) {
+      case 0:
+        return (
+          <StepAddPhoto
+            handleChange={this.handleChange}
+            file={this.state.file}
+          />
+        );
+      case 1:
+        return 'What is an ad group anyways?';
+      case 2:
+        return 'This is the bit I really care about!';
+      default:
+        return 'Unknown stepIndex';
+    }
+  };
 
   handleNext = () => {
     this.setState({
@@ -75,67 +78,45 @@ class PostPage extends React.Component {
     });
   };
 
+  handleChange = e => {
+    this.setState({
+      file: URL.createObjectURL(e.target.files[0])
+    });
+
+    // TODO: Save image to database
+    // const formData = new FormData();
+    // formData.append('id', user._id);
+    // formData.append('file', e.target.files[0]);
+    // this.props.setGroupImage(formData);
+  };
+
   render() {
     const { classes } = this.props;
     const steps = getSteps();
-    const { activeStep } = this.state;
-    return (
-      <Fragment>
-        <Header />
-        <main>
-          <Typography
-            variant="h6"
-            align="inherit"
-            color="textPrimary"
-            gutterBottom
-            className={classes.instructions}
-          >
-            Submit photo step
-          </Typography>
-          <div className={classes.root}>
-            <Stepper activeStep={activeStep} alternativeLabel>
-              {steps.map(label => {
-                return (
-                  <Step key={label}>
-                    <StepLabel>{label}</StepLabel>
-                  </Step>
-                );
-              })}
-            </Stepper>
-            <div>
-              {activeStep === steps.length ? (
-                <div>
-                  <Typography className={classes.instructions}>
-                    All steps completed
-                  </Typography>
-                  <Button onClick={() => this.handleReset()}>Reset</Button>
-                </div>
-              ) : (
-                <div>
-                  {getStepContent(activeStep)}
-                  <div>
-                    <Button
-                      disabled={activeStep === 0}
-                      onClick={() => this.handleBack()}
-                      className={classes.backButton}
-                    >
-                      Back
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => this.handleNext()}
-                    >
-                      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </main>
-      </Fragment>
-    );
+    const { activeStep, uploading, images } = this.state;
+
+    const content = () => {
+      switch (true) {
+        case uploading:
+          return <Loading />;
+        case images.length > 0:
+          return <Album images={images} removeImage={this.removeImage} />;
+        default:
+          return (
+            <Steps
+              steps={steps}
+              activeStep={activeStep}
+              getStepContent={this.getStepContent}
+              handleChange={this.handleChange}
+              handleNext={this.handleNext}
+              handleBack={this.handleBack}
+              handleReset={this.handleReset}
+            />
+          );
+      }
+    };
+
+    return <main>{content()}</main>;
   }
 }
 
