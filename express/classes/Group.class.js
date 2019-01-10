@@ -10,6 +10,12 @@ const GroupSchema = new Schema({
       ref: 'User'
     }
   ],
+  posts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Photo'
+    }
+  ],
   places: [String],
   open: Boolean,
   latestUpdateTime: Number

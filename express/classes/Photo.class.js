@@ -2,8 +2,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const PhotoSchema = new Schema({
-  postedGroup: String,
-  photographer: String,
+  postedGroup: {
+    type: Schema.Types.ObjectId,
+    ref: 'Group'
+  },
+  photographer: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   exifData: {
     fileType: String,
     fileSize: String,
@@ -17,7 +23,10 @@ const PhotoSchema = new Schema({
   favorite: Number,
   comments: [
     {
-      username: String,
+      sender: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+      },
       comment: String
     }
   ]
