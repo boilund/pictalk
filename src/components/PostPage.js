@@ -20,8 +20,8 @@ const styles = theme => ({
     marginRight: theme.spacing.unit
   },
   instructions: {
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2
   },
   preview: {
     width: '300px',
@@ -88,6 +88,7 @@ class PostPage extends React.Component {
             align="inherit"
             color="textPrimary"
             gutterBottom
+            className={classes.instructions}
           >
             Submit photo step
           </Typography>
@@ -111,9 +112,7 @@ class PostPage extends React.Component {
                 </div>
               ) : (
                 <div>
-                  <Typography className={classes.instructions}>
-                    {getStepContent(activeStep)}
-                  </Typography>
+                  {getStepContent(activeStep)}
                   <div>
                     <Button
                       disabled={activeStep === 0}
