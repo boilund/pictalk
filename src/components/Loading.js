@@ -11,7 +11,14 @@ const styles = theme => ({
 
 const Loading = props => {
   const { classes } = props;
-  return <CircularProgress className={classes.progress} />;
+  return (
+    <CircularProgress
+      className={classes.progress}
+      container
+      justify="center"
+      alignItems="center"
+    />
+  );
 };
 
 Loading.propTypes = {
