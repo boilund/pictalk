@@ -5,6 +5,7 @@ import Steps from './Steps';
 import StepAddPhoto from './StepAddPhoto';
 import Loading from './Loading';
 import Album from '../containers/Album';
+import Header from '../containers/Header';
 
 const styles = theme => ({
   root: {
@@ -103,6 +104,8 @@ class PostPage extends React.Component {
           return <Album images={images} removeImage={this.removeImage} />;
         default:
           return (
+            <Fragment>
+              <Header />
             <Steps
               steps={steps}
               activeStep={activeStep}
@@ -112,6 +115,7 @@ class PostPage extends React.Component {
               handleBack={this.handleBack}
               handleReset={this.handleReset}
             />
+            </Fragment>
           );
       }
     };
