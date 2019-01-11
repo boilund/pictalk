@@ -19,10 +19,16 @@ const StepAddPhoto = props => {
   const { classes, handleChange, file } = props;
   return (
     <Fragment>
-      <form>
+      <form action="/image-upload" method="post" encType="multipart/form-data">
         <FormControl margin="normal" required fullWidth>
           <InputLabel htmlFor="addPhoto" />
-          <Input id="addPhoto" type="file" autoFocus onChange={handleChange} />
+          <Input
+            id="addPhoto"
+            name="image"
+            type="file"
+            autoFocus
+            onChange={handleChange}
+          />
         </FormControl>
       </form>
       <div

@@ -6,6 +6,7 @@ import StepAddPhoto from './StepAddPhoto';
 import Loading from './Loading';
 import Album from '../containers/Album';
 import Header from '../containers/Header';
+import axios from 'axios';
 
 const styles = theme => ({
   root: {
@@ -80,15 +81,32 @@ class PostPage extends React.Component {
   };
 
   handleChange = e => {
+    // preview
     this.setState({
       file: URL.createObjectURL(e.target.files[0])
     });
 
-    // TODO: Save image to database
-    // const formData = new FormData();
-    // formData.append('id', user._id);
-    // formData.append('file', e.target.files[0]);
-    // this.props.setGroupImage(formData);
+    // save file to database
+    const files = Array.from(e.target.files);
+    this.setState({ uploading: true });
+
+    const formData = new FormData();
+
+    files.forEach((file, i) => {
+      formData.append(i, file);
+    });
+    console.log('formData', formData.get('0'));
+    axios
+      .post('/api/image-upload', {
+        formData
+      })
+      .then(images => {
+        console.log('images', images);
+        this.setState({
+          uploading: false,
+          images
+        });
+      });
   };
 
   render() {
@@ -106,15 +124,15 @@ class PostPage extends React.Component {
           return (
             <Fragment>
               <Header />
-            <Steps
-              steps={steps}
-              activeStep={activeStep}
-              getStepContent={this.getStepContent}
-              handleChange={this.handleChange}
-              handleNext={this.handleNext}
-              handleBack={this.handleBack}
-              handleReset={this.handleReset}
-            />
+              <Steps
+                steps={steps}
+                activeStep={activeStep}
+                getStepContent={this.getStepContent}
+                handleChange={this.handleChange}
+                handleNext={this.handleNext}
+                handleBack={this.handleBack}
+                handleReset={this.handleReset}
+              />
             </Fragment>
           );
       }

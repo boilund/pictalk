@@ -70,4 +70,46 @@ app.get('/user/:_id', userRoutes.user);
 
 const groupRoutes = require('./routes/group');
 app.post('/:userId/creategroup', loginCheck, groupRoutes.creategroup);
-app.post('/upload', loginCheck, groupRoutes.upload);
+
+const multer = require('multer');
+
+// Difine storage and file name
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/images/uploads');
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + '-' + Date.now() + '.' + file.mimetype.split('image/')[1]
+    );
+  }
+});
+const upload = multer({ storage: storage });
+
+// routing
+// TODO: req.file is undefined
+app.post('/image-upload', upload.single('image'), (req, res) => {
+  console.log('req', req.file);
+  // delete req.file.buffer;
+  // res.json({ req.file });
+  res.redirect('/');
+});
+
+// catch 404 and forward to error handler
+app.use((req, res, next) => {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// error handler
+app.use((err, req, res) => {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.send({ error: 'error' });
+});
