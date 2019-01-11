@@ -16,8 +16,8 @@ import {
 
 const initialState = {
   user: {
+    id: '',
     loggedIn: false,
-    _id: '',
     nickname: '',
     image: '',
     avatarColor: '',
@@ -44,7 +44,7 @@ const userReducer = (state = initialState.user, action) => {
     case SET_USER:
       return {
         ...state,
-        _id: user._id,
+        id: user._id,
         loggedIn: true,
         nickname: user.nickname,
         image: user.image,
