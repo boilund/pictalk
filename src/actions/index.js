@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export const SET_USER = 'SET_USER';
-export const RESET_USER = 'RESET_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const FETCH_CANDIDATES = 'FETCH_CANDIDATES';
 export const REQUEST_DATA = 'REQUEST_DATA';
@@ -14,32 +13,12 @@ export const SET_GROUP_MEMBERS = 'SET_GROUP_MEMBERS';
 export const CHANGE_GROUP = 'CHANGE_GROUP';
 export const SET_PHOTO = 'SET_PHOTO';
 
-export const setUser = (user = {}) => {
-  if (user === {}) {
-    console.log('user', user);
-    // get session id
-    axios.get('/api/loggedin').then(res => {
-      console.log('res', res);
-      // find user
-      axios.get(`/api/user/${res.data.user}`).then(result => {
-        console.log(result.data.user);
+export const setUser = user => {
         return {
           type: SET_USER,
-          user: result.data.user
-        };
-      });
-    });
-  } else {
-    return {
-      type: SET_USER,
       user
     };
-  }
 };
-
-export const resetUser = () => ({
-  type: RESET_USER
-});
 
 export const logoutUser = () => dispatch => {
   axios
