@@ -43,18 +43,13 @@ class Settings extends React.Component {
     this.setState({ value });
   };
 
-  logout = () => {
-    axios.get('/api/logout').then(res => {
-      if (res.data.success) {
-        this.props.resetUser();
-        this.props.history.push('/login');
-      }
-    });
-  };
-
   render() {
-    const { classes, user, history } = this.props;
+    const { classes, user, history, isLoggedIn, setUserLogout } = this.props;
     const { value } = this.state;
+
+    if (!isLoggedIn) {
+      history.push('/login');
+    }
 
     return (
       <Fragment>
@@ -66,7 +61,7 @@ class Settings extends React.Component {
                 variant="outlined"
                 color="secondary"
                 className={classes.button}
-                onClick={() => this.logout()}
+                onClick={() => setUserLogout()}
               >
                 Logout
               </Button>
@@ -93,18 +88,21 @@ class Settings extends React.Component {
 Settings.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  setUserLogout: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    isLoggedIn: state.user.loggedIn
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    resetUser: () => dispatch(actions.resetUser())
+    setUserLogout: () => dispatch(actions.logoutUser())
   };
 };
 const connected = connect(

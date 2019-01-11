@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const SET_USER = 'SET_USER';
 export const RESET_USER = 'RESET_USER';
+export const LOGOUT_USER = 'LOGOUT_USER';
 export const FETCH_CANDIDATES = 'FETCH_CANDIDATES';
 export const REQUEST_DATA = 'REQUEST_DATA';
 export const RECEIVE_REQUEST_DATA = 'RECEIVE_REQUEST_DATA';
@@ -39,6 +40,19 @@ export const setUser = (user = {}) => {
 export const resetUser = () => ({
   type: RESET_USER
 });
+
+export const logoutUser = () => dispatch => {
+  axios
+    .get('/api/logout')
+    .then(res => {
+      if (res.data.success) {
+        dispatch({ type: LOGOUT_USER });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
 
 export const fetchUsers = userId => dispatch => {
   axios

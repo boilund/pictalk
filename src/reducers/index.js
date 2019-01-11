@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import {
   SET_USER,
   RESET_USER,
+  LOGOUT_USER,
   FETCH_CANDIDATES,
   REQUEST_DATA,
   RECEIVE_REQUEST_DATA,
@@ -16,6 +17,7 @@ import {
 
 const initialState = {
   user: {
+    loggedIn: false,
     _id: '',
     nickname: '',
     image: '',
@@ -43,7 +45,8 @@ const userReducer = (state = initialState.user, action) => {
     case SET_USER:
       return {
         ...state,
-        _id: undefined || user._id,
+        _id: user._id,
+        loggedIn: true,
         nickname: user.nickname,
         image: user.image,
         avatarColor: user.avatarColor,
@@ -53,6 +56,11 @@ const userReducer = (state = initialState.user, action) => {
       };
     case RESET_USER:
       return initialState.user;
+    case LOGOUT_USER:
+      return {
+        ...state,
+        loggedIn: false
+      };
     default:
       return state;
   }
