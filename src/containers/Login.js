@@ -18,7 +18,6 @@ import Alert from '../components/Alert';
 
 import * as actions from '../actions';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 const styles = theme => ({
   main: {
@@ -87,8 +86,16 @@ class Login extends React.Component {
   handleSignUpSubmit = e => {
     e.preventDefault();
     const { email, password } = this.state;
-    this.props.requestData();
+    const {
+      requestData,
+      changeGroup,
+      setUser,
+      receiveRequestData,
+      history,
+      receiveDataFailed
+    } = this.props;
 
+    requestData();
     axios
       .post('/api/login', {
         email,
@@ -99,14 +106,16 @@ class Login extends React.Component {
           return b.latestUpdateTime - a.latestUpdateTime;
         });
         const latestGroup = sortedGroup.slice(0, 1)[0];
-        this.props.setUser(res.data.user);
-        this.props.changeGroup(latestGroup);
-        this.props.receiveRequestData();
-        this.props.history.push('/');
+        if (latestGroup) {
+          changeGroup(latestGroup);
+        }
+        setUser(res.data.user);
+        receiveRequestData();
+        history.push('/');
       })
       .catch(err => {
         this.setState({ alert: true });
-        this.props.receiveDataFailed();
+        receiveDataFailed();
         console.error(new Error(err));
       });
   };
@@ -208,9 +217,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const connected = connect(
+export default connect(
   null,
   mapDispatchToProps
 )(withStyles(styles)(Login));
-
-export default withRouter(connected);
