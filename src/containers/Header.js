@@ -27,7 +27,7 @@ const Header = props => {
   const { classes, user } = props;
 
   const handleClick = () => {
-    if (user._id) {
+    if (user.loggedIn) {
       props.history.push('/');
     }
   };
@@ -47,7 +47,7 @@ const Header = props => {
             PicTalk
           </Typography>
           {/* show this icon when user login */}
-          {user._id && (
+          {user.loggedIn && (
             <Link to="/settings" className={classes.noLinkColor}>
               <Settings />
             </Link>
