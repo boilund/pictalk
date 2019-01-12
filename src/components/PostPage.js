@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Steps from './Steps';
 import StepAddPhoto from './StepAddPhoto';
+import StepAddText from './StepAddText';
 import Loading from './Loading';
 import Album from '../containers/Album';
 import Header from '../containers/Header';
@@ -39,9 +40,11 @@ class PostPage extends React.Component {
       activeStep: 0,
       uploading: false,
       files: [],
-      images: []
+      images: [],
+      description: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleTextChange = this.handleTextChange.bind(this);
   }
 
   getStepContent = stepIndex => {
@@ -54,7 +57,12 @@ class PostPage extends React.Component {
           />
         );
       case 1:
-        return 'What is an ad group anyways?';
+        return (
+          <StepAddText
+            handleTextChange={this.handleTextChange}
+            description={this.state.description}
+          />
+        );
       case 2:
         return 'This is the bit I really care about!';
       default:
@@ -102,6 +110,10 @@ class PostPage extends React.Component {
       console.error(error);
     }
     this.setState({ uploading: false });
+  };
+
+  handleTextChange = e => {
+    this.setState({ description: e.target.value });
   };
 
   render() {

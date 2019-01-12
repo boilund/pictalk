@@ -19,7 +19,8 @@ const styles = theme => ({
     color: theme.palette.text.secondary,
     margin: 'auto',
     marginTop: theme.spacing.unit * 5,
-    maxWidth: 1000
+    maxWidth: 1000,
+    minHeight: 650
   }
 });
 
