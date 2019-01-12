@@ -85,15 +85,18 @@ const storage = multer.diskStorage({
     );
   }
 });
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  limits: {
+    // max size of files 10 MB
+    fileSize: 10000000
+  }
+});
 
 // routing
-// TODO: req.file is undefined
-app.post('/image-upload', upload.single('image'), (req, res) => {
-  console.log('req', req.file);
-  // delete req.file.buffer;
-  // res.json({ req.file });
-  res.redirect('/');
+app.post('/image-upload', upload.array('images', 10), (req, res) => {
+  console.log('req', req.files);
+  res.json(req.body);
 });
 
 // catch 404 and forward to error handler

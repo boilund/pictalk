@@ -38,7 +38,7 @@ class PostPage extends React.Component {
     this.state = {
       activeStep: 0,
       uploading: false,
-      file: null,
+      files: [],
       images: []
     };
     this.handleChange = this.handleChange.bind(this);
@@ -50,7 +50,7 @@ class PostPage extends React.Component {
         return (
           <StepAddPhoto
             handleChange={this.handleChange}
-            file={this.state.file}
+            files={this.state.files}
           />
         );
       case 1:
@@ -80,10 +80,10 @@ class PostPage extends React.Component {
     });
   };
 
-  handleChange = e => {
+  handleChange = async e => {
     // preview
     this.setState({
-      file: URL.createObjectURL(e.target.files[0])
+      files: Array.from(e.target.files, file => URL.createObjectURL(file))
     });
 
     // save file to database
@@ -92,21 +92,16 @@ class PostPage extends React.Component {
 
     const formData = new FormData();
 
-    files.forEach((file, i) => {
-      formData.append(i, file);
+    files.forEach(file => {
+      formData.append('images', file);
     });
-    console.log('formData', formData.get('0'));
-    axios
-      .post('/api/image-upload', {
-        formData
-      })
-      .then(images => {
-        console.log('images', images);
-        this.setState({
-          uploading: false,
-          images
-        });
-      });
+
+    try {
+      const response = await axios.post('/api/image-upload', formData);
+    } catch (error) {
+      console.error(error);
+    }
+    this.setState({ uploading: false });
   };
 
   render() {

@@ -16,25 +16,31 @@ const styles = {
 };
 
 const StepAddPhoto = props => {
-  const { classes, handleChange, file } = props;
+  const { classes, handleChange, files } = props;
   return (
     <Fragment>
       <form action="/image-upload" method="post" encType="multipart/form-data">
         <FormControl margin="normal" required fullWidth>
           <InputLabel htmlFor="addPhoto" />
-          <Input
+          <input
             id="addPhoto"
             name="image"
             type="file"
+            multiple
             autoFocus
             onChange={handleChange}
           />
         </FormControl>
       </form>
-      <div
-        className={classes.preview}
-        style={{ backgroundImage: `url(${file})` }}
-      />
+      {files.map((file, i) => {
+        return (
+          <div
+            key={i}
+            className={classes.preview}
+            style={{ backgroundImage: `url(${file})` }}
+          />
+        );
+      })}
     </Fragment>
   );
 };
@@ -42,7 +48,7 @@ const StepAddPhoto = props => {
 StepAddPhoto.propTypes = {
   classes: PropTypes.object.isRequired,
   handleChange: PropTypes.func.isRequired,
-  file: PropTypes.string
+  files: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default withStyles(styles)(StepAddPhoto);

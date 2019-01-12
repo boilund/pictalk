@@ -3,6 +3,7 @@ const Group = require('../classes/Group.class');
 const pathTo = require('path');
 const fs = require('fs');
 const jo = require('jpeg-autorotate');
+const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
