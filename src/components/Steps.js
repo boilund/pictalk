@@ -37,7 +37,8 @@ const Steps = props => {
     getStepContent,
     handleNext,
     handleBack,
-    handleReset
+    handleReset,
+    handleSubmit
   } = props;
 
   return (
@@ -86,7 +87,12 @@ const Steps = props => {
                       <Button
                         variant="contained"
                         color="primary"
-                        onClick={() => handleNext()}
+                        // onClick={() => handleNext()}
+                        onClick={() => {
+                          activeStep === steps.length - 1
+                            ? handleSubmit()
+                            : handleNext();
+                        }}
                       >
                         {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                       </Button>
@@ -109,7 +115,8 @@ Steps.propTypes = {
   getStepContent: PropTypes.func.isRequired,
   handleNext: PropTypes.func.isRequired,
   handleBack: PropTypes.func.isRequired,
-  handleReset: PropTypes.func.isRequired
+  handleReset: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(Steps);

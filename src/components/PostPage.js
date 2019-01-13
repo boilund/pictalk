@@ -89,6 +89,11 @@ class PostPage extends React.Component {
     });
   };
 
+  handleSubmit = async () => {
+    const { formData, description } = this.state;
+
+  };
+
   handleChange = async e => {
     // preview
     this.setState({
@@ -120,14 +125,12 @@ class PostPage extends React.Component {
   render() {
     const { classes } = this.props;
     const steps = getSteps();
-    const { activeStep, uploading, images } = this.state;
+    const { activeStep, uploading } = this.state;
 
     const content = () => {
       switch (true) {
         case uploading:
           return <Loading />;
-        case images.length > 0:
-          return <Album images={images} removeImage={this.removeImage} />;
         default:
           return (
             <Fragment>
@@ -140,6 +143,7 @@ class PostPage extends React.Component {
                 handleNext={this.handleNext}
                 handleBack={this.handleBack}
                 handleReset={this.handleReset}
+                handleSubmit={this.handleSubmit}
               />
             </Fragment>
           );
