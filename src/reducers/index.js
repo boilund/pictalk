@@ -31,6 +31,7 @@ const initialState = {
     openDialog: false
   },
   group: {
+    id: '',
     name: '',
     image: '',
     members: [],
@@ -117,6 +118,7 @@ const groupReducer = (state = initialState.group, action) => {
     case CHANGE_GROUP:
       return {
         ...state,
+        id: action.group._id,
         name: action.group.name,
         image: action.group.image,
         members: action.group.members
