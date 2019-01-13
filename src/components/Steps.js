@@ -21,6 +21,11 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 5,
     maxWidth: 1000,
     minHeight: 650
+  },
+  stepContent: {
+    width: '80%',
+    height: '80%',
+    margin: '0 auto'
   }
 });
 
@@ -59,7 +64,7 @@ const Steps = props => {
                   );
                 })}
               </Stepper>
-              <div>
+              <div className={classes.stepContent}>
                 {activeStep === steps.length ? (
                   <div>
                     <Typography className={classes.instructions}>

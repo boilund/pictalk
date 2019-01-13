@@ -61,6 +61,7 @@ class PostPage extends React.Component {
           <StepAddText
             handleTextChange={this.handleTextChange}
             description={this.state.description}
+            files={this.state.files}
           />
         );
       case 2:

@@ -7,9 +7,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 
 const styles = {
   preview: {
-    width: '300px',
-    height: '300px',
-    backgroundSize: ' cover',
+    margin: '0 auto',
+    width: '400px',
+    height: '400px',
+    backgroundSize: ' contain',
     backgroundRepeat: ' no-repeat',
     backgroundPosition: 'center'
   }
