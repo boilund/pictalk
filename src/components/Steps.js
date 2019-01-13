@@ -87,7 +87,6 @@ const Steps = props => {
                       <Button
                         variant="contained"
                         color="primary"
-                        // onClick={() => handleNext()}
                         onClick={() => {
                           activeStep === steps.length - 1
                             ? handleSubmit()

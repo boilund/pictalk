@@ -1,13 +1,14 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Steps from './Steps';
-import StepAddPhoto from './StepAddPhoto';
-import StepAddText from './StepAddText';
-import Loading from './Loading';
-import Album from '../containers/Album';
-import Header from '../containers/Header';
+import Steps from '../components/Steps';
+import StepAddPhoto from '../components/StepAddPhoto';
+import StepAddText from '../components/StepAddText';
+import Loading from '../components/Loading';
+import Album from './Album';
+import Header from './Header';
 import axios from 'axios';
+import { connect } from 'react-redux';
 
 const styles = theme => ({
   root: {
@@ -40,7 +41,7 @@ class PostPage extends React.Component {
       activeStep: 0,
       uploading: false,
       files: [],
-      images: [],
+      formData: {},
       description: ''
     };
     this.handleChange = this.handleChange.bind(this);
@@ -90,8 +91,26 @@ class PostPage extends React.Component {
   };
 
   handleSubmit = async () => {
+    const { group, history } = this.props;
     const { formData, description } = this.state;
+    formData.append('groupId', group.id);
+    formData.append('description', description);
 
+    this.setState({
+      uploading: true,
+      formData
+    });
+
+    try {
+      const response = await axios.post('/api/image-upload', formData);
+      if (response.data.success) {
+        console.log(response.data.photo);
+        this.setState({ uploading: false });
+        history.push('/');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   handleChange = async e => {
@@ -100,22 +119,15 @@ class PostPage extends React.Component {
       files: Array.from(e.target.files, file => URL.createObjectURL(file))
     });
 
-    // save file to database
+    // make formData in order to save files to database when submitting
     const files = Array.from(e.target.files);
-    this.setState({ uploading: true });
-
     const formData = new FormData();
 
     files.forEach(file => {
       formData.append('images', file);
     });
 
-    try {
-      const response = await axios.post('/api/image-upload', formData);
-    } catch (error) {
-      console.error(error);
-    }
-    this.setState({ uploading: false });
+    this.setState({ formData });
   };
 
   handleTextChange = e => {
@@ -155,7 +167,18 @@ class PostPage extends React.Component {
 }
 
 PostPage.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  group: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(PostPage);
+const mapStateToProps = state => {
+  return {
+    group: state.group
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(withStyles(styles)(PostPage));

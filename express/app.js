@@ -72,7 +72,7 @@ const groupRoutes = require('./routes/group');
 app.post('/:userId/creategroup', loginCheck, groupRoutes.creategroup);
 
 const multer = require('multer');
-
+const Photo = require('./classes/Photo.class');
 // Difine storage and file name
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -95,8 +95,17 @@ const upload = multer({
 
 // routing
 app.post('/image-upload', upload.array('images', 10), (req, res) => {
-  console.log('req', req.files);
-  res.json(req.body);
+  const filenames = req.files.map(file => file.filename);
+  const newPhoto = new Photo({
+    filename: filenames,
+    postedGroup: req.body.groupId,
+    photographer: req.session.userId,
+    description: req.body.description,
+    favorite: false
+  });
+  newPhoto.save().then(photo => {
+    res.status(200).json({ success: true, photo });
+  });
 });
 
 // catch 404 and forward to error handler
