@@ -11,7 +11,6 @@ export const SET_GROUP_NAME = 'SET_GROUP_NAME';
 export const SET_GROUP_IMAGE = 'SET_GROUP_IMAGE';
 export const SET_GROUP_MEMBERS = 'SET_GROUP_MEMBERS';
 export const CHANGE_GROUP = 'CHANGE_GROUP';
-export const SET_PHOTO = 'SET_PHOTO';
 
 export const setUser = user => {
         return {
@@ -86,16 +85,15 @@ export const setGroupMembers = members => {
   };
 };
 
-export const changeGroup = groupObj => {
-  return {
-    type: CHANGE_GROUP,
-    group: groupObj
-  };
-};
-
-export const setPhoto = photo => {
-  return {
-    type: SET_PHOTO,
-    photo
-  };
+export const changeGroup = groupId => dispatch => {
+  axios
+    .get(`/api/group/${groupId}`)
+    .then(res => {
+      if (res.data.success) {
+        dispatch({ type: CHANGE_GROUP, group: res.data.group });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };

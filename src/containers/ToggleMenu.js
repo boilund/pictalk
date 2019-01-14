@@ -80,7 +80,7 @@ class ToggleMenu extends React.Component {
             <MenuItem
               key={index}
               selected={g.name === group.name}
-              onClick={() => changeGroup(g)}
+              onClick={() => changeGroup(g._id)}
             >
               <GroupListContent group={g} />
             </MenuItem>
@@ -113,7 +113,7 @@ const mapDispatchToProps = dispatch => {
   return {
     openCreateGroupDialog: boolean =>
       dispatch(actions.openCreateGroupDialog(boolean)),
-    changeGroup: groupObj => dispatch(actions.changeGroup(groupObj))
+    changeGroup: groupId => dispatch(actions.changeGroup(groupId))
   };
 };
 

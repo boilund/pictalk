@@ -70,6 +70,7 @@ app.get('/user/:_id', userRoutes.user);
 
 const groupRoutes = require('./routes/group');
 app.post('/:userId/creategroup', loginCheck, groupRoutes.creategroup);
+app.get('/group/:groupId', loginCheck, groupRoutes.fetchGroup);
 
 const multer = require('multer');
 const Photo = require('./classes/Photo.class');

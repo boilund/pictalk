@@ -107,7 +107,7 @@ class Login extends React.Component {
         });
         const latestGroup = sortedGroup.slice(0, 1)[0];
         if (latestGroup) {
-          changeGroup(latestGroup);
+          changeGroup(latestGroup._id);
         }
         setUser(res.data.user);
         receiveRequestData();
@@ -213,7 +213,7 @@ const mapDispatchToProps = dispatch => {
     requestData: () => dispatch(actions.requestData()),
     receiveRequestData: () => dispatch(actions.receiveRequestData()),
     receiveDataFailed: () => dispatch(actions.receiveDataFailed()),
-    changeGroup: groupObj => dispatch(actions.changeGroup(groupObj))
+    changeGroup: groupId => dispatch(actions.changeGroup(groupId))
   };
 };
 
