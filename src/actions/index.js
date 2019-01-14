@@ -10,6 +10,7 @@ export const OPEN_CREATE_GROUP_DIALOG = 'OPEN_CREATE_GROUP_DIALOG';
 export const SET_GROUP_NAME = 'SET_GROUP_NAME';
 export const SET_GROUP_IMAGE = 'SET_GROUP_IMAGE';
 export const SET_GROUP_MEMBERS = 'SET_GROUP_MEMBERS';
+export const RESET_GROUP = 'RESET_GROUP';
 export const CHANGE_GROUP = 'CHANGE_GROUP';
 
 export const setUser = user => {
@@ -25,6 +26,7 @@ export const logoutUser = () => dispatch => {
     .then(res => {
       if (res.data.success) {
         dispatch({ type: LOGOUT_USER });
+        dispatch({ type: RESET_GROUP });
       }
     })
     .catch(err => {
