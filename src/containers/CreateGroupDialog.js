@@ -9,7 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
-import UploadImage from './UploadImage';
+import UploadImage from '../components/UploadImage';
 import GroupNameInput from '../components/GroupNameInput';
 import SelectMembers from '../components/SelectMembers';
 
@@ -80,7 +80,8 @@ class CreateGroupDialog extends React.Component {
       candidates,
       isFetching,
       setGroupName,
-      setGroupMembers
+      setGroupMembers,
+      setGroupImage
     } = this.props;
 
     return (
@@ -93,7 +94,7 @@ class CreateGroupDialog extends React.Component {
         <DialogTitle id="responsive-dialog-title">Make new group</DialogTitle>
         <DialogContent>
           <div className={classes.row}>
-            <UploadImage />
+            <UploadImage setGroupImage={setGroupImage} />
             <GroupNameInput
               groupname={group.name}
               setGroupName={setGroupName}
@@ -129,6 +130,7 @@ CreateGroupDialog.propTypes = {
   isFetching: PropTypes.bool,
   candidates: PropTypes.array.isRequired,
   setGroupName: PropTypes.func.isRequired,
+  setGroupImage: PropTypes.func.isRequired,
   setGroupMembers: PropTypes.func.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
   changeGroup: PropTypes.func.isRequired,
@@ -148,6 +150,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     setGroupName: groupname => dispatch(actions.setGroupName(groupname)),
+    setGroupImage: image => dispatch(actions.setGroupImage(image)),
     setGroupMembers: members => dispatch(actions.setGroupMembers(members)),
     openCreateGroupDialog: boolean =>
       dispatch(actions.openCreateGroupDialog(boolean)),

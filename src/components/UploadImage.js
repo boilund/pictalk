@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import ImageAvatar from '../components/ImageAvatar';
-
-import * as actions from '../actions';
-import { connect } from 'react-redux';
+import ImageAvatar from './ImageAvatar';
 
 const defaultImg = '/images/default-group.svg';
 
@@ -43,13 +40,4 @@ UploadImage.propTypes = {
   setGroupImage: PropTypes.func.isRequired
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setGroupImage: image => dispatch(actions.setGroupImage(image))
-  };
-};
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(UploadImage);
+export default UploadImage;
