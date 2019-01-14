@@ -11,7 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 import UploadImage from './UploadImage';
 import GroupNameInput from '../components/GroupNameInput';
-import SelectMembers from './SelectMembers';
+import SelectMembers from '../components/SelectMembers';
 
 import * as actions from '../actions';
 import { connect } from 'react-redux';
@@ -79,7 +79,8 @@ class CreateGroupDialog extends React.Component {
       group,
       candidates,
       isFetching,
-      setGroupName
+      setGroupName,
+      setGroupMembers
     } = this.props;
 
     return (
@@ -98,7 +99,13 @@ class CreateGroupDialog extends React.Component {
               setGroupName={setGroupName}
             />
           </div>
-          <SelectMembers user={user} />
+          <SelectMembers
+            isFetching={isFetching}
+            user={user}
+            members={group.members}
+            candidates={candidates}
+            setGroupMembers={setGroupMembers}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => openCreateGroupDialog(false)} autoFocus>
@@ -132,7 +139,9 @@ const mapStateToProps = state => {
   return {
     user: state.user,
     group: state.group,
-    openDialog: state.app.openDialog
+    openDialog: state.app.openDialog,
+    isFetching: state.app.isFetching,
+    candidates: state.app.candidates
   };
 };
 

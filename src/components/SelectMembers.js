@@ -7,16 +7,12 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Checkbox from '@material-ui/core/Checkbox';
-import ImageAvatar from '../components/ImageAvatar';
-import LetterAvatar from '../components/LetterAvatar';
-import SeletedMembers from '../components/SelectedMembers';
+import ImageAvatar from './ImageAvatar';
+import LetterAvatar from './LetterAvatar';
+import SeletedMembers from './SelectedMembers';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-
-import * as actions from '../actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 const styles = theme => ({
   search: {
@@ -140,8 +136,8 @@ class SelectMembers extends React.Component {
                     {candidate.image ? (
                       <ImageAvatar
                         key={i}
-                        image={user.image}
-                        alt={user.nickname}
+                        image={candidate.image}
+                        alt={candidate.nickname}
                       />
                     ) : (
                       <LetterAvatar
@@ -173,27 +169,8 @@ SelectMembers.propTypes = {
   isFetching: PropTypes.bool,
   user: PropTypes.object.isRequired,
   candidates: PropTypes.array.isRequired,
+  members: PropTypes.array.isRequired,
   setGroupMembers: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => {
-  return {
-    isFetching: state.app.isFetching,
-    user: state.user,
-    candidates: state.app.candidates,
-    members: state.group.members
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    setGroupMembers: members => dispatch(actions.setGroupMembers(members))
-  };
-};
-
-const connected = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(SelectMembers));
-
-export default withRouter(connected);
+export default withStyles(styles)(SelectMembers);
