@@ -32,7 +32,7 @@ const styles = theme => ({
 
 class Album extends React.Component {
   componentDidMount() {
-    this.props.fetchUsers(this.props.user.id);
+    this.props.fetchUsers(this.props.user._id);
   }
 
   render() {
