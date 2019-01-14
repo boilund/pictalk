@@ -8,6 +8,7 @@ import Loading from '../components/Loading';
 import Album from './Album';
 import Header from './Header';
 import axios from 'axios';
+import * as actions from '../actions';
 import { connect } from 'react-redux';
 
 const styles = theme => ({
@@ -91,7 +92,7 @@ class PostPage extends React.Component {
   };
 
   handleSubmit = async () => {
-    const { group, history } = this.props;
+    const { group, history, changeGroup } = this.props;
     const { formData, description } = this.state;
     formData.append('groupId', group._id);
     formData.append('description', description);
@@ -104,7 +105,7 @@ class PostPage extends React.Component {
     try {
       const response = await axios.post('/api/image-upload', formData);
       if (response.data.success) {
-        console.log(response.data.photo);
+        changeGroup(group._id);
         this.setState({ uploading: false });
         history.push('/');
       }
@@ -169,7 +170,8 @@ class PostPage extends React.Component {
 PostPage.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  group: PropTypes.object.isRequired
+  group: PropTypes.object.isRequired,
+  changeGroup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -178,7 +180,13 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    changeGroup: groupId => dispatch(actions.changeGroup(groupId))
+  };
+};
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(PostPage));
