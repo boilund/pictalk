@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TextField from '@material-ui/core/TextField';
 
-import * as actions from '../actions';
-import { connect } from 'react-redux';
-
 const styles = theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
@@ -27,7 +24,7 @@ const GroupNameInput = props => {
         label="Group name"
         className={classes.textField}
         value={groupname}
-        onChange={handleNameChange}
+        onChange={e => handleNameChange(e)}
         margin="normal"
         variant="outlined"
       />
@@ -37,23 +34,8 @@ const GroupNameInput = props => {
 
 GroupNameInput.propTypes = {
   classes: PropTypes.object.isRequired,
-  groupname: PropTypes.string.isRequired,
+  groupname: PropTypes.string,
   setGroupName: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => {
-  return {
-    groupname: state.group.name
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    setGroupName: groupname => dispatch(actions.setGroupName(groupname))
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(GroupNameInput));
+export default withStyles(styles)(GroupNameInput);

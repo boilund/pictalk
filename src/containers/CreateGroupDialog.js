@@ -10,7 +10,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 import UploadImage from './UploadImage';
-import GroupNameInput from './GroupNameInput';
+import GroupNameInput from '../components/GroupNameInput';
 import SelectMembers from './SelectMembers';
 
 import * as actions from '../actions';
@@ -37,19 +37,13 @@ class CreateGroupDialog extends React.Component {
   };
 
   createGroup = () => {
-    const {
-      user,
-      groupimage,
-      groupname,
-      members,
-      openCreateGroupDialog
-    } = this.props;
+    const { user, group, openCreateGroupDialog, changeGroup } = this.props;
 
     const milliseconds = Date.now();
     axios
       .post(`/api/creategroup`, {
-        groupname,
-        members,
+        groupname: group.name,
+        members: group.members,
         latestUpdateTime: milliseconds
       })
       .then(res => {
@@ -81,7 +75,11 @@ class CreateGroupDialog extends React.Component {
       fullScreen,
       user,
       openDialog,
-      openCreateGroupDialog
+      openCreateGroupDialog,
+      group,
+      candidates,
+      isFetching,
+      setGroupName
     } = this.props;
 
     return (
@@ -95,7 +93,10 @@ class CreateGroupDialog extends React.Component {
         <DialogContent>
           <div className={classes.row}>
             <UploadImage />
-            <GroupNameInput user={user} />
+            <GroupNameInput
+              groupname={group.name}
+              setGroupName={setGroupName}
+            />
           </div>
           <SelectMembers user={user} />
         </DialogContent>
@@ -117,29 +118,31 @@ CreateGroupDialog.propTypes = {
   fullScreen: PropTypes.bool.isRequired,
   openDialog: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
-  groupname: PropTypes.string.isRequired,
-  // groupimage: PropTypes.object, //TODO: warning
-  members: PropTypes.array.isRequired,
+  group: PropTypes.object.isRequired,
+  isFetching: PropTypes.bool,
+  candidates: PropTypes.array.isRequired,
+  setGroupName: PropTypes.func.isRequired,
   setGroupMembers: PropTypes.func.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
+  changeGroup: PropTypes.func.isRequired,
   open: PropTypes.bool
 };
 
 const mapStateToProps = state => {
   return {
     user: state.user,
-    groupname: state.group.name,
-    groupimage: state.group.image,
-    members: state.group.members,
+    group: state.group,
     openDialog: state.app.openDialog
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    setGroupName: groupname => dispatch(actions.setGroupName(groupname)),
     setGroupMembers: members => dispatch(actions.setGroupMembers(members)),
     openCreateGroupDialog: boolean =>
-      dispatch(actions.openCreateGroupDialog(boolean))
+      dispatch(actions.openCreateGroupDialog(boolean)),
+    changeGroup: groupId => dispatch(actions.changeGroup(groupId))
   };
 };
 
