@@ -16,7 +16,7 @@ import {
 
 const initialState = {
   user: {
-    id: '',
+    _id: '',
     loggedIn: false,
     nickname: '',
     image: '',
@@ -31,7 +31,7 @@ const initialState = {
     openDialog: false
   },
   group: {
-    id: '',
+    _id: '',
     name: '',
     image: '',
     members: [],
@@ -45,7 +45,7 @@ const userReducer = (state = initialState.user, action) => {
     case SET_USER:
       return {
         ...state,
-        id: user._id,
+        _id: user._id,
         loggedIn: true,
         nickname: user.nickname,
         image: user.image,
@@ -118,7 +118,7 @@ const groupReducer = (state = initialState.group, action) => {
     case CHANGE_GROUP:
       return {
         ...state,
-        id: action.group._id,
+        _id: action.group._id,
         name: action.group.name,
         image: action.group.image,
         members: action.group.members,
@@ -127,7 +127,7 @@ const groupReducer = (state = initialState.group, action) => {
     case RESET_GROUP:
       return {
         ...state,
-        id: initialState.group._id,
+        _id: initialState.group._id,
         name: initialState.group.name,
         image: initialState.group.image,
         members: initialState.group.members,

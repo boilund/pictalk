@@ -93,7 +93,7 @@ class PostPage extends React.Component {
   handleSubmit = async () => {
     const { group, history } = this.props;
     const { formData, description } = this.state;
-    formData.append('groupId', group.id);
+    formData.append('groupId', group._id);
     formData.append('description', description);
 
     this.setState({

@@ -47,7 +47,7 @@ class CreateGroupDialog extends React.Component {
 
     const milliseconds = Date.now();
     axios
-      .post(`/api/${user._id}/creategroup`, {
+      .post(`/api/creategroup`, {
         groupname,
         members,
         latestUpdateTime: milliseconds

@@ -69,7 +69,7 @@ app.get('/users', loginCheck, userRoutes.users);
 app.get('/user/:_id', userRoutes.user);
 
 const groupRoutes = require('./routes/group');
-app.post('/:userId/creategroup', loginCheck, groupRoutes.creategroup);
+app.post('/creategroup', loginCheck, groupRoutes.creategroup);
 app.get('/group/:groupId', loginCheck, groupRoutes.fetchGroup);
 
 const multer = require('multer');
