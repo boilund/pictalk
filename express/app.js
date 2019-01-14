@@ -73,6 +73,7 @@ app.post('/:userId/creategroup', loginCheck, groupRoutes.creategroup);
 
 const multer = require('multer');
 const Photo = require('./classes/Photo.class');
+const Group = require('./classes/Group.class');
 // Difine storage and file name
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -104,7 +105,14 @@ app.post('/image-upload', upload.array('images', 10), (req, res) => {
     favorite: false
   });
   newPhoto.save().then(photo => {
-    res.status(200).json({ success: true, photo });
+    Group.findOneAndUpdate(
+      { _id: req.body.groupId },
+      { $push: { posts: photo._id } }
+    )
+      .then(() => res.status(200).json({ success: true }))
+      .catch(err => {
+        throw err;
+      });
   });
 });
 
