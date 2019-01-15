@@ -21,8 +21,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CameraIcon from '@material-ui/icons/PhotoCamera';
 import SendIcon from '@material-ui/icons/Send';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const styles = theme => ({
   card: {
@@ -63,7 +61,7 @@ const styles = theme => ({
 });
 
 class PostCard extends React.Component {
-  state = { expanded: false, comment: '', comments: [] };
+  state = { expanded: false, comment: '' };
 
   handleExpandClick = () => {
     this.setState({ expanded: !this.state.expanded });
@@ -74,9 +72,10 @@ class PostCard extends React.Component {
   };
 
   handleSendComment = () => {
-    const { comment, comments } = this.state;
-    comments.push(comment);
-    this.setState({ comments });
+    const { comment } = this.state;
+    const { post, user, addComment, group } = this.props;
+    addComment(post._id, user._id, comment, group._id);
+    this.setState({ comment: '' });
   };
 
   render() {
@@ -130,18 +129,17 @@ class PostCard extends React.Component {
         </CardActions>
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            {/* test by state */}
-            {this.state.comments.map((comment, i) => (
+            {post.comments.map((comment, i) => (
               <Typography paragraph key={i}>
-                <span className={classes.username}>{user.nickname}</span>
-                {comment}
+                <span className={classes.username}>
+                  {
+                    members.find(member => member._id === comment.sender)
+                      .nickname
+                  }
+                </span>
+                {comment.comment}
               </Typography>
             ))}
-            {/* {post.comments.map((comment, i) => (
-              <Typography paragraph key={i}>
-                {comment}
-              </Typography>
-            ))} */}
           </CardContent>
           <CardActions>
             <TextField
@@ -175,7 +173,8 @@ PostCard.propTypes = {
   classes: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  members: PropTypes.arrayOf(PropTypes.object)
+  members: PropTypes.arrayOf(PropTypes.object),
+  addComment: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(PostCard);

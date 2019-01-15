@@ -10,6 +10,7 @@ import SideMenu from '../components/SideMenu';
 import CreateGroupDialog from './CreateGroupDialog';
 import Loading from '../components/Loading';
 import PostCard from '../components/PostCard';
+import axios from 'axios';
 
 import * as actions from '../actions';
 import { connect } from 'react-redux';
@@ -34,6 +35,20 @@ class Album extends React.Component {
   componentDidMount() {
     this.props.fetchUsers(this.props.user._id);
   }
+
+  addComment = (photoId, userId, comment, groupId) => {
+    axios
+      .post(`/api/${photoId}/addcomment`, { userId, comment })
+      .then(res => {
+        if (res.data.success) {
+          // fetch group after saving new comment
+          this.props.changeGroup(groupId);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   render() {
     const {
@@ -66,7 +81,9 @@ class Album extends React.Component {
                     <PostCard
                       post={post}
                       user={user}
+                      group={group}
                       members={group.members}
+                      addComment={this.addComment}
                       key={i}
                     />
                   ))

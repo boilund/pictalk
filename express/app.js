@@ -72,6 +72,9 @@ const groupRoutes = require('./routes/group');
 app.post('/creategroup', loginCheck, groupRoutes.creategroup);
 app.get('/group/:groupId', loginCheck, groupRoutes.fetchGroup);
 
+const photoRoutes = require('./routes/photo');
+app.post('/:photoId/addcomment', loginCheck, photoRoutes.addComment);
+
 const multer = require('multer');
 const Photo = require('./classes/Photo.class');
 const Group = require('./classes/Group.class');
