@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import Card from '@material-ui/core/Card';
@@ -11,13 +12,17 @@ import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import red from '@material-ui/core/colors/red';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import TextField from '@material-ui/core/TextField';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CameraIcon from '@material-ui/icons/PhotoCamera';
+import SendIcon from '@material-ui/icons/Send';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const styles = theme => ({
   card: {
@@ -48,18 +53,34 @@ const styles = theme => ({
   username: {
     fontWeight: '600',
     marginRight: theme.spacing.unit
+  },
+  margin: {
+    margin: theme.spacing.unit
+  },
+  textField: {
+    width: '100%'
   }
 });
 
 class PostCard extends React.Component {
-  state = { expanded: false };
+  state = { expanded: false, comment: '', comments: [] };
 
   handleExpandClick = () => {
     this.setState({ expanded: !this.state.expanded });
   };
 
+  handleChangeComment = e => {
+    this.setState({ comment: e.target.value });
+  };
+
+  handleSendComment = () => {
+    const { comment, comments } = this.state;
+    comments.push(comment);
+    this.setState({ comments });
+  };
+
   render() {
-    const { classes, post, members } = this.props;
+    const { classes, post, members, user } = this.props;
     const postedUser = members.find(member => member._id === post.photographer);
 
     return (
@@ -93,7 +114,7 @@ class PostCard extends React.Component {
           <IconButton aria-label="Add to favorites">
             <FavoriteIcon />
           </IconButton>
-          <IconButton aria-label="Share">
+          <IconButton aria-label="Show photo data">
             <CameraIcon />
           </IconButton>
           <IconButton
@@ -109,17 +130,40 @@ class PostCard extends React.Component {
         </CardActions>
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <Typography paragraph>Comment:</Typography>
-            {post.comments.map((comment, i) => (
+            {/* test by state */}
+            {this.state.comments.map((comment, i) => (
               <Typography paragraph key={i}>
+                <span className={classes.username}>{user.nickname}</span>
                 {comment}
               </Typography>
             ))}
+            {/* {post.comments.map((comment, i) => (
+              <Typography paragraph key={i}>
+                {comment}
+              </Typography>
+            ))} */}
           </CardContent>
           <CardActions>
-            <Button size="small" color="primary">
-              Add Comment...
-            </Button>
+            <TextField
+              className={classNames(classes.margin, classes.textField)}
+              variant="outlined"
+              type="text"
+              label="Comment..."
+              value={this.state.comment}
+              onChange={this.handleChangeComment}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="Send comment"
+                      onClick={this.handleSendComment}
+                    >
+                      <SendIcon />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+            />
           </CardActions>
         </Collapse>
       </Card>
@@ -130,6 +174,7 @@ class PostCard extends React.Component {
 PostCard.propTypes = {
   classes: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   members: PropTypes.arrayOf(PropTypes.object)
 };
 
