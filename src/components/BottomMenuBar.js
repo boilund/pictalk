@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ChatBubbleOutline from '@material-ui/icons/ChatBubbleOutline';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import PersonOutline from '@material-ui/icons/PersonOutline';
-import ToggleMenu from '../containers/ToggleMenu';
+import ToggleMenu from './ToggleMenu';
 
 const styles = theme => ({
   appBar: {
@@ -41,14 +41,19 @@ const styles = theme => ({
 });
 
 const BottomMenuBar = props => {
-  const { classes } = props;
+  const { classes, user, group, openCreateGroupDialog, changeGroup } = props;
   return (
     <Hidden only={['md', 'lg']}>
       <footer className={classes.footer}>
         <AppBar position="fixed" color="primary" className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
             <div aria-label="Open drawer">
-              <ToggleMenu />
+              <ToggleMenu
+                user={user}
+                group={group}
+                openCreateGroupDialog={openCreateGroupDialog}
+                changeGroup={changeGroup}
+              />
             </div>
             <Link to="/comment" className={classes.noLinkColor}>
               <IconButton color="inherit">
@@ -82,7 +87,11 @@ const BottomMenuBar = props => {
 };
 
 BottomMenuBar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  group: PropTypes.object.isRequired,
+  openCreateGroupDialog: PropTypes.func.isRequired,
+  changeGroup: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(BottomMenuBar);

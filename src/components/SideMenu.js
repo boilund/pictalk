@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
-import ToggleMenu from '../containers/ToggleMenu';
+import ToggleMenu from './ToggleMenu';
 import AddIcon from '@material-ui/icons/Add';
 import ChatBubbleOutline from '@material-ui/icons/ChatBubbleOutline';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
@@ -41,13 +41,18 @@ const styles = theme => ({
 });
 
 const SideMenu = props => {
-  const { classes, group } = props;
+  const { classes, user, group, openCreateGroupDialog, changeGroup } = props;
   return (
     <Hidden only={['xs', 'sm']}>
       <Grid item md={3} lg={3}>
         <aside>
           <div className={classes.currentGroup}>
-            <ToggleMenu />
+            <ToggleMenu
+              user={user}
+              group={group}
+              openCreateGroupDialog={openCreateGroupDialog}
+              changeGroup={changeGroup}
+            />
             <Typography component="h1" variant="h6">
               {group.name}
             </Typography>
@@ -112,7 +117,10 @@ const SideMenu = props => {
 
 SideMenu.propTypes = {
   classes: PropTypes.object.isRequired,
-  group: PropTypes.object
+  user: PropTypes.object.isRequired,
+  group: PropTypes.object.isRequired,
+  openCreateGroupDialog: PropTypes.func.isRequired,
+  changeGroup: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(SideMenu);

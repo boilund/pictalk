@@ -36,7 +36,14 @@ class Album extends React.Component {
   }
 
   render() {
-    const { classes, isFetching, user, group, posts } = this.props;
+    const {
+      classes,
+      isFetching,
+      user,
+      group,
+      openCreateGroupDialog,
+      changeGroup
+    } = this.props;
 
     if (isFetching) {
       return <Loading />;
@@ -51,21 +58,31 @@ class Album extends React.Component {
           ) : (
             <CreateGroupDialog open={true} />
           )}
-          <CreateGroupDialog />
           <div className={classNames(classes.layout, classes.cardGrid)}>
             <Grid container spacing={40}>
               <Grid item xs={12} md={9}>
-                {posts.length ? (
-                  posts.map((post, i) => <PostCard post={post} key={i} />)
+                {group.posts.length ? (
+                  group.posts.map((post, i) => (
+                  ))
                 ) : (
-                  <Typography>Please post something</Typography>
+                  <Typography>Let's post something!</Typography>
                 )}
               </Grid>
-              <SideMenu group={group} />
+              <SideMenu
+                user={user}
+                group={group}
+                openCreateGroupDialog={openCreateGroupDialog}
+                changeGroup={changeGroup}
+              />
             </Grid>
           </div>
         </main>
-        <BottomMenuBar />
+        <BottomMenuBar
+          user={user}
+          group={group}
+          openCreateGroupDialog={openCreateGroupDialog}
+          changeGroup={changeGroup}
+        />
       </React.Fragment>
     );
   }
@@ -75,23 +92,26 @@ Album.propTypes = {
   classes: PropTypes.object.isRequired,
   isFetching: PropTypes.bool,
   user: PropTypes.object.isRequired,
+  group: PropTypes.object.isRequired,
   fetchUsers: PropTypes.func.isRequired,
-  openDialog: PropTypes.bool
+  openCreateGroupDialog: PropTypes.func.isRequired,
+  changeGroup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
   return {
     isFetching: state.app.isFetching,
     user: state.user,
-    group: state.group,
-    openDialog: state.app.openDialog,
-    posts: state.group.posts
+    group: state.group
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchUsers: userId => dispatch(actions.fetchUsers(userId))
+    fetchUsers: userId => dispatch(actions.fetchUsers(userId)),
+    openCreateGroupDialog: boolean =>
+      dispatch(actions.openCreateGroupDialog(boolean)),
+    changeGroup: groupId => dispatch(actions.changeGroup(groupId))
   };
 };
 

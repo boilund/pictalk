@@ -5,15 +5,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import ImageAvatar from '../components/ImageAvatar';
-import LetterAvatar from '../components/LetterAvatar';
-
-import CreateGroupContent from '../components/CreateGroupContent';
-import GroupListContent from '../components/GroupListContent';
-
-import * as actions from '../actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import ImageAvatar from './ImageAvatar';
+import LetterAvatar from './LetterAvatar';
+import CreateGroupContent from './CreateGroupContent';
+import GroupListContent from './GroupListContent';
 
 const ITEM_HEIGHT = 48;
 
@@ -102,24 +97,4 @@ ToggleMenu.propTypes = {
   changeGroup: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => {
-  return {
-    user: state.user,
-    group: state.group
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    openCreateGroupDialog: boolean =>
-      dispatch(actions.openCreateGroupDialog(boolean)),
-    changeGroup: groupId => dispatch(actions.changeGroup(groupId))
-  };
-};
-
-const connected = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(ToggleMenu));
-
-export default withRouter(connected);
+export default withStyles(styles)(ToggleMenu);
