@@ -44,6 +44,10 @@ const styles = theme => ({
   },
   avatar: {
     backgroundColor: red[500]
+  },
+  username: {
+    fontWeight: '600',
+    marginRight: theme.spacing.unit
   }
 });
 
@@ -55,7 +59,8 @@ class PostCard extends React.Component {
   };
 
   render() {
-    const { classes, post } = this.props;
+    const { classes, post, members } = this.props;
+    const postedUser = members.find(member => member._id === post.photographer);
 
     return (
       <Card className={classes.card}>
@@ -70,7 +75,7 @@ class PostCard extends React.Component {
               <MoreVertIcon />
             </IconButton>
           }
-          title={post.photographer}
+          title={postedUser.nickname}
           subheader={post.date}
         />
         <CardMedia
@@ -80,7 +85,8 @@ class PostCard extends React.Component {
         />
         <CardContent>
           <Typography component="p">
-            {post.photographer} {post.description}
+            <span className={classes.username}>{postedUser.nickname}</span>
+            {post.description}
           </Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
@@ -123,7 +129,8 @@ class PostCard extends React.Component {
 
 PostCard.propTypes = {
   classes: PropTypes.object.isRequired,
-  post: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired,
+  members: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default withStyles(styles)(PostCard);
