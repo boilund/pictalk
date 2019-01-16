@@ -9,7 +9,7 @@ const UploadImage = props => {
   return (
     <div>
       <ImageAvatar size="Lg" alt="group image" image={props.file} />
-      <input type="file" id="changeImage" onChange={props.handleFileChange} />
+      <input type="file" name="file" onChange={props.handleFileChange} />
     </div>
   );
 };

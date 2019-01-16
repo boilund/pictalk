@@ -69,7 +69,7 @@ app.get('/users', loginCheck, userRoutes.users);
 app.get('/user/:_id', userRoutes.user);
 
 const groupRoutes = require('./routes/group');
-app.post('/creategroup', loginCheck, groupRoutes.creategroup);
+// app.post('/create-group', loginCheck, groupRoutes.createGroup);
 app.get('/group/:groupId', loginCheck, groupRoutes.fetchGroup);
 
 const photoRoutes = require('./routes/photo');
@@ -117,6 +117,49 @@ app.post('/image-upload', upload.array('images', 10), (req, res) => {
       .catch(err => {
         throw err;
       });
+  });
+});
+
+// Difine storage and file name
+const avatarStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/avatarUploads');
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + '-' + Date.now() + '.' + file.mimetype.split('image/')[1]
+    );
+  }
+});
+const avatarUpload = multer({
+  storage: avatarStorage,
+  limits: {
+    // max size of files 10 MB
+    fileSize: 10000000
+  }
+});
+
+app.post('/create-group', avatarUpload.single('file'), (req, res) => {
+  const filename = req.file.filename;
+  const { groupname, members, latestUpdateTime } = req.body;
+
+  const newGroup = new Group({
+    name: groupname,
+    image: filename,
+    members: members,
+    open: true,
+    latestUpdateTime: latestUpdateTime
+  });
+  newGroup.save().then(group => {
+    console.log('group members', group.members);
+    for (let member of group.members) {
+      User.findOneAndUpdate({ _id: member }, { $push: { groups: group._id } })
+        .then(() => res.status(200).json({ success: true, groupId: group._id }))
+        .catch(err => {
+          throw err;
+        });
+    }
   });
 });
 

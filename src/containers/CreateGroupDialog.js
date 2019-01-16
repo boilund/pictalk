@@ -29,8 +29,8 @@ const styles = () => ({
 
 const initialState = {
   file: defaultImg,
+  formData: {},
   groupName: '',
-  groupImage: '',
   groupMembers: []
 };
 
@@ -51,15 +51,15 @@ class CreateGroupDialog extends React.Component {
   };
 
   handleGroupImage = e => {
+    // for preview
     this.setState({
       file: URL.createObjectURL(e.target.files[0])
     });
 
-    // TODO: Save image to database
-    // const formData = new FormData();
-    // formData.append('id', user._id);
-    // formData.append('file', e.target.files[0]);
-    // this.props.setGroupImage(formData);
+    // make formData to save in database
+    const formData = new FormData();
+    formData.append('file', e.target.files[0]);
+    this.setState({ formData });
   };
 
   handleGroupName = e => {
@@ -70,39 +70,28 @@ class CreateGroupDialog extends React.Component {
     this.setState({ groupMembers: members });
   };
 
-  createGroup = () => {
+  createGroup = async () => {
     const { openCreateGroupDialog, changeGroup } = this.props;
-    const { groupName, groupImage, groupMembers } = this.state;
-
+    const { formData, groupName, groupMembers } = this.state;
     const milliseconds = Date.now();
-    axios
-      .post(`/api/creategroup`, {
-        groupname: groupName,
-        members: groupMembers,
-        latestUpdateTime: milliseconds
-      })
-      .then(res => {
-        console.log('res after create group', res);
-        if (res.data.success) {
-          changeGroup(res.data.groupId);
-          console.log('image', groupformdata);
-          // TODO: if image is not defined, use default image
-          // if (groupformdata) {
-          //   axios
-          //     .post('/api/upload', {
-          //       groupformdata
-          //     })
-          //     .then(res => {
-          //       console.log(res.path);
-          //       openCreateGroupDialog(false);
-          //       // this.props.updateProfile("image", res.path);
-          //     });
-          // }
-        }
-      })
-      .catch(err => {
-        console.error(new Error(err));
-      });
+
+    formData.append('groupname', groupName);
+    groupMembers.forEach(member => {
+      formData.append('members', member._id);
+    });
+    formData.append('latestUpdateTime', milliseconds);
+    this.setState({ formData });
+
+    try {
+      const response = await axios.post(`/api/create-group`, formData);
+      console.log(response);
+      if (response.data.success) {
+        changeGroup(response.data.groupId);
+        openCreateGroupDialog(false);
+      }
+    } catch (error) {
+      console.error(new Error(error));
+    }
   };
 
   render() {
