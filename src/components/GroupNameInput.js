@@ -11,11 +11,7 @@ const styles = theme => ({
 });
 
 const GroupNameInput = props => {
-  const { classes, groupname, setGroupName } = props;
-
-  const handleNameChange = e => {
-    setGroupName(e.target.value);
-  };
+  const { classes, groupname, handleGroupName } = props;
 
   return (
     <form noValidate autoComplete="off">
@@ -24,7 +20,7 @@ const GroupNameInput = props => {
         label="Group name"
         className={classes.textField}
         value={groupname}
-        onChange={e => handleNameChange(e)}
+        onChange={e => handleGroupName(e)}
         margin="normal"
         variant="outlined"
       />
@@ -35,7 +31,7 @@ const GroupNameInput = props => {
 GroupNameInput.propTypes = {
   classes: PropTypes.object.isRequired,
   groupname: PropTypes.string,
-  setGroupName: PropTypes.func.isRequired
+  handleGroupName: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(GroupNameInput);

@@ -25,25 +25,47 @@ const styles = () => ({
   }
 });
 
+const initialState = {
+  groupName: '',
+  groupImage: '',
+  groupMembers: []
+};
+
 class CreateGroupDialog extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = initialState;
+  }
+
   componentDidMount = () => {
-    const { setGroupMembers, user, open, openCreateGroupDialog } = this.props;
+    const { user, open, openCreateGroupDialog } = this.props;
     // Set user as group members at first
-    setGroupMembers([user]);
+    this.handleGroupMembers([user]);
     // if user has no group, open the dialog to create a group
     if (open) {
       openCreateGroupDialog(true);
     }
   };
 
+  handleGroupName = e => {
+    this.setState({ groupName: e.target.value });
+  };
+
+  handleGroupMembers = members => {
+    this.setState({ groupMembers: members });
+  };
+
+  handleGroupImage = e => {};
+
   createGroup = () => {
-    const { user, group, openCreateGroupDialog, changeGroup } = this.props;
+    const { openCreateGroupDialog, changeGroup } = this.props;
+    const { groupName, groupImage, groupMembers } = this.state;
 
     const milliseconds = Date.now();
     axios
       .post(`/api/creategroup`, {
-        groupname: group.name,
-        members: group.members,
+        groupname: groupName,
+        members: groupMembers,
         latestUpdateTime: milliseconds
       })
       .then(res => {
@@ -78,11 +100,9 @@ class CreateGroupDialog extends React.Component {
       openCreateGroupDialog,
       group,
       candidates,
-      isFetching,
-      setGroupName,
-      setGroupMembers,
-      setGroupImage
+      isFetching
     } = this.props;
+    const { groupName, groupImage, groupMembers } = this.state;
 
     return (
       <Dialog
@@ -94,18 +114,18 @@ class CreateGroupDialog extends React.Component {
         <DialogTitle id="responsive-dialog-title">Make new group</DialogTitle>
         <DialogContent>
           <div className={classes.row}>
-            <UploadImage setGroupImage={setGroupImage} />
+            <UploadImage setGroupImage={this.handleGroupImage} />
             <GroupNameInput
-              groupname={group.name}
-              setGroupName={setGroupName}
+              groupname={groupName}
+              handleGroupName={this.handleGroupName}
             />
           </div>
           <SelectMembers
             isFetching={isFetching}
             user={user}
-            members={group.members}
+            members={groupMembers}
             candidates={candidates}
-            setGroupMembers={setGroupMembers}
+            handleGroupMembers={this.handleGroupMembers}
           />
         </DialogContent>
         <DialogActions>
@@ -129,9 +149,6 @@ CreateGroupDialog.propTypes = {
   group: PropTypes.object.isRequired,
   isFetching: PropTypes.bool,
   candidates: PropTypes.array.isRequired,
-  setGroupName: PropTypes.func.isRequired,
-  setGroupImage: PropTypes.func.isRequired,
-  setGroupMembers: PropTypes.func.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
   changeGroup: PropTypes.func.isRequired,
   open: PropTypes.bool
@@ -149,9 +166,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setGroupName: groupname => dispatch(actions.setGroupName(groupname)),
-    setGroupImage: image => dispatch(actions.setGroupImage(image)),
-    setGroupMembers: members => dispatch(actions.setGroupMembers(members)),
     openCreateGroupDialog: boolean =>
       dispatch(actions.openCreateGroupDialog(boolean)),
     changeGroup: groupId => dispatch(actions.changeGroup(groupId))

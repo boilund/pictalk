@@ -72,7 +72,7 @@ class SelectMembers extends React.Component {
   }
 
   handleCheckboxToggle = value => {
-    const { members: checked, setGroupMembers } = this.props;
+    const { members: checked, handleGroupMembers } = this.props;
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -81,7 +81,7 @@ class SelectMembers extends React.Component {
     } else {
       newChecked.splice(currentIndex, 1);
     }
-    setGroupMembers(newChecked);
+    handleGroupMembers(newChecked);
   };
 
   handleSearchTextChange = e => {
@@ -96,14 +96,7 @@ class SelectMembers extends React.Component {
   };
 
   render() {
-    const {
-      classes,
-      isFetching,
-      user,
-      candidates,
-      members,
-      setGroupMembers
-    } = this.props;
+    const { classes, isFetching, user, candidates, members } = this.props;
     const { searchText, searchedCandidates } = this.state;
 
     if (isFetching) {
@@ -170,7 +163,7 @@ SelectMembers.propTypes = {
   user: PropTypes.object.isRequired,
   candidates: PropTypes.array.isRequired,
   members: PropTypes.array.isRequired,
-  setGroupMembers: PropTypes.func.isRequired
+  handleGroupMembers: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(SelectMembers);

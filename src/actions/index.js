@@ -7,17 +7,14 @@ export const REQUEST_DATA = 'REQUEST_DATA';
 export const RECEIVE_REQUEST_DATA = 'RECEIVE_REQUEST_DATA';
 export const RECEIVE_DATA_FAILED = 'RECEIVE_DATA_FAILED';
 export const OPEN_CREATE_GROUP_DIALOG = 'OPEN_CREATE_GROUP_DIALOG';
-export const SET_GROUP_NAME = 'SET_GROUP_NAME';
-export const SET_GROUP_IMAGE = 'SET_GROUP_IMAGE';
-export const SET_GROUP_MEMBERS = 'SET_GROUP_MEMBERS';
 export const RESET_GROUP = 'RESET_GROUP';
 export const CHANGE_GROUP = 'CHANGE_GROUP';
 
 export const setUser = user => {
-        return {
-          type: SET_USER,
-      user
-    };
+  return {
+    type: SET_USER,
+    user
+  };
 };
 
 export const logoutUser = () => dispatch => {
@@ -65,27 +62,6 @@ export const openCreateGroupDialog = boolean => ({
   type: OPEN_CREATE_GROUP_DIALOG,
   openDialog: boolean
 });
-
-export const setGroupName = groupname => {
-  return {
-    type: SET_GROUP_NAME,
-    groupname
-  };
-};
-
-export const setGroupImage = image => {
-  return {
-    type: SET_GROUP_IMAGE,
-    image
-  };
-};
-
-export const setGroupMembers = members => {
-  return {
-    type: SET_GROUP_MEMBERS,
-    members
-  };
-};
 
 export const changeGroup = groupId => dispatch => {
   axios

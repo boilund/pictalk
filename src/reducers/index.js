@@ -7,9 +7,6 @@ import {
   RECEIVE_REQUEST_DATA,
   RECEIVE_DATA_FAILED,
   OPEN_CREATE_GROUP_DIALOG,
-  SET_GROUP_NAME,
-  SET_GROUP_IMAGE,
-  SET_GROUP_MEMBERS,
   RESET_GROUP,
   CHANGE_GROUP
 } from '../actions';
@@ -100,21 +97,6 @@ const appReducer = (state = initialState.app, action) => {
 const groupReducer = (state = initialState.group, action) => {
   const { type } = action;
   switch (type) {
-    case SET_GROUP_NAME:
-      return {
-        ...state,
-        name: action.groupname
-      };
-    case SET_GROUP_IMAGE:
-      return {
-        ...state,
-        image: action.image
-      };
-    case SET_GROUP_MEMBERS:
-      return {
-        ...state,
-        members: action.members
-      };
     case CHANGE_GROUP:
       return {
         ...state,
