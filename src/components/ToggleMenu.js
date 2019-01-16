@@ -54,7 +54,10 @@ class ToggleMenu extends React.Component {
           className={classes.avatarButton}
         >
           {group.image ? (
-            <ImageAvatar alt={group.name} />
+            <ImageAvatar
+              alt={group.name}
+              image={`/avatarUploads/${group.image}`}
+            />
           ) : (
             <LetterAvatar nickname={group.name} color={'default'} />
           )}
