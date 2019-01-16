@@ -114,7 +114,7 @@ class PostPage extends React.Component {
     }
   };
 
-  handleChange = async e => {
+  handleChange = e => {
     // preview
     this.setState({
       files: Array.from(e.target.files, file => URL.createObjectURL(file))
