@@ -84,7 +84,6 @@ class CreateGroupDialog extends React.Component {
 
     try {
       const response = await axios.post(`/api/create-group`, formData);
-      console.log(response);
       if (response.data.success) {
         changeGroup(response.data.groupId);
         openCreateGroupDialog(false);

@@ -152,14 +152,15 @@ app.post('/create-group', avatarUpload.single('file'), (req, res) => {
     latestUpdateTime: latestUpdateTime
   });
   newGroup.save().then(group => {
-    console.log('group members', group.members);
-    for (let member of group.members) {
+    res.json({ success: true, groupId: group._id });
+
+    group.members.forEach(member => {
       User.findOneAndUpdate({ _id: member }, { $push: { groups: group._id } })
-        .then(() => res.status(200).json({ success: true, groupId: group._id }))
+        .then(() => res.status(200))
         .catch(err => {
           throw err;
         });
-    }
+    });
   });
 });
 
