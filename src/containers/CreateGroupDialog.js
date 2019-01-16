@@ -17,6 +17,8 @@ import * as actions from '../actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+const defaultImg = '/images/default-group.svg';
+
 const styles = () => ({
   row: {
     display: 'flex',
@@ -26,6 +28,7 @@ const styles = () => ({
 });
 
 const initialState = {
+  file: defaultImg,
   groupName: '',
   groupImage: '',
   groupMembers: []
@@ -47,6 +50,18 @@ class CreateGroupDialog extends React.Component {
     }
   };
 
+  handleGroupImage = e => {
+    this.setState({
+      file: URL.createObjectURL(e.target.files[0])
+    });
+
+    // TODO: Save image to database
+    // const formData = new FormData();
+    // formData.append('id', user._id);
+    // formData.append('file', e.target.files[0]);
+    // this.props.setGroupImage(formData);
+  };
+
   handleGroupName = e => {
     this.setState({ groupName: e.target.value });
   };
@@ -54,8 +69,6 @@ class CreateGroupDialog extends React.Component {
   handleGroupMembers = members => {
     this.setState({ groupMembers: members });
   };
-
-  handleGroupImage = e => {};
 
   createGroup = () => {
     const { openCreateGroupDialog, changeGroup } = this.props;
@@ -69,21 +82,22 @@ class CreateGroupDialog extends React.Component {
         latestUpdateTime: milliseconds
       })
       .then(res => {
-        console.log(res);
-        if (res.success) {
-          console.log('image', groupimage.get('id'));
+        console.log('res after create group', res);
+        if (res.data.success) {
+          changeGroup(res.data.groupId);
+          console.log('image', groupformdata);
           // TODO: if image is not defined, use default image
-          if (groupimage) {
-            axios
-              .post('/api/upload', {
-                groupimage
-              })
-              .then(res => {
-                console.log(res.path);
-                openCreateGroupDialog(false);
-                // this.props.updateProfile("image", res.path);
-              });
-          }
+          // if (groupformdata) {
+          //   axios
+          //     .post('/api/upload', {
+          //       groupformdata
+          //     })
+          //     .then(res => {
+          //       console.log(res.path);
+          //       openCreateGroupDialog(false);
+          //       // this.props.updateProfile("image", res.path);
+          //     });
+          // }
         }
       })
       .catch(err => {
@@ -98,11 +112,10 @@ class CreateGroupDialog extends React.Component {
       user,
       openDialog,
       openCreateGroupDialog,
-      group,
       candidates,
       isFetching
     } = this.props;
-    const { groupName, groupImage, groupMembers } = this.state;
+    const { file, groupName, groupImage, groupMembers } = this.state;
 
     return (
       <Dialog
@@ -114,7 +127,7 @@ class CreateGroupDialog extends React.Component {
         <DialogTitle id="responsive-dialog-title">Make new group</DialogTitle>
         <DialogContent>
           <div className={classes.row}>
-            <UploadImage setGroupImage={this.handleGroupImage} />
+            <UploadImage file={file} handleFileChange={this.handleGroupImage} />
             <GroupNameInput
               groupname={groupName}
               handleGroupName={this.handleGroupName}
@@ -146,7 +159,6 @@ CreateGroupDialog.propTypes = {
   fullScreen: PropTypes.bool.isRequired,
   openDialog: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
-  group: PropTypes.object.isRequired,
   isFetching: PropTypes.bool,
   candidates: PropTypes.array.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
@@ -157,7 +169,6 @@ CreateGroupDialog.propTypes = {
 const mapStateToProps = state => {
   return {
     user: state.user,
-    group: state.group,
     openDialog: state.app.openDialog,
     isFetching: state.app.isFetching,
     candidates: state.app.candidates
