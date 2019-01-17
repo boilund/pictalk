@@ -95,7 +95,7 @@ class PostCard extends React.Component {
 
   handleSendComment = () => {
     const { comment } = this.state;
-    const { post, user, group } = this.props;
+    const { post, user } = this.props;
     // add comment
     socket.emit('comment', {
       sender: user._id,
@@ -107,19 +107,21 @@ class PostCard extends React.Component {
   };
 
   render() {
-    const { classes, post, members, user } = this.props;
-    const postedUser = members.find(member => member._id === post.photographer);
+    const { classes, post } = this.props;
 
     return (
       <Card className={classes.card}>
         <CardHeader
           avatar={
-            postedUser.image ? (
-              <ImageAvatar image={postedUser.image} alt={postedUser.nickname} />
+            post.photographer.image ? (
+              <ImageAvatar
+                image={post.photographer.image}
+                alt={post.photographer.nickname}
+              />
             ) : (
               <LetterAvatar
-                nickname={postedUser.nickname}
-                color={postedUser.avatarColor}
+                nickname={post.photographer.nickname}
+                color={post.photographer.avatarColor}
               />
             )
           }
@@ -128,7 +130,7 @@ class PostCard extends React.Component {
               <MoreVertIcon />
             </IconButton>
           }
-          title={postedUser.nickname}
+          title={post.photographer.nickname}
           subheader={post.date}
         />
         <CardMedia
@@ -138,7 +140,9 @@ class PostCard extends React.Component {
         />
         <CardContent>
           <Typography component="p">
-            <span className={classes.username}>{postedUser.nickname}</span>
+            <span className={classes.username}>
+              {post.photographer.nickname}
+            </span>
             {post.description}
           </Typography>
         </CardContent>
@@ -203,8 +207,7 @@ class PostCard extends React.Component {
 PostCard.propTypes = {
   classes: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  members: PropTypes.arrayOf(PropTypes.object)
+  user: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(PostCard);

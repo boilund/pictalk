@@ -64,13 +64,7 @@ class Album extends React.Component {
               <Grid item xs={12} md={9}>
                 {group.posts.length ? (
                   group.posts.map((post, i) => (
-                    <PostCard
-                      post={post}
-                      user={user}
-                      group={group}
-                      members={group.members}
-                      key={i}
-                    />
+                    <PostCard post={post} user={user} key={i} />
                   ))
                 ) : (
                   <Typography>Let's post something!</Typography>

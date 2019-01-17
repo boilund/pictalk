@@ -30,10 +30,10 @@ exports.creategroup = (req, res) => {
 
 exports.fetchGroup = (req, res) => {
   Group.findOne({ _id: req.params.groupId })
-    .populate('posts')
     .populate('members')
+    .populate({ path: 'posts', populate: { path: 'comments' } })
+    .populate({ path: 'posts', populate: { path: 'photographer' } })
     .exec((err, group) => {
-      console.log('posts', group);
       if (err) console.error(new Error(err));
       res.status(200).json({ success: true, group });
     });
