@@ -17,6 +17,15 @@ export const setUser = user => {
   };
 };
 
+export const updateUser = userId => dispatch => {
+  axios.get(`/api/user/${userId}`).then(res => {
+    console.log('res', res);
+    if (res.data.success) {
+      dispatch({ type: SET_USER, user: res.data.user });
+    }
+  });
+};
+
 export const logoutUser = () => dispatch => {
   axios
     .get('/api/logout')
