@@ -21,6 +21,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CameraIcon from '@material-ui/icons/PhotoCamera';
 import SendIcon from '@material-ui/icons/Send';
+import ImageAvatar from './ImageAvatar';
+import LetterAvatar from './LetterAvatar';
 import io from 'socket.io-client';
 
 const socket = io.connect({ path: '/api/socket' });
@@ -112,9 +114,14 @@ class PostCard extends React.Component {
       <Card className={classes.card}>
         <CardHeader
           avatar={
-            <Avatar aria-label="Recipe" className={classes.avatar}>
-              R
-            </Avatar>
+            postedUser.image ? (
+              <ImageAvatar image={postedUser.image} alt={postedUser.nickname} />
+            ) : (
+              <LetterAvatar
+                nickname={postedUser.nickname}
+                color={postedUser.avatarColor}
+              />
+            )
           }
           action={
             <IconButton>
