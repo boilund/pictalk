@@ -36,20 +36,6 @@ class Album extends React.Component {
     this.props.fetchUsers(this.props.user._id);
   }
 
-  addComment = (photoId, userId, comment, groupId) => {
-    axios
-      .post(`/api/${photoId}/addcomment`, { userId, comment })
-      .then(res => {
-        if (res.data.success) {
-          // fetch group after saving new comment
-          this.props.changeGroup(groupId);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
   render() {
     const {
       classes,
@@ -83,7 +69,6 @@ class Album extends React.Component {
                       user={user}
                       group={group}
                       members={group.members}
-                      addComment={this.addComment}
                       key={i}
                     />
                   ))

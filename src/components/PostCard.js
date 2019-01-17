@@ -21,6 +21,9 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CameraIcon from '@material-ui/icons/PhotoCamera';
 import SendIcon from '@material-ui/icons/Send';
+import io from 'socket.io-client';
+
+const socket = io.connect({ path: '/api/socket' });
 
 const styles = theme => ({
   card: {
@@ -61,7 +64,24 @@ const styles = theme => ({
 });
 
 class PostCard extends React.Component {
-  state = { expanded: false, comment: '' };
+  state = { expanded: false, comment: '', commentsInState: [] };
+
+  componentDidMount() {
+    const { post } = this.props;
+    const { commentsInState } = this.state;
+
+    if (this.props.user.loggedIn) {
+      socket.off('comment');
+      socket.on('comment', comments => {
+        for (let comment of comments) {
+          commentsInState.push(comment);
+        }
+        this.setState({ commentsInState });
+        console.log(commentsInState);
+      });
+      socket.emit('asking to join room', post._id);
+    }
+  }
 
   handleExpandClick = () => {
     this.setState({ expanded: !this.state.expanded });
@@ -73,8 +93,14 @@ class PostCard extends React.Component {
 
   handleSendComment = () => {
     const { comment } = this.state;
-    const { post, user, addComment, group } = this.props;
-    addComment(post._id, user._id, comment, group._id);
+    const { post, user, group } = this.props;
+    // add comment
+    socket.emit('comment', {
+      sender: user._id,
+      comment: comment,
+      room: post._id
+    });
+    // empty field
     this.setState({ comment: '' });
   };
 
@@ -129,13 +155,10 @@ class PostCard extends React.Component {
         </CardActions>
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            {post.comments.map((comment, i) => (
+            {this.state.commentsInState.map((comment, i) => (
               <Typography paragraph key={i}>
                 <span className={classes.username}>
-                  {
-                    members.find(member => member._id === comment.sender)
-                      .nickname
-                  }
+                  {comment.sender.nickname}
                 </span>
                 {comment.comment}
               </Typography>
@@ -174,8 +197,7 @@ PostCard.propTypes = {
   classes: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  members: PropTypes.arrayOf(PropTypes.object),
-  addComment: PropTypes.func.isRequired
+  members: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default withStyles(styles)(PostCard);

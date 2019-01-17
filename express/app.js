@@ -30,6 +30,7 @@ app.use(bodyParser.json());
 const User = require('./classes/User.class');
 const Group = require('./classes/Group.class');
 const Photo = require('./classes/Photo.class');
+const Comment = require('./classes/Comment.class');
 
 // Set up socket.io (do this before normal middleware and routing!)
 const io = require('socket.io')(global.httpServer, {
@@ -67,7 +68,68 @@ io.use(
 
 // use socket.io
 io.on('connection', socket => {
-  console.log('a user connected (socket)');
+  console.log('a user connected to socket');
+
+  socket.on('comment', async messageFromClient => {
+    // Get the user from session
+    const user = socket.handshake.session.loggedInUser;
+    // Don't do anything if we are not logged in
+    if (!user) {
+      return;
+    }
+
+    const room = messageFromClient.room;
+
+    // Create a mongoose Comment and write to the db
+    const comment = new Comment({
+      ...messageFromClient,
+      sender: user._id
+    });
+    await comment.save();
+
+    // Send the comment to all the sockets in the room
+    io.to(room).emit('comment', [
+      {
+        sender: user,
+        comment: comment.comment,
+        room: comment.room,
+        date: comment.date
+      }
+    ]);
+
+    // Save comment id in the Photo
+    Photo.findOneAndUpdate({ _id: room }, { $push: { comments: comment._id } })
+      .then(photo => console.log(photo))
+      .catch(err => {
+        throw err;
+      });
+  });
+
+  socket.on('asking to join room', async room => {
+    // Get the user from session
+    let user = socket.handshake.session.loggedInUser;
+    // Don't do anything if we are not logged in
+    if (!user) {
+      return;
+    }
+
+    if (typeof room === 'string') {
+      socket.join(room);
+      // Send all previous comments from the room to the socket
+      let comments = await Comment.find({ room: room })
+        .populate('sender')
+        .exec();
+      comments = comments.map(x => ({
+        sender: x.sender,
+        comment: x.comment,
+        room: x.room,
+        date: x.date
+      }));
+
+      socket.emit('comments', comments);
+    }
+  });
+
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
