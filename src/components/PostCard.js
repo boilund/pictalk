@@ -149,6 +149,7 @@ class PostCard extends React.Component {
               label="Comment..."
               value={this.state.comment}
               onChange={this.handleChangeComment}
+              onKeyPress={e => e.key === 'Enter' && this.handleSendComment()}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
