@@ -26,7 +26,6 @@ const GroupListContent = props => {
         ) : (
           <LetterAvatar nickname={group.name} color={'default'} />
         )}
-        {/* <ImageA!vatar alt={group.name} image={`/avatarUploads/${group.image}`} /> */}
       </div>
       <Typography variant={'subtitle1'}>{group.name}</Typography>
     </Fragment>
