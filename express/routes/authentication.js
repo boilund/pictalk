@@ -10,7 +10,7 @@ const alternativeColor = [
 
 // after login
 exports.loggedin = (req, res) => {
-  res.json({ user: req.session.userId });
+  res.json({ user: req.session.loggedInUser });
 };
 
 exports.signup = async (req, res) => {
@@ -28,7 +28,7 @@ exports.signup = async (req, res) => {
       avatarColor: color
     });
     newUser.save().then(user => {
-      req.session.userId = user._id;
+      req.session.loggedInUser = user;
       res.status(200).json({ success: true, user });
     });
   } else {
@@ -49,7 +49,7 @@ exports.login = (req, res) => {
           algorithm: 'sha512'
         });
         if (user.password === hash) {
-          req.session.userId = user._id;
+          req.session.loggedInUser = user;
           // set 'groups' data
           User.findOne({ _id: user._id })
             .populate('groups')

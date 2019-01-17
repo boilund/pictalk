@@ -74,7 +74,7 @@ io.on('connection', socket => {
 });
 
 const loginCheck = (req, res, next) => {
-  if (req.session && req.session.userId) {
+  if (req.session && req.session.loggedInUser) {
     next();
   } else {
     const err = new Error('You must be logged in to view this page.');
@@ -131,7 +131,7 @@ app.post('/image-upload', upload.array('images', 10), (req, res) => {
   const newPhoto = new Photo({
     filename: filenames,
     postedGroup: req.body.groupId,
-    photographer: req.session.userId,
+    photographer: req.session.loggedInUser,
     description: req.body.description,
     favorite: false
   });
