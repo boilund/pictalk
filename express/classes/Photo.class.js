@@ -24,11 +24,8 @@ const PhotoSchema = new Schema({
   favorite: Number,
   comments: [
     {
-      sender: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-      },
-      comment: String
+      type: Schema.Types.ObjectId,
+      ref: 'Comment'
     }
   ]
 });
