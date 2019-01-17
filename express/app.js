@@ -26,6 +26,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Returns middleware that only parses json
 app.use(bodyParser.json());
 
+// Require our REST-based classes
+const User = require('./classes/User.class');
+const Group = require('./classes/Group.class');
+const Photo = require('./classes/Photo.class');
+
+// Set up socket.io (do this before normal middleware and routing!)
+const io = require('socket.io')(global.httpServer, {
+  path: global.production ? '/api/socket' : '/socket',
+  serveClient: false
+});
+
 // user sessions for tracking logins
 const expressSession = require('express-session');
 const connectMongo = require('connect-mongo')(expressSession);
@@ -42,7 +53,25 @@ const session = expressSession({
     ttl: 30 * 24 * 60 * 60
   })
 });
+
+// Use express-session middleware for express
 app.use(session);
+
+// Use shared session middleware for socket.io
+const sharedsession = require('express-socket.io-session');
+io.use(
+  sharedsession(session, {
+    autoSave: true
+  })
+);
+
+// use socket.io
+io.on('connection', socket => {
+  console.log('a user connected (socket)');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
 
 const loginCheck = (req, res, next) => {
   if (req.session && req.session.userId) {
@@ -76,8 +105,6 @@ const photoRoutes = require('./routes/photo');
 app.post('/:photoId/addcomment', loginCheck, photoRoutes.addComment);
 
 const multer = require('multer');
-const Photo = require('./classes/Photo.class');
-const Group = require('./classes/Group.class');
 // Difine storage and file name
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
