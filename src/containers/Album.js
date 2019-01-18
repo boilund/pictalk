@@ -70,6 +70,7 @@ class Album extends React.Component {
                       post={post}
                       user={user}
                       addComment={addComment}
+                      changeGroup={changeGroup}
                       key={i}
                     />
                   ))

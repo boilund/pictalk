@@ -72,6 +72,7 @@ export const openCreateGroupDialog = boolean => ({
 });
 
 export const changeGroup = groupId => dispatch => {
+  console.log('changed to group id', groupId);
   axios
     .get(`/api/group/${groupId}`)
     .then(res => {

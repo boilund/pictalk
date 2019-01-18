@@ -1,6 +1,7 @@
 const Photo = require('../classes/Photo.class');
 const Comment = require('../classes/Comment.class');
 
+// not needed anymore since done by socket in app.js
 exports.addComment = (req, res) => {
   const { groupId, postId } = req.params;
   const { comment } = req.body;

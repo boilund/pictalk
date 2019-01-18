@@ -66,9 +66,15 @@ io.use(
   })
 );
 
+// memory pairing all logged in users to sockets
+global.userSocketMem = {};
+
 // use socket.io
 io.on('connection', socket => {
   console.log('a user connected to socket');
+
+  const user = socket.handshake.session.loggedInUser;
+  userSocketMem[user._id] = socket;
 
   socket.on('comment', async messageFromClient => {
     // Get the user from session
@@ -77,14 +83,37 @@ io.on('connection', socket => {
     if (!user) {
       return;
     }
+    console.log('from client', messageFromClient);
 
     const room = messageFromClient.room;
+    socket.join(room);
+    console.log(
+      'THIS IS FROM SOCKET The user ' +
+        user.nickname +
+        'joined the room ' +
+        room
+    );
 
+    // Save to db
+    let m = messageFromClient;
+    const newComment = new Comment({
+      sender: m.sender,
+      comment: m.comment,
+      room: m.postgroup
+    });
+    await newComment.save();
+    await Photo.findOneAndUpdate(
+      { _id: m.post },
+      { $push: { comments: newComment } }
+    );
+
+    console.log('comment', messageFromClient);
     // Send the comment to all the sockets in the room
-    io.to(room).emit('comment', [
+    io.to(m.postgroup).emit('comment', [
       {
         post: messageFromClient.post,
-        room: room
+        room: m.postgroup,
+        comment: messageFromClient.comment
       }
     ]);
   });

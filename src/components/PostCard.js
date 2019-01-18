@@ -78,20 +78,32 @@ const styles = theme => ({
 });
 
 class PostCard extends React.Component {
-  state = { expanded: false, comment: '', commentsInState: [] };
+  state = { expanded: false, comment: '' };
 
-  componentDidMount() {
-    const { post } = this.props;
-    const { commentsInState } = this.state;
+  // componentDidMount() {
+  //   console.log('did mount');
+  //   if (this.props.user.loggedIn) {
+  //     socket.off('comment');
+  //     socket.on('comment', comments => {
+  //       console.log('comments from socket', comments);
+  //       for (let comment of comments) {
+  //         // update this room(group)
+  //         this.props.changeGroup(comment.room);
+  //       }
+  //     });
+  //   }
+  // }
 
+  componentDidUpdate() {
+    console.log('did update');
     if (this.props.user.loggedIn) {
       socket.off('comment');
       socket.on('comment', comments => {
+        console.log('comments from socket', comments);
         for (let comment of comments) {
-          commentsInState.push(comment);
+          // update this room(group)
+          this.props.changeGroup(comment.room);
         }
-        this.setState({ commentsInState });
-        console.log(commentsInState);
       });
     }
   }
@@ -107,13 +119,15 @@ class PostCard extends React.Component {
   handleSendComment = () => {
     const { comment } = this.state;
     const { post, user, addComment } = this.props;
-    // add comment
-    addComment(post.postedGroup, post._id, comment);
+    // save comment
+    // addComment(post.postedGroup, post._id, comment);
+    // send comment to sockets
     socket.emit('comment', {
       sender: user._id,
       post: post._id,
       comment: comment,
-      room: post.postedGroup
+      room: post.postedGroup,
+      postgroup: post.postedGroup
     });
     // empty field
     this.setState({ comment: '' });
@@ -234,7 +248,8 @@ PostCard.propTypes = {
   classes: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  addComment: PropTypes.func.isRequired
+  addComment: PropTypes.func.isRequired,
+  changeGroup: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(PostCard);
