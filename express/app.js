@@ -80,54 +80,13 @@ io.on('connection', socket => {
 
     const room = messageFromClient.room;
 
-    // Create a mongoose Comment and write to the db
-    const comment = new Comment({
-      ...messageFromClient,
-      sender: user._id
-    });
-    await comment.save();
-
     // Send the comment to all the sockets in the room
     io.to(room).emit('comment', [
       {
-        sender: user,
-        comment: comment.comment,
-        room: comment.room,
-        date: comment.date
+        post: messageFromClient.post,
+        room: room
       }
     ]);
-
-    // Save comment id in the Photo
-    Photo.findOneAndUpdate({ _id: room }, { $push: { comments: comment._id } })
-      .then(photo => console.log(photo))
-      .catch(err => {
-        throw err;
-      });
-  });
-
-  socket.on('asking to join room', async room => {
-    // Get the user from session
-    let user = socket.handshake.session.loggedInUser;
-    // Don't do anything if we are not logged in
-    if (!user) {
-      return;
-    }
-
-    if (typeof room === 'string') {
-      socket.join(room);
-      // Send all previous comments from the room to the socket
-      let comments = await Comment.find({ room: room })
-        .populate('sender')
-        .exec();
-      comments = comments.map(x => ({
-        sender: x.sender,
-        comment: x.comment,
-        room: x.room,
-        date: x.date
-      }));
-
-      socket.emit('comments', comments);
-    }
   });
 
   socket.on('disconnect', () => {
@@ -164,7 +123,7 @@ const groupRoutes = require('./routes/group');
 app.get('/group/:groupId', loginCheck, groupRoutes.fetchGroup);
 
 const photoRoutes = require('./routes/photo');
-app.post('/:photoId/addcomment', loginCheck, photoRoutes.addComment);
+app.post('/group/:groupId/:postId/comment', loginCheck, photoRoutes.addComment);
 
 const multer = require('multer');
 // Difine storage and file name

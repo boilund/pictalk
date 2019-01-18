@@ -1,14 +1,21 @@
 const Photo = require('../classes/Photo.class');
+const Comment = require('../classes/Comment.class');
 
 exports.addComment = (req, res) => {
-  const { userId, comment } = req.body;
+  const { groupId, postId } = req.params;
+  const { comment } = req.body;
+  const { _id } = req.session.loggedInUser;
 
-  Photo.findOneAndUpdate(
-    { _id: req.params.photoId },
-    { $push: { comments: { sender: userId, comment: comment } } }
-  )
-    .then(photo => res.status(200).json({ success: true, photo: photo }))
-    .catch(err => {
-      throw err;
-    });
+  const newComment = new Comment({
+    sender: _id,
+    comment: comment,
+    room: groupId
+  });
+  newComment.save().then(c => {
+    Photo.findOneAndUpdate({ _id: postId }, { $push: { comments: c } })
+      .then(photo => res.status(200).json({ success: true, photo: photo }))
+      .catch(err => {
+        throw err;
+      });
+  });
 };

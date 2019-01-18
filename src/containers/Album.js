@@ -43,8 +43,10 @@ class Album extends React.Component {
       user,
       group,
       openCreateGroupDialog,
-      changeGroup
+      changeGroup,
+      addComment
     } = this.props;
+    console.log('group', group);
 
     if (isFetching) {
       return <Loading />;
@@ -64,7 +66,12 @@ class Album extends React.Component {
               <Grid item xs={12} md={9}>
                 {group.posts.length ? (
                   group.posts.map((post, i) => (
-                    <PostCard post={post} user={user} key={i} />
+                    <PostCard
+                      post={post}
+                      user={user}
+                      addComment={addComment}
+                      key={i}
+                    />
                   ))
                 ) : (
                   <Typography>Let's post something!</Typography>
@@ -97,7 +104,8 @@ Album.propTypes = {
   group: PropTypes.object.isRequired,
   fetchUsers: PropTypes.func.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
-  changeGroup: PropTypes.func.isRequired
+  changeGroup: PropTypes.func.isRequired,
+  addComment: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -113,7 +121,9 @@ const mapDispatchToProps = dispatch => {
     fetchUsers: userId => dispatch(actions.fetchUsers(userId)),
     openCreateGroupDialog: boolean =>
       dispatch(actions.openCreateGroupDialog(boolean)),
-    changeGroup: groupId => dispatch(actions.changeGroup(groupId))
+    changeGroup: groupId => dispatch(actions.changeGroup(groupId)),
+    addComment: (groupId, postId, comment) =>
+      dispatch(actions.addComment(groupId, postId, comment))
   };
 };
 

@@ -19,7 +19,6 @@ export const setUser = user => {
 
 export const updateUser = userId => dispatch => {
   axios.get(`/api/user/${userId}`).then(res => {
-    console.log('res', res);
     if (res.data.success) {
       dispatch({ type: SET_USER, user: res.data.user });
     }
@@ -78,6 +77,28 @@ export const changeGroup = groupId => dispatch => {
     .then(res => {
       if (res.data.success) {
         dispatch({ type: CHANGE_GROUP, group: res.data.group });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const addComment = (groupId, postId, comment) => dispatch => {
+  axios
+    .post(`/api/group/${groupId}/${postId}/comment`, { comment })
+    .then(res => {
+      if (res.data.success) {
+        axios
+          .get(`/api/group/${groupId}`)
+          .then(res => {
+            if (res.data.success) {
+              dispatch({ type: CHANGE_GROUP, group: res.data.group });
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     })
     .catch(err => {

@@ -62,6 +62,18 @@ const styles = theme => ({
   },
   textField: {
     width: '100%'
+  },
+  marginBottom: {
+    marginBottom: '0'
+  },
+  commentColumn: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  commentRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
   }
 });
 
@@ -81,7 +93,6 @@ class PostCard extends React.Component {
         this.setState({ commentsInState });
         console.log(commentsInState);
       });
-      socket.emit('asking to join room', post._id);
     }
   }
 
@@ -95,12 +106,14 @@ class PostCard extends React.Component {
 
   handleSendComment = () => {
     const { comment } = this.state;
-    const { post, user } = this.props;
+    const { post, user, addComment } = this.props;
     // add comment
+    addComment(post.postedGroup, post._id, comment);
     socket.emit('comment', {
       sender: user._id,
+      post: post._id,
       comment: comment,
-      room: post._id
+      room: post.postedGroup
     });
     // empty field
     this.setState({ comment: '' });
@@ -165,14 +178,27 @@ class PostCard extends React.Component {
           </IconButton>
         </CardActions>
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            {this.state.commentsInState.map((comment, i) => (
-              <Typography paragraph key={i}>
-                <span className={classes.username}>
-                  {comment.sender.nickname}
-                </span>
-                {comment.comment}
-              </Typography>
+          <CardContent className={classes.commentColumn}>
+            {post.comments.map((comment, i) => (
+              <div key={i} className={classes.commentRow}>
+                {comment.sender.image ? (
+                  <ImageAvatar
+                    image={comment.sender.image}
+                    alt={comment.sender.nickname}
+                  />
+                ) : (
+                  <LetterAvatar
+                    nickname={comment.sender.nickname}
+                    color={comment.sender.avatarColor}
+                  />
+                )}
+                <Typography paragraph key={i} className={classes.marginBottom}>
+                  <span className={classes.username}>
+                    {comment.sender.nickname}
+                  </span>
+                  {comment.comment}
+                </Typography>
+              </div>
             ))}
           </CardContent>
           <CardActions>
@@ -207,7 +233,8 @@ class PostCard extends React.Component {
 PostCard.propTypes = {
   classes: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  addComment: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(PostCard);
