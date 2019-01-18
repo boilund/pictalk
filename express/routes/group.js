@@ -31,7 +31,10 @@ exports.creategroup = (req, res) => {
 exports.fetchGroup = (req, res) => {
   Group.findOne({ _id: req.params.groupId })
     .populate('members')
-    .populate({ path: 'posts', populate: { path: 'comments' } })
+    .populate({
+      path: 'posts',
+      populate: { path: 'comments', populate: { path: 'sender' } }
+    })
     .populate({ path: 'posts', populate: { path: 'photographer' } })
     .exec((err, group) => {
       if (err) console.error(new Error(err));
