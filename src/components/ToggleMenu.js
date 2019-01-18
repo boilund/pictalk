@@ -33,15 +33,14 @@ class ToggleMenu extends React.Component {
     this.setState({ anchorEl: null });
   };
 
+  changeGroup = groupId => {
+    this.props.changeGroup(groupId);
+    this.handleClose();
+  };
+
   render() {
     const { anchorEl } = this.state;
-    const {
-      classes,
-      user,
-      group,
-      openCreateGroupDialog,
-      changeGroup
-    } = this.props;
+    const { classes, user, group, openCreateGroupDialog } = this.props;
     const open = Boolean(anchorEl);
 
     return (
@@ -78,7 +77,7 @@ class ToggleMenu extends React.Component {
             <MenuItem
               key={index}
               selected={g.name === group.name}
-              onClick={() => changeGroup(g._id)}
+              onClick={() => this.changeGroup(g._id)}
             >
               <GroupListContent group={g} />
             </MenuItem>
