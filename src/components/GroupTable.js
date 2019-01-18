@@ -38,7 +38,11 @@ const GroupTable = props => {
                 <TableCell component="th" scope="row">
                   {group.name}
                 </TableCell>
-                <TableCell align="right">{group.members}</TableCell>
+                <TableCell align="right">
+                  {group.members.map((member, i) => (
+                    <span key={i}>{member.nickname} </span>
+                  ))}
+                </TableCell>
               </TableRow>
             );
           })}

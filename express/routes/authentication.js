@@ -52,7 +52,10 @@ exports.login = (req, res) => {
           req.session.loggedInUser = user;
           // set 'groups' data
           User.findOne({ _id: user._id })
-            .populate('groups')
+            .populate({
+              path: 'groups',
+              populate: { path: 'members' }
+            })
             .exec((err, user) => {
               if (err) console.error(new Error(err));
               res.status(200).json({ success: true, user });
