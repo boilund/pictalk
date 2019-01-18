@@ -74,7 +74,9 @@ io.on('connection', socket => {
   console.log('a user connected to socket');
 
   const user = socket.handshake.session.loggedInUser;
-  userSocketMem[user._id] = socket;
+  if (user) {
+    userSocketMem[user._id] = socket;
+  }
 
   socket.on('comment', async messageFromClient => {
     // Get the user from session
