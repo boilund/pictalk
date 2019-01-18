@@ -67,7 +67,7 @@ class PostPage extends React.Component {
           />
         );
       case 2:
-        return 'This is the bit I really care about!';
+        return '';
       default:
         return 'Unknown stepIndex';
     }

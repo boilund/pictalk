@@ -9,25 +9,21 @@ import green from '@material-ui/core/colors/green';
 
 const styles = {
   default: {
-    margin: 10
+    color: '#fff'
   },
   orangeAvatar: {
-    margin: 10,
     color: '#fff',
     backgroundColor: deepOrange[500]
   },
   purpleAvatar: {
-    margin: 10,
     color: '#fff',
     backgroundColor: deepPurple[500]
   },
   pink: {
-    margin: 10,
     color: '#fff',
     backgroundColor: pink[500]
   },
   green: {
-    margin: 10,
     color: '#fff',
     backgroundColor: green[500]
   }

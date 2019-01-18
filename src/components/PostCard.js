@@ -196,15 +196,19 @@ class PostCard extends React.Component {
             {post.comments.map((comment, i) => (
               <div key={i} className={classes.commentRow}>
                 {comment.sender.image ? (
-                  <ImageAvatar
-                    image={comment.sender.image}
-                    alt={comment.sender.nickname}
-                  />
+                  <div className={classes.margin}>
+                    <ImageAvatar
+                      image={comment.sender.image}
+                      alt={comment.sender.nickname}
+                    />
+                  </div>
                 ) : (
-                  <LetterAvatar
-                    nickname={comment.sender.nickname}
-                    color={comment.sender.avatarColor}
-                  />
+                  <div className={classes.margin}>
+                    <LetterAvatar
+                      nickname={comment.sender.nickname}
+                      color={comment.sender.avatarColor}
+                    />
+                  </div>
                 )}
                 <Typography paragraph key={i} className={classes.marginBottom}>
                   <span className={classes.username}>

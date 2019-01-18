@@ -4,10 +4,12 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
+import green from '@material-ui/core/colors/green';
 
 const styles = theme => ({
   addIcon: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
+    backgroundColor: green[500]
   }
 });
 
