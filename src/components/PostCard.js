@@ -15,12 +15,14 @@ import Typography from '@material-ui/core/Typography';
 import red from '@material-ui/core/colors/red';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
+import Badge from '@material-ui/core/Badge';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CameraIcon from '@material-ui/icons/PhotoCamera';
 import SendIcon from '@material-ui/icons/Send';
+import QuestionAnswer from '@material-ui/icons/QuestionAnswer';
 import ImageAvatar from './ImageAvatar';
 import LetterAvatar from './LetterAvatar';
 import { socket } from '../components/App';
@@ -168,6 +170,13 @@ class PostCard extends React.Component {
             aria-expanded={this.state.expanded}
             aria-label="Show more"
           >
+            <Badge
+              className={classes.margin}
+              badgeContent={10}
+              color="secondary"
+            >
+              <QuestionAnswer />
+            </Badge>
             <ExpandMoreIcon />
           </IconButton>
         </CardActions>
