@@ -116,7 +116,7 @@ class PostCard extends React.Component {
   };
 
   render() {
-    const { classes, post } = this.props;
+    const { classes, post, user } = this.props;
 
     return (
       <Card className={classes.card}>
@@ -218,6 +218,22 @@ class PostCard extends React.Component {
               onChange={this.handleChangeComment}
               onKeyPress={e => e.key === 'Enter' && this.handleSendComment()}
               InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    {user.image ? (
+                      <div className={classes.margin}>
+                        <ImageAvatar image={user.image} alt={user.nickname} />
+                      </div>
+                    ) : (
+                      <div className={classes.margin}>
+                        <LetterAvatar
+                          nickname={user.nickname}
+                          color={user.avatarColor}
+                        />
+                      </div>
+                    )}
+                  </InputAdornment>
+                ),
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
