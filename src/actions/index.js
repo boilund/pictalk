@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { socket } from '../components/App';
 
 export const SET_USER = 'SET_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';

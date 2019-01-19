@@ -7,7 +7,7 @@ import Loading from './Loading';
 import io from 'socket.io-client';
 
 const { store, persistor } = configureStore();
-io({ path: '/api/socket' });
+export const socket = io({ path: '/api/socket' });
 
 export const App = () => {
   return (

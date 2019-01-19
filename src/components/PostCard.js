@@ -23,9 +23,7 @@ import CameraIcon from '@material-ui/icons/PhotoCamera';
 import SendIcon from '@material-ui/icons/Send';
 import ImageAvatar from './ImageAvatar';
 import LetterAvatar from './LetterAvatar';
-import io from 'socket.io-client';
-
-const socket = io.connect({ path: '/api/socket' });
+import { socket } from '../components/App';
 
 const styles = theme => ({
   card: {
