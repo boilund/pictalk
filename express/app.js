@@ -73,10 +73,15 @@ global.userSocketMem = {};
 io.on('connection', socket => {
   console.log('a user connected to socket');
 
-  const user = socket.handshake.session.loggedInUser;
-  if (user) {
-    userSocketMem[user._id] = socket;
-  }
+  socket.on('joinRoom', data => {
+    const { room } = data;
+    socket.join(room);
+  });
+
+  socket.on('leaveRoom', data => {
+    const { room } = data;
+    socket.leave(room);
+  });
 
   socket.on('comment', async messageFromClient => {
     // Get the user from session
@@ -85,39 +90,26 @@ io.on('connection', socket => {
     if (!user) {
       return;
     }
-    console.log('from client', messageFromClient);
 
-    const room = messageFromClient.room;
-    socket.join(room);
-    console.log(
-      'THIS IS FROM SOCKET The user ' +
-        user.nickname +
-        'joined the room ' +
-        room
-    );
-
+    const { sender, post, comment, room } = messageFromClient;
     // Save to db
-    let m = messageFromClient;
     const newComment = new Comment({
-      sender: m.sender,
-      comment: m.comment,
-      room: m.postgroup
+      sender,
+      comment,
+      room
     });
     await newComment.save();
     await Photo.findOneAndUpdate(
-      { _id: m.post },
+      { _id: post },
       { $push: { comments: newComment } }
     );
 
-    console.log('comment', messageFromClient);
     // Send the comment to all the sockets in the room
-    io.to(m.postgroup).emit('comment', [
-      {
-        post: messageFromClient.post,
-        room: m.postgroup,
-        comment: messageFromClient.comment
-      }
-    ]);
+    io.to(room).emit('comment', {
+      post,
+      room,
+      comment
+    });
   });
 
   socket.on('disconnect', () => {
@@ -154,7 +146,6 @@ const groupRoutes = require('./routes/group');
 app.get('/group/:groupId', loginCheck, groupRoutes.fetchGroup);
 
 const photoRoutes = require('./routes/photo');
-app.post('/group/:groupId/:postId/comment', loginCheck, photoRoutes.addComment);
 
 const multer = require('multer');
 // Difine storage and file name

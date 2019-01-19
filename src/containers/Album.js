@@ -43,8 +43,7 @@ class Album extends React.Component {
       user,
       group,
       openCreateGroupDialog,
-      changeGroup,
-      addComment
+      changeGroup
     } = this.props;
     console.log('group', group);
 
@@ -69,7 +68,7 @@ class Album extends React.Component {
                     <PostCard
                       post={post}
                       user={user}
-                      addComment={addComment}
+                      groupId={group._id}
                       changeGroup={changeGroup}
                       key={i}
                     />
@@ -105,8 +104,7 @@ Album.propTypes = {
   group: PropTypes.object.isRequired,
   fetchUsers: PropTypes.func.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
-  changeGroup: PropTypes.func.isRequired,
-  addComment: PropTypes.func.isRequired
+  changeGroup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -122,9 +120,7 @@ const mapDispatchToProps = dispatch => {
     fetchUsers: userId => dispatch(actions.fetchUsers(userId)),
     openCreateGroupDialog: boolean =>
       dispatch(actions.openCreateGroupDialog(boolean)),
-    changeGroup: groupId => dispatch(actions.changeGroup(groupId)),
-    addComment: (groupId, postId, comment) =>
-      dispatch(actions.addComment(groupId, postId, comment))
+    changeGroup: groupId => dispatch(actions.changeGroup(groupId))
   };
 };
 

@@ -40,13 +40,4 @@ exports.fetchGroup = (req, res) => {
       if (err) console.error(new Error(err));
       res.status(200).json({ success: true, group });
     });
-  const user = req.session.loggedInUser;
-  const socket = userSocketMem[user._id];
-  if (socket) {
-    console.log('Hurray found the socket the user is connected to!');
-    socket.join(req.params.groupId);
-    console.log(
-      'The user ' + user.nickname + 'joined the room ' + req.params.groupId
-    );
-  }
 };

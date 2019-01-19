@@ -73,34 +73,13 @@ export const openCreateGroupDialog = boolean => ({
 });
 
 export const changeGroup = groupId => dispatch => {
-  console.log('changed to group id', groupId);
+  socket.emit('joinRoom', { room: groupId });
+
   axios
     .get(`/api/group/${groupId}`)
     .then(res => {
       if (res.data.success) {
         dispatch({ type: CHANGE_GROUP, group: res.data.group });
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
-};
-
-export const addComment = (groupId, postId, comment) => dispatch => {
-  axios
-    .post(`/api/group/${groupId}/${postId}/comment`, { comment })
-    .then(res => {
-      if (res.data.success) {
-        axios
-          .get(`/api/group/${groupId}`)
-          .then(res => {
-            if (res.data.success) {
-              dispatch({ type: CHANGE_GROUP, group: res.data.group });
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
       }
     })
     .catch(err => {
