@@ -35,7 +35,11 @@ exports.fetchGroup = (req, res) => {
       path: 'posts',
       populate: { path: 'comments', populate: { path: 'sender' } }
     })
-    .populate({ path: 'posts', populate: { path: 'photographer' } })
+    .populate({
+      path: 'posts',
+      populate: { path: 'photographer' },
+      options: { sort: { date: -1 } }
+    })
     .exec((err, group) => {
       if (err) console.error(new Error(err));
       res.status(200).json({ success: true, group });
