@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -10,7 +10,7 @@ import Settings from '@material-ui/icons/Settings';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-const styles = {
+const styles = theme => ({
   root: {
     flexGrow: 1
   },
@@ -19,9 +19,10 @@ const styles = {
     cursor: 'pointer'
   },
   noLinkColor: {
-    color: 'inherit'
+    color: 'inherit',
+    marginLeft: theme.spacing.unit
   }
-};
+});
 
 const Header = props => {
   const { classes, user } = props;
@@ -48,9 +49,12 @@ const Header = props => {
           </Typography>
           {/* show this icon when user login */}
           {user.loggedIn && (
-            <Link to="/settings" className={classes.noLinkColor}>
-              <Settings />
-            </Link>
+            <Fragment>
+              <Typography>{user.nickname}</Typography>
+              <Link to="/settings" className={classes.noLinkColor}>
+                <Settings />
+              </Link>
+            </Fragment>
           )}
         </Toolbar>
       </AppBar>
