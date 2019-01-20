@@ -11,6 +11,7 @@ import CreateGroupDialog from './CreateGroupDialog';
 import Loading from '../components/Loading';
 import PostCard from '../components/PostCard';
 import axios from 'axios';
+import { socket } from '../components/App';
 
 import * as actions from '../actions';
 import { connect } from 'react-redux';
@@ -32,8 +33,29 @@ const styles = theme => ({
 });
 
 class Album extends React.Component {
+  state = { unreadPost: '', unreadCount: 0 };
+
   componentDidMount() {
-    this.props.fetchUsers(this.props.user._id);
+    const { fetchUsers, changeGroup, group, user } = this.props;
+
+    // fetch data
+    fetchUsers(user._id);
+    changeGroup(group._id);
+
+    if (user.loggedIn) {
+      socket.off('comment');
+      socket.on('comment', comment => {
+        changeGroup(comment.room);
+        this.setState({
+          unreadPost: comment.post,
+          unreadCount: this.state.unreadCount + 1
+        });
+      });
+    }
+  }
+
+  resetUnreadCount() {
+    this.setState({ unreadPost: '', unreadCount: 0 });
   }
 
   render() {
@@ -45,7 +67,7 @@ class Album extends React.Component {
       openCreateGroupDialog,
       changeGroup
     } = this.props;
-    console.log('group', group);
+    const { unreadPost, unreadCount } = this.state;
 
     if (isFetching) {
       return <Loading />;
@@ -68,8 +90,8 @@ class Album extends React.Component {
                     <PostCard
                       post={post}
                       user={user}
-                      groupId={group._id}
-                      changeGroup={changeGroup}
+                      unreadCount={unreadPost === post._id ? unreadCount : 0}
+                      resetUnreadCount={() => this.resetUnreadCount()}
                       key={i}
                     />
                   ))

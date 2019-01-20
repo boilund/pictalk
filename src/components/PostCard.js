@@ -80,21 +80,9 @@ const styles = theme => ({
 class PostCard extends React.Component {
   state = { expanded: false, comment: '' };
 
-  componentDidMount() {
-    const { changeGroup, groupId, user } = this.props;
-    changeGroup(groupId);
-
-    if (user.loggedIn) {
-      socket.off('comment');
-      socket.on('comment', comment => {
-        console.log('comment from socket', comment);
-        changeGroup(comment.room);
-      });
-    }
-  }
-
   handleExpandClick = () => {
     this.setState({ expanded: !this.state.expanded });
+    this.props.resetUnreadCount();
   };
 
   handleChangeComment = e => {
@@ -116,7 +104,8 @@ class PostCard extends React.Component {
   };
 
   render() {
-    const { classes, post, user } = this.props;
+    const { classes, post, user, unreadCount } = this.props;
+    const { expanded, comment } = this.state;
 
     return (
       <Card className={classes.card}>
@@ -164,23 +153,27 @@ class PostCard extends React.Component {
           </IconButton>
           <IconButton
             className={classnames(classes.expand, {
-              [classes.expandOpen]: this.state.expanded
+              [classes.expandOpen]: expanded
             })}
             onClick={this.handleExpandClick}
-            aria-expanded={this.state.expanded}
+            aria-expanded={expanded}
             aria-label="Show more"
           >
-            <Badge
-              className={classes.margin}
-              badgeContent={10}
-              color="secondary"
-            >
+            {!expanded && unreadCount > 0 ? (
+              <Badge
+                className={classes.margin}
+                badgeContent={unreadCount}
+                color="secondary"
+              >
+                <QuestionAnswer />
+              </Badge>
+            ) : (
               <QuestionAnswer />
-            </Badge>
+            )}
             <ExpandMoreIcon />
           </IconButton>
         </CardActions>
-        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent className={classes.commentColumn}>
             {post.comments.map((comment, i) => (
               <div key={i} className={classes.commentRow}>
@@ -214,7 +207,7 @@ class PostCard extends React.Component {
               variant="outlined"
               type="text"
               label="Comment..."
-              value={this.state.comment}
+              value={comment}
               onChange={this.handleChangeComment}
               onKeyPress={e => e.key === 'Enter' && this.handleSendComment()}
               InputProps={{
@@ -257,8 +250,7 @@ PostCard.propTypes = {
   classes: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  groupId: PropTypes.string.isRequired,
-  changeGroup: PropTypes.func.isRequired
+  resetUnreadCount: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(PostCard);
