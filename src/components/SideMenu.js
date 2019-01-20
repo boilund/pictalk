@@ -41,7 +41,7 @@ const styles = theme => ({
 });
 
 const SideMenu = props => {
-  const { classes, user, group, openCreateGroupDialog, changeGroup } = props;
+  const { classes, user, group, openCreateGroupDialog, fetchGroup } = props;
   return (
     <Hidden only={['xs', 'sm']}>
       <Grid item md={3} lg={3}>
@@ -51,7 +51,7 @@ const SideMenu = props => {
               user={user}
               group={group}
               openCreateGroupDialog={openCreateGroupDialog}
-              changeGroup={changeGroup}
+              fetchGroup={fetchGroup}
             />
             <Typography component="h1" variant="h6">
               {group.name}
@@ -120,7 +120,7 @@ SideMenu.propTypes = {
   user: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
-  changeGroup: PropTypes.func.isRequired
+  fetchGroup: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(SideMenu);

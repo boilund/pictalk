@@ -71,7 +71,7 @@ class CreateGroupDialog extends React.Component {
   };
 
   createGroup = async () => {
-    const { openCreateGroupDialog, changeGroup, updateUser, user } = this.props;
+    const { openCreateGroupDialog, fetchGroup, updateUser, user } = this.props;
     const { formData, groupName, groupMembers } = this.state;
     const milliseconds = Date.now();
 
@@ -86,7 +86,7 @@ class CreateGroupDialog extends React.Component {
       const response = await axios.post(`/api/create-group`, formData);
       if (response.data.success) {
         updateUser(user._id);
-        changeGroup(response.data.groupId);
+        fetchGroup(response.data.groupId);
         openCreateGroupDialog(false);
       }
     } catch (error) {
@@ -151,7 +151,7 @@ CreateGroupDialog.propTypes = {
   isFetching: PropTypes.bool,
   candidates: PropTypes.array.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
-  changeGroup: PropTypes.func.isRequired,
+  fetchGroup: PropTypes.func.isRequired,
   updateUser: PropTypes.func.isRequired,
   open: PropTypes.bool
 };
@@ -169,7 +169,7 @@ const mapDispatchToProps = dispatch => {
   return {
     openCreateGroupDialog: boolean =>
       dispatch(actions.openCreateGroupDialog(boolean)),
-    changeGroup: groupId => dispatch(actions.changeGroup(groupId)),
+    fetchGroup: groupId => dispatch(actions.fetchGroup(groupId)),
     updateUser: userId => dispatch(actions.updateUser(userId))
   };
 };

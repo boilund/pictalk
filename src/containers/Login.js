@@ -88,7 +88,7 @@ class Login extends React.Component {
     const { email, password } = this.state;
     const {
       requestData,
-      changeGroup,
+      fetchGroup,
       setUser,
       receiveRequestData,
       history,
@@ -107,7 +107,7 @@ class Login extends React.Component {
         });
         const latestGroup = sortedGroup.slice(0, 1)[0];
         if (latestGroup) {
-          changeGroup(latestGroup._id);
+          fetchGroup(latestGroup._id);
         }
         setUser(res.data.user);
         receiveRequestData();
@@ -204,7 +204,7 @@ Login.propTypes = {
   requestData: PropTypes.func,
   receiveRequestData: PropTypes.func,
   receiveDataFailed: PropTypes.func,
-  changeGroup: PropTypes.func
+  fetchGroup: PropTypes.func
 };
 
 const mapDispatchToProps = dispatch => {
@@ -213,7 +213,7 @@ const mapDispatchToProps = dispatch => {
     requestData: () => dispatch(actions.requestData()),
     receiveRequestData: () => dispatch(actions.receiveRequestData()),
     receiveDataFailed: () => dispatch(actions.receiveDataFailed()),
-    changeGroup: groupId => dispatch(actions.changeGroup(groupId))
+    fetchGroup: groupId => dispatch(actions.fetchGroup(groupId))
   };
 };
 

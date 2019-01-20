@@ -9,7 +9,7 @@ export const RECEIVE_REQUEST_DATA = 'RECEIVE_REQUEST_DATA';
 export const RECEIVE_DATA_FAILED = 'RECEIVE_DATA_FAILED';
 export const OPEN_CREATE_GROUP_DIALOG = 'OPEN_CREATE_GROUP_DIALOG';
 export const RESET_GROUP = 'RESET_GROUP';
-export const CHANGE_GROUP = 'CHANGE_GROUP';
+export const FETCH_GROUP = 'FETCH_GROUP';
 
 export const setUser = user => {
   return {
@@ -72,14 +72,14 @@ export const openCreateGroupDialog = boolean => ({
   openDialog: boolean
 });
 
-export const changeGroup = groupId => dispatch => {
+export const fetchGroup = groupId => dispatch => {
   socket.emit('joinRoom', { room: groupId });
 
   axios
     .get(`/api/group/${groupId}`)
     .then(res => {
       if (res.data.success) {
-        dispatch({ type: CHANGE_GROUP, group: res.data.group });
+        dispatch({ type: FETCH_GROUP, group: res.data.group });
       }
     })
     .catch(err => {

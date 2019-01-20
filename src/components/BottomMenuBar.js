@@ -41,7 +41,7 @@ const styles = theme => ({
 });
 
 const BottomMenuBar = props => {
-  const { classes, user, group, openCreateGroupDialog, changeGroup } = props;
+  const { classes, user, group, openCreateGroupDialog, fetchGroup } = props;
   return (
     <Hidden only={['md', 'lg']}>
       <footer className={classes.footer}>
@@ -52,7 +52,7 @@ const BottomMenuBar = props => {
                 user={user}
                 group={group}
                 openCreateGroupDialog={openCreateGroupDialog}
-                changeGroup={changeGroup}
+                fetchGroup={fetchGroup}
               />
             </div>
             <Link to="/comment" className={classes.noLinkColor}>
@@ -91,7 +91,7 @@ BottomMenuBar.propTypes = {
   user: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
-  changeGroup: PropTypes.func.isRequired
+  fetchGroup: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(BottomMenuBar);

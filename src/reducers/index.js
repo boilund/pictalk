@@ -8,7 +8,7 @@ import {
   RECEIVE_DATA_FAILED,
   OPEN_CREATE_GROUP_DIALOG,
   RESET_GROUP,
-  CHANGE_GROUP
+  FETCH_GROUP
 } from '../actions';
 
 const initialState = {
@@ -97,7 +97,7 @@ const appReducer = (state = initialState.app, action) => {
 const groupReducer = (state = initialState.group, action) => {
   const { type } = action;
   switch (type) {
-    case CHANGE_GROUP:
+    case FETCH_GROUP:
       return {
         ...state,
         _id: action.group._id,

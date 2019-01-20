@@ -36,16 +36,15 @@ class Album extends React.Component {
   state = { unreadPost: '', unreadCount: 0 };
 
   componentDidMount() {
-    const { fetchUsers, changeGroup, group, user } = this.props;
-
+    const { fetchUsers, fetchGroup, group, user } = this.props;
     // fetch data
     fetchUsers(user._id);
-    changeGroup(group._id);
+    fetchGroup(group._id);
 
     if (user.loggedIn) {
       socket.off('comment');
       socket.on('comment', comment => {
-        changeGroup(comment.room);
+        fetchGroup(comment.room);
         this.setState({
           unreadPost: comment.post,
           unreadCount: this.state.unreadCount + 1
@@ -65,7 +64,7 @@ class Album extends React.Component {
       user,
       group,
       openCreateGroupDialog,
-      changeGroup
+      fetchGroup
     } = this.props;
     const { unreadPost, unreadCount } = this.state;
 
@@ -103,7 +102,7 @@ class Album extends React.Component {
                 user={user}
                 group={group}
                 openCreateGroupDialog={openCreateGroupDialog}
-                changeGroup={changeGroup}
+                fetchGroup={fetchGroup}
               />
             </Grid>
           </div>
@@ -112,7 +111,7 @@ class Album extends React.Component {
           user={user}
           group={group}
           openCreateGroupDialog={openCreateGroupDialog}
-          changeGroup={changeGroup}
+          fetchGroup={fetchGroup}
         />
       </React.Fragment>
     );
@@ -126,7 +125,7 @@ Album.propTypes = {
   group: PropTypes.object.isRequired,
   fetchUsers: PropTypes.func.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
-  changeGroup: PropTypes.func.isRequired
+  fetchGroup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -142,7 +141,7 @@ const mapDispatchToProps = dispatch => {
     fetchUsers: userId => dispatch(actions.fetchUsers(userId)),
     openCreateGroupDialog: boolean =>
       dispatch(actions.openCreateGroupDialog(boolean)),
-    changeGroup: groupId => dispatch(actions.changeGroup(groupId))
+    fetchGroup: groupId => dispatch(actions.fetchGroup(groupId))
   };
 };
 

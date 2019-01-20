@@ -34,7 +34,7 @@ class ToggleMenu extends React.Component {
   };
 
   changeGroup = groupId => {
-    this.props.changeGroup(groupId);
+    this.props.fetchGroup(groupId);
     this.handleClose();
   };
 
@@ -96,7 +96,7 @@ ToggleMenu.propTypes = {
   user: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
-  changeGroup: PropTypes.func.isRequired
+  fetchGroup: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(ToggleMenu);

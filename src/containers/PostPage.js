@@ -92,7 +92,7 @@ class PostPage extends React.Component {
   };
 
   handleSubmit = async () => {
-    const { group, history, changeGroup } = this.props;
+    const { group, history, fetchGroup } = this.props;
     const { formData, description } = this.state;
     formData.append('groupId', group._id);
     formData.append('description', description);
@@ -105,7 +105,7 @@ class PostPage extends React.Component {
     try {
       const response = await axios.post('/api/image-upload', formData);
       if (response.data.success) {
-        changeGroup(group._id);
+        fetchGroup(group._id);
         this.setState({ uploading: false });
         history.push('/');
       }
@@ -171,7 +171,7 @@ PostPage.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
-  changeGroup: PropTypes.func.isRequired
+  fetchGroup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -182,7 +182,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    changeGroup: groupId => dispatch(actions.changeGroup(groupId))
+    fetchGroup: groupId => dispatch(actions.fetchGroup(groupId))
   };
 };
 
