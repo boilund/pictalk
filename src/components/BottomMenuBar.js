@@ -45,7 +45,7 @@ const BottomMenuBar = props => {
   return (
     <Hidden only={['md', 'lg']}>
       <footer className={classes.footer}>
-        <AppBar position="fixed" color="primary" className={classes.appBar}>
+        <AppBar position="fixed" color="default" className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
             <div aria-label="Open drawer">
               <ToggleMenu
