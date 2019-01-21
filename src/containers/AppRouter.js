@@ -9,7 +9,7 @@ import Album from './Album';
 import CommentPage from '../components/CommentPage';
 import PostPage from './PostPage';
 import FavoritePage from '../components/FavoritePage';
-import MyphotoPage from '../components/MyphotoPage';
+import MyphotoPage from './MyphotoPage';
 import Settings from './Settings';
 import PrivateRoute from '../components/PrivateRoute';
 
