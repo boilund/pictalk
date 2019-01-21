@@ -11,7 +11,8 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    marginTop: theme.spacing.unit * 10
   },
   paper: {
     padding: theme.spacing.unit * 2,

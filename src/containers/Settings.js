@@ -19,7 +19,7 @@ const styles = theme => ({
   root: {
     maxWidth: 1000,
     margin: '0 auto',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 10,
     display: 'flex',
     flexDirection: 'column'
   },

@@ -18,7 +18,8 @@ import { withRouter } from 'react-router-dom';
 
 const styles = theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    marginBottom: theme.spacing.unit * 5
   },
   grow: {
     flexGrow: 1,
@@ -44,7 +45,7 @@ const Header = props => {
 
   return (
     <header className={classes.root}>
-      <AppBar position="static" color="default">
+      <AppBar position="fixed" color="default">
         <Toolbar>
           <Typography
             variant="h6"
