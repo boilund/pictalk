@@ -169,7 +169,7 @@ const upload = multer({
 });
 
 // routing
-app.post('/image-upload', upload.array('images', 10), (req, res) => {
+app.post('/image-upload', upload.array('images', 10), async (req, res) => {
   const filenames = req.files.map(file => file.filename);
   const newPhoto = new Photo({
     filename: filenames,
@@ -178,16 +178,21 @@ app.post('/image-upload', upload.array('images', 10), (req, res) => {
     description: req.body.description,
     favorite: false
   });
-  newPhoto.save().then(photo => {
-    Group.findOneAndUpdate(
-      { _id: req.body.groupId },
-      { $push: { posts: photo._id } }
-    )
-      .then(() => res.status(200).json({ success: true }))
-      .catch(err => {
-        throw err;
-      });
-  });
+  await newPhoto.save();
+  // save photo id to group
+  await Group.findOneAndUpdate(
+    { _id: req.body.groupId },
+    { $push: { posts: newPhoto._id } }
+  );
+  // save photo id to user who posted
+  await User.findOneAndUpdate(
+    { _id: req.session.loggedInUser },
+    { $push: { photos: newPhoto._id } }
+  )
+    .then(() => res.status(200).json({ success: true }))
+    .catch(err => {
+      throw err;
+    });
 });
 
 // Difine storage and file name
