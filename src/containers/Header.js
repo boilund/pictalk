@@ -7,6 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Settings from '@material-ui/icons/Settings';
+import Tooltip from '@material-ui/core/Tooltip';
 import DrawerGroupList from '../components/DrawerGroupList';
 import ImageAvatar from '../components/ImageAvatar';
 import LetterAvatar from '../components/LetterAvatar';
@@ -59,29 +60,35 @@ const Header = props => {
           {user.loggedIn && (
             <Fragment>
               <Link to="/settings" className={classes.noLinkColor}>
-                <IconButton color="inherit">
-                  <Settings />
-                </IconButton>
+                <Tooltip title="Settings" aria-label="Settings">
+                  <IconButton color="inherit">
+                    <Settings />
+                  </IconButton>
+                </Tooltip>
               </Link>
+
               <DrawerGroupList
                 user={user}
                 group={group}
                 openCreateGroupDialog={openCreateGroupDialog}
                 fetchGroup={fetchGroup}
               />
-              <div className={classes.userAvatar}>
-                {user.image ? (
-                  <ImageAvatar
-                    alt={user.nickname}
-                    image={`/avatarUploads/${user.image}`}
-                  />
-                ) : (
-                  <LetterAvatar
-                    nickname={user.nickname}
-                    color={user.avatarColor}
-                  />
-                )}
-              </div>
+
+              <Tooltip title={user.nickname} aria-label={user.nickname}>
+                <div className={classes.userAvatar}>
+                  {user.image ? (
+                    <ImageAvatar
+                      alt={user.nickname}
+                      image={`/avatarUploads/${user.image}`}
+                    />
+                  ) : (
+                    <LetterAvatar
+                      nickname={user.nickname}
+                      color={user.avatarColor}
+                    />
+                  )}
+                </div>
+              </Tooltip>
             </Fragment>
           )}
         </Toolbar>

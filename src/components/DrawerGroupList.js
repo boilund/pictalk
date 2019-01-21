@@ -9,6 +9,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import AddIcon from '@material-ui/icons/Add';
@@ -80,9 +81,14 @@ class DrawerGroupList extends React.Component {
 
     return (
       <div className={classes.root}>
-        <IconButton color="inherit" onClick={this.toggleDrawer('right', true)}>
-          <GroupIcon />
-        </IconButton>
+        <Tooltip title="Change Group" aria-label="Change Group">
+          <IconButton
+            color="inherit"
+            onClick={this.toggleDrawer('right', true)}
+          >
+            <GroupIcon />
+          </IconButton>
+        </Tooltip>
         <SwipeableDrawer
           anchor="right"
           open={this.state.right}
