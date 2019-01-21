@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Settings from '@material-ui/icons/Settings';
 import DrawerGroupList from '../components/DrawerGroupList';
+import ImageAvatar from '../components/ImageAvatar';
+import LetterAvatar from '../components/LetterAvatar';
 
 import * as actions from '../actions';
 import { connect } from 'react-redux';
@@ -23,6 +25,9 @@ const styles = theme => ({
   },
   noLinkColor: {
     color: 'inherit',
+    marginLeft: theme.spacing.unit
+  },
+  userAvatar: {
     marginLeft: theme.spacing.unit
   }
 });
@@ -53,7 +58,6 @@ const Header = props => {
           {/* show this icons when user login */}
           {user.loggedIn && (
             <Fragment>
-              <Typography>{user.nickname}</Typography>
               <Link to="/settings" className={classes.noLinkColor}>
                 <IconButton color="inherit">
                   <Settings />
@@ -65,6 +69,19 @@ const Header = props => {
                 openCreateGroupDialog={openCreateGroupDialog}
                 fetchGroup={fetchGroup}
               />
+              <div className={classes.userAvatar}>
+                {user.image ? (
+                  <ImageAvatar
+                    alt={user.nickname}
+                    image={`/avatarUploads/${user.image}`}
+                  />
+                ) : (
+                  <LetterAvatar
+                    nickname={user.nickname}
+                    color={user.avatarColor}
+                  />
+                )}
+              </div>
             </Fragment>
           )}
         </Toolbar>
