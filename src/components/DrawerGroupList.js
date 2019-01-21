@@ -16,6 +16,7 @@ import AddIcon from '@material-ui/icons/Add';
 import GroupIcon from '@material-ui/icons/Group';
 import ImageAvatar from './ImageAvatar';
 import LetterAvatar from './LetterAvatar';
+import { withRouter } from 'react-router-dom';
 
 const styles = {
   list: {
@@ -32,6 +33,12 @@ class DrawerGroupList extends React.Component {
     this.setState({
       [side]: open
     });
+  };
+
+  changeGroup = groupId => {
+    const { fetchGroup, history } = this.props;
+    fetchGroup(groupId);
+    history.push('/');
   };
 
   render() {
@@ -60,7 +67,7 @@ class DrawerGroupList extends React.Component {
               button
               key={index}
               selected={g._id === group._id}
-              onClick={() => fetchGroup(g._id)}
+              onClick={() => this.changeGroup(g._id)}
             >
               <ListItemIcon>
                 {g.image ? (
@@ -111,6 +118,7 @@ class DrawerGroupList extends React.Component {
 
 DrawerGroupList.propTypes = {
   classes: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
@@ -118,4 +126,5 @@ DrawerGroupList.propTypes = {
   // unreadGroup: PropTypes.arrayOf(PropTypes.string)
 };
 
-export default withStyles(styles)(DrawerGroupList);
+const styled = withStyles(styles)(DrawerGroupList);
+export default withRouter(styled);
