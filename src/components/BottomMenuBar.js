@@ -12,7 +12,8 @@ import AddIcon from '@material-ui/icons/Add';
 import ChatBubbleOutline from '@material-ui/icons/ChatBubbleOutline';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import PersonOutline from '@material-ui/icons/PersonOutline';
-import ToggleMenu from './ToggleMenu';
+import ImageAvatar from './ImageAvatar';
+import LetterAvatar from './LetterAvatar';
 
 const styles = theme => ({
   appBar: {
@@ -41,20 +42,20 @@ const styles = theme => ({
 });
 
 const BottomMenuBar = props => {
-  const { classes, user, group, openCreateGroupDialog, fetchGroup } = props;
+  const { classes, group } = props;
   return (
     <Hidden only={['md', 'lg']}>
       <footer className={classes.footer}>
         <AppBar position="fixed" color="default" className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
-            <div aria-label="Open drawer">
-              <ToggleMenu
-                user={user}
-                group={group}
-                openCreateGroupDialog={openCreateGroupDialog}
-                fetchGroup={fetchGroup}
+            {group.image ? (
+              <ImageAvatar
+                alt={group.name}
+                image={`/avatarUploads/${group.image}`}
               />
-            </div>
+            ) : (
+              <LetterAvatar nickname={group.name} color={'default'} />
+            )}
             <Link to="/comment" className={classes.noLinkColor}>
               <IconButton color="inherit">
                 <ChatBubbleOutline />
@@ -88,10 +89,7 @@ const BottomMenuBar = props => {
 
 BottomMenuBar.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  group: PropTypes.object.isRequired,
-  openCreateGroupDialog: PropTypes.func.isRequired,
-  fetchGroup: PropTypes.func.isRequired
+  group: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(BottomMenuBar);

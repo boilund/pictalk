@@ -10,13 +10,21 @@ import Paper from '@material-ui/core/Paper';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
-import ToggleMenu from './ToggleMenu';
 import AddIcon from '@material-ui/icons/Add';
 import ChatBubbleOutline from '@material-ui/icons/ChatBubbleOutline';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import PersonOutline from '@material-ui/icons/PersonOutline';
+import ImageAvatar from './ImageAvatar';
+import LetterAvatar from './LetterAvatar';
 
 const styles = theme => ({
+  sidemenu: {
+    position: 'fixed'
+  },
+  groupImage: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit * 3
+  },
   currentGroup: {
     display: 'flex',
     flexDirection: 'row',
@@ -31,7 +39,6 @@ const styles = theme => ({
       }
     }
   },
-  primary: {},
   icon: {
     marginRight: theme.spacing.unit * 2
   },
@@ -41,34 +48,34 @@ const styles = theme => ({
 });
 
 const SideMenu = props => {
-  const { classes, user, group, openCreateGroupDialog, fetchGroup } = props;
+  const { classes, group } = props;
   return (
     <Hidden only={['xs', 'sm']}>
       <Grid item md={3} lg={3}>
-        <aside>
+        <aside className={classes.sidemenu}>
           <div className={classes.currentGroup}>
-            <ToggleMenu
-              user={user}
-              group={group}
-              openCreateGroupDialog={openCreateGroupDialog}
-              fetchGroup={fetchGroup}
-            />
+            <div className={classes.groupImage}>
+              {group.image ? (
+                <ImageAvatar
+                  alt={group.name}
+                  image={`/avatarUploads/${group.image}`}
+                />
+              ) : (
+                <LetterAvatar nickname={group.name} color={'default'} />
+              )}
+            </div>
             <Typography component="h1" variant="h6">
               {group.name}
             </Typography>
           </div>
-          <Paper>
+          <Paper position="fixed">
             <MenuList>
               <Link to="/post" className={classes.noUnderLine}>
                 <MenuItem className={classes.menuItem}>
                   <ListItemIcon className={classes.icon}>
                     <AddIcon />
                   </ListItemIcon>
-                  <ListItemText
-                    classes={{ primary: classes.primary }}
-                    inset
-                    primary="Add photo"
-                  />
+                  <ListItemText inset primary="Add photo" />
                 </MenuItem>
               </Link>
               <Link to="/comment" className={classes.noUnderLine}>
@@ -76,11 +83,7 @@ const SideMenu = props => {
                   <ListItemIcon className={classes.icon}>
                     <ChatBubbleOutline />
                   </ListItemIcon>
-                  <ListItemText
-                    classes={{ primary: classes.primary }}
-                    inset
-                    primary="Comment"
-                  />
+                  <ListItemText inset primary="Comment" />
                 </MenuItem>
               </Link>
               <Link to="/favorite" className={classes.noUnderLine}>
@@ -88,11 +91,7 @@ const SideMenu = props => {
                   <ListItemIcon className={classes.icon}>
                     <FavoriteBorder />
                   </ListItemIcon>
-                  <ListItemText
-                    classes={{ primary: classes.primary }}
-                    inset
-                    primary="Favorite"
-                  />
+                  <ListItemText inset primary="Favorite" />
                 </MenuItem>
               </Link>
               <Link to="/myphoto" className={classes.noUnderLine}>
@@ -100,11 +99,7 @@ const SideMenu = props => {
                   <ListItemIcon className={classes.icon}>
                     <PersonOutline />
                   </ListItemIcon>
-                  <ListItemText
-                    classes={{ primary: classes.primary }}
-                    inset
-                    primary="My photo"
-                  />
+                  <ListItemText inset primary="My photo" />
                 </MenuItem>
               </Link>
             </MenuList>
@@ -117,10 +112,7 @@ const SideMenu = props => {
 
 SideMenu.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  group: PropTypes.object.isRequired,
-  openCreateGroupDialog: PropTypes.func.isRequired,
-  fetchGroup: PropTypes.func.isRequired
+  group: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(SideMenu);

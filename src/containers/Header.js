@@ -5,8 +5,11 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
 import Settings from '@material-ui/icons/Settings';
+import DrawerGroupList from '../components/DrawerGroupList';
 
+import * as actions from '../actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -25,7 +28,7 @@ const styles = theme => ({
 });
 
 const Header = props => {
-  const { classes, user } = props;
+  const { classes, user, group, openCreateGroupDialog, fetchGroup } = props;
 
   const handleClick = () => {
     if (user.loggedIn) {
@@ -47,13 +50,21 @@ const Header = props => {
           >
             PicTalk
           </Typography>
-          {/* show this icon when user login */}
+          {/* show this icons when user login */}
           {user.loggedIn && (
             <Fragment>
               <Typography>{user.nickname}</Typography>
               <Link to="/settings" className={classes.noLinkColor}>
-                <Settings />
+                <IconButton color="inherit">
+                  <Settings />
+                </IconButton>
               </Link>
+              <DrawerGroupList
+                user={user}
+                group={group}
+                openCreateGroupDialog={openCreateGroupDialog}
+                fetchGroup={fetchGroup}
+              />
             </Fragment>
           )}
         </Toolbar>
@@ -65,18 +76,31 @@ const Header = props => {
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  user: PropTypes.object
+  user: PropTypes.object,
+  group: PropTypes.object.isRequired,
+  openCreateGroupDialog: PropTypes.func.isRequired,
+  fetchGroup: PropTypes.func.isRequired,
+  unreadGroup: PropTypes.arrayOf(PropTypes.string)
 };
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    group: state.group
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    openCreateGroupDialog: boolean =>
+      dispatch(actions.openCreateGroupDialog(boolean)),
+    fetchGroup: groupId => dispatch(actions.fetchGroup(groupId))
   };
 };
 
 const connected = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withStyles(styles)(Header));
 
 export default withRouter(connected);
