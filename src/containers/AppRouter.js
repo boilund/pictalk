@@ -6,7 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import SignUp from './SignUp';
 import Login from './Login';
 import Album from './Album';
-import CommentPage from '../components/CommentPage';
+import CommentPage from './CommentPage';
 import PostPage from './PostPage';
 import FavoritePage from '../components/FavoritePage';
 import MyphotoPage from './MyphotoPage';

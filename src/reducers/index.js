@@ -3,6 +3,7 @@ import {
   SET_USER,
   LOGOUT_USER,
   FETCH_CANDIDATES,
+  FETCH_UNREAD_PHOTOS,
   REQUEST_DATA,
   RECEIVE_REQUEST_DATA,
   RECEIVE_DATA_FAILED,
@@ -20,7 +21,8 @@ const initialState = {
     avatarColor: '',
     favorites: [],
     groups: [],
-    photos: []
+    photos: [],
+    unreadPhotos: []
   },
   app: {
     isFetching: false,
@@ -55,6 +57,11 @@ const userReducer = (state = initialState.user, action) => {
       return {
         ...state,
         loggedIn: false
+      };
+    case FETCH_UNREAD_PHOTOS:
+      return {
+        ...state,
+        unreadPhotos: action.unreadPhotos
       };
     default:
       return state;
