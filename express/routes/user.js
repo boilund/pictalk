@@ -10,7 +10,18 @@ exports.users = (req, res) => {
 
 exports.user = (req, res) => {
   User.findOne({ _id: req.params._id })
-    .populate('groups')
+    .populate({
+      path: 'groups',
+      populate: { path: 'members' }
+    })
+    .populate({
+      path: 'photos',
+      populate: { path: 'photographer' }
+    })
+    .populate({
+      path: 'photos',
+      populate: { path: 'postedGroup' }
+    })
     .exec((err, user) => {
       if (err) console.error(new Error(err));
       res.status(200).json({ success: true, user });
