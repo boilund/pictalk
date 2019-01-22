@@ -26,6 +26,12 @@ const UserSchema = new Schema({
       ref: 'Photo'
     }
   ],
+  unreadPhotos: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Photo'
+    }
+  ],
   date: {
     type: Date,
     default: Date.now

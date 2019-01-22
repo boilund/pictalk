@@ -180,11 +180,21 @@ app.post('/image-upload', upload.array('images', 10), async (req, res) => {
   });
   await newPhoto.save();
   // save photo id to group
-  await Group.findOneAndUpdate(
+  const postedGroup = await Group.findOneAndUpdate(
     { _id: req.body.groupId },
     { $push: { posts: newPhoto._id } }
   );
-  // save photo id to user who posted
+  // pick members without posted user and save photo id for unreadPhotos
+  const otherMembers = postedGroup.members.filter(member => {
+    return member.toString() !== req.session.loggedInUser._id;
+  });
+  for (let member of otherMembers) {
+    await User.findOneAndUpdate(
+      { _id: member._id },
+      { $push: { unreadPhotos: newPhoto._id } }
+    );
+  }
+  // save photo id to the user who posted
   await User.findOneAndUpdate(
     { _id: req.session.loggedInUser },
     { $push: { photos: newPhoto._id } }
