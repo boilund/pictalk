@@ -123,7 +123,6 @@ DrawerGroupList.propTypes = {
   group: PropTypes.object.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
   fetchGroup: PropTypes.func.isRequired
-  // unreadGroup: PropTypes.arrayOf(PropTypes.string)
 };
 
 const styled = withStyles(styles)(DrawerGroupList);

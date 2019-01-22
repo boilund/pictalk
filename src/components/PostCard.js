@@ -15,7 +15,6 @@ import Typography from '@material-ui/core/Typography';
 import red from '@material-ui/core/colors/red';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
-import Badge from '@material-ui/core/Badge';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -82,7 +81,6 @@ class PostCard extends React.Component {
 
   handleExpandClick = () => {
     this.setState({ expanded: !this.state.expanded });
-    this.props.resetUnreadCount();
   };
 
   handleChangeComment = e => {
@@ -104,7 +102,7 @@ class PostCard extends React.Component {
   };
 
   render() {
-    const { classes, post, user, unreadCount } = this.props;
+    const { classes, post, user } = this.props;
     const { expanded, comment } = this.state;
 
     return (
@@ -159,17 +157,7 @@ class PostCard extends React.Component {
             aria-expanded={expanded}
             aria-label="Show more"
           >
-            {!expanded && unreadCount > 0 ? (
-              <Badge
-                className={classes.margin}
-                badgeContent={unreadCount}
-                color="secondary"
-              >
-                <QuestionAnswer />
-              </Badge>
-            ) : (
-              <QuestionAnswer />
-            )}
+            <QuestionAnswer />
             <ExpandMoreIcon />
           </IconButton>
         </CardActions>
@@ -249,8 +237,7 @@ class PostCard extends React.Component {
 PostCard.propTypes = {
   classes: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  resetUnreadCount: PropTypes.func.isRequired
+  user: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(PostCard);

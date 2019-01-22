@@ -33,8 +33,6 @@ const styles = theme => ({
 });
 
 class Album extends React.Component {
-  state = { unreadPost: '', unreadCount: 0 };
-
   componentDidMount() {
     const { fetchUsers, fetchGroup, group, user } = this.props;
     // fetch data
@@ -45,16 +43,8 @@ class Album extends React.Component {
       socket.off('comment');
       socket.on('comment', comment => {
         fetchGroup(comment.room);
-        this.setState({
-          unreadPost: comment.post,
-          unreadCount: this.state.unreadCount + 1
-        });
       });
     }
-  }
-
-  resetUnreadCount() {
-    this.setState({ unreadPost: '', unreadCount: 0 });
   }
 
   render() {
@@ -66,7 +56,6 @@ class Album extends React.Component {
       openCreateGroupDialog,
       fetchGroup
     } = this.props;
-    const { unreadPost, unreadCount } = this.state;
 
     if (isFetching) {
       return <Loading />;
@@ -86,13 +75,7 @@ class Album extends React.Component {
               <Grid item xs={12} md={9}>
                 {group.posts.length ? (
                   group.posts.map((post, i) => (
-                    <PostCard
-                      post={post}
-                      user={user}
-                      unreadCount={unreadPost === post._id ? unreadCount : 0}
-                      resetUnreadCount={() => this.resetUnreadCount()}
-                      key={i}
-                    />
+                    <PostCard post={post} user={user} key={i} />
                   ))
                 ) : (
                   <Typography>Let's post something!</Typography>

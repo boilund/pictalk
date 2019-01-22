@@ -104,8 +104,7 @@ Header.propTypes = {
   user: PropTypes.object,
   group: PropTypes.object.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
-  fetchGroup: PropTypes.func.isRequired,
-  unreadGroup: PropTypes.arrayOf(PropTypes.string)
+  fetchGroup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
