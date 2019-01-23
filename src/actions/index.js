@@ -47,6 +47,24 @@ export const loginUser = (email, password) => dispatch => {
     });
 };
 
+export const signUpUser = (email, password) => dispatch => {
+  requestData();
+  axios
+    .post('/api/signup', {
+      email,
+      password
+    })
+    .then(res => {
+      dispatch({ type: SET_USER, user: res.data.user });
+      dispatch({ type: NO_ERROR });
+      receiveRequestData();
+    })
+    .catch(err => {
+      dispatch({ type: ERROR });
+      receiveDataFailed();
+      console.error(new Error(err));
+    });
+};
 export const updateUser = userId => dispatch => {
   axios.get(`/api/user/${userId}`).then(res => {
     if (res.data.success) {

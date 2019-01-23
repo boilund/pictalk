@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -73,6 +72,17 @@ class SignUp extends React.Component {
     this.setState(initialState);
   }
 
+  componentDidUpdate() {
+    const { alertForSamePassword } = this.state;
+    const { user, error, history } = this.props;
+    if (user.loggedIn) {
+      history.push('/');
+    }
+    if (error && !alert) {
+      this.setState({ alertForSamePassword: true });
+    }
+  }
+
   handleEmailChange = e => {
     this.setState({
       email: e.target.value
@@ -87,24 +97,9 @@ class SignUp extends React.Component {
 
   handleSignUpSubmit = e => {
     e.preventDefault();
-    const { email, password, alertForSamePassword } = this.state;
-    this.props.requestData();
-
-    axios
-      .post('/api/signup', {
-        email,
-        password
-      })
-      .then(res => {
-        this.props.setUser(res.data.user);
-        this.props.receiveRequestData();
-        this.props.history.push('/');
-      })
-      .catch(err => {
-        this.setState({ alertForSamePassword: true });
-        this.props.receiveDataFailed();
-        console.error(new Error(err));
-      });
+    const { email, password } = this.state;
+    const { signUpUser } = this.props;
+    signUpUser(email, password);
   };
 
   render() {
@@ -178,23 +173,27 @@ class SignUp extends React.Component {
 SignUp.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  setUser: PropTypes.func.isRequired,
-  requestData: PropTypes.func,
-  receiveRequestData: PropTypes.func,
-  receiveDataFailed: PropTypes.func
+  user: PropTypes.object,
+  error: PropTypes.bool.isRequired,
+  signUpUser: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => {
+  return {
+    user: state.user,
+    error: state.app.error
+  };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setUser: user => dispatch(actions.setUser(user)),
-    requestData: () => dispatch(actions.requestData()),
-    receiveRequestData: () => dispatch(actions.receiveRequestData()),
-    receiveDataFailed: () => dispatch(actions.receiveDataFailed())
+    signUpUser: (email, password) =>
+      dispatch(actions.signUpUser(email, password))
   };
 };
 
 const connected = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(withStyles(styles)(SignUp));
 
