@@ -12,9 +12,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
-import FolderIcon from '@material-ui/icons/Folder';
-import DeleteIcon from '@material-ui/icons/Delete';
+import ForwardIcon from '@material-ui/icons/Forward';
 import Header from './Header';
+import ImageAvatar from '../components/ImageAvatar';
+import LetterAvatar from '../components/LetterAvatar';
 import * as actions from '../actions';
 import { connect } from 'react-redux';
 
@@ -26,12 +27,21 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 10
   },
   paper: {
-    maxWidth: 800,
+    maxWidth: 600,
     margin: `${theme.spacing.unit}px auto`,
     padding: theme.spacing.unit * 2
   },
   title: {
-    margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`
+    margin: `${theme.spacing.unit * 4}px ${theme.spacing.unit * 2}px ${theme
+      .spacing.unit * 2}px`
+  },
+  thumbnail: {
+    margin: '0 auto',
+    width: '50px',
+    height: '50px',
+    backgroundSize: ' contain',
+    backgroundRepeat: ' no-repeat',
+    backgroundPosition: 'center'
   }
 });
 
@@ -41,7 +51,7 @@ class NotificationsPage extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, unreadPhotos } = this.props;
 
     return (
       <Fragment>
@@ -55,31 +65,62 @@ class NotificationsPage extends React.Component {
                     <Typography variant="h6" className={classes.title}>
                       Your unread item is here
                     </Typography>
-                    <div className={classes.demo}>
-                      <List>
-                        <ListItem>
+                    {unreadPhotos.map((item, i) => (
+                      <List key={i}>
+                        <ListItem button>
                           <ListItemAvatar>
-                            <Avatar>
-                              <FolderIcon />
-                            </Avatar>
+                            {item.postedGroup.image ? (
+                              <ImageAvatar
+                                alt={item.postedGroup.name}
+                                image={`/avatarUploads/${
+                                  item.postedGroup.image
+                                }`}
+                              />
+                            ) : (
+                              <LetterAvatar
+                                nickname={item.postedGroup.name}
+                                color={'default'}
+                              />
+                            )}
                           </ListItemAvatar>
                           <ListItemAvatar>
-                            <Avatar>
-                              <FolderIcon />
-                            </Avatar>
+                            {item.photographer.image ? (
+                              <ImageAvatar
+                                alt={item.photographer.nickname}
+                                image={`/avatarUploads/${
+                                  item.photographer.image
+                                }`}
+                              />
+                            ) : (
+                              <LetterAvatar
+                                nickname={item.photographer.nickname}
+                                color={item.photographer.avatarColor}
+                              />
+                            )}
                           </ListItemAvatar>
                           <ListItemText
-                            primary="Single-line item"
-                            secondary="Secondary text"
+                            primary={item.photographer.nickname}
+                            secondary={item.description}
                           />
+                          {item.filename.map((file, i) => {
+                            return (
+                              <ListItemIcon key={i}>
+                                <img
+                                  className={classes.thumbnail}
+                                  alt={file}
+                                  src={`/images/uploads/${file}`}
+                                />
+                              </ListItemIcon>
+                            );
+                          })}
                           <ListItemSecondaryAction>
-                            <IconButton aria-label="Delete">
-                              <DeleteIcon />
+                            <IconButton aria-label="Forward">
+                              <ForwardIcon />
                             </IconButton>
                           </ListItemSecondaryAction>
                         </ListItem>
                       </List>
-                    </div>
+                    ))}
                   </Grid>
                 </Grid>
               </Paper>
@@ -96,6 +137,12 @@ NotificationsPage.propTypes = {
   fetchUnreadPhotos: PropTypes.func.isRequired
 };
 
+const mapStateToProps = state => {
+  return {
+    unreadPhotos: state.user.unreadPhotos
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     fetchUnreadPhotos: () => dispatch(actions.fetchUnreadPhotos())
@@ -103,6 +150,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(withStyles(styles)(NotificationsPage));
