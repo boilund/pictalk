@@ -3,8 +3,10 @@ import { socket } from '../components/App';
 
 export const SET_USER = 'SET_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
-export const FETCH_CANDIDATES = 'FETCH_CANDIDATES';
 export const FETCH_UNREAD_PHOTOS = 'FETCH_UNREAD_PHOTOS';
+export const ERROR = 'ERROR';
+export const NO_ERROR = 'NO_ERROR';
+export const FETCH_CANDIDATES = 'FETCH_CANDIDATES';
 export const REQUEST_DATA = 'REQUEST_DATA';
 export const RECEIVE_REQUEST_DATA = 'RECEIVE_REQUEST_DATA';
 export const RECEIVE_DATA_FAILED = 'RECEIVE_DATA_FAILED';
@@ -17,6 +19,32 @@ export const setUser = user => {
     type: SET_USER,
     user
   };
+};
+
+export const loginUser = (email, password) => dispatch => {
+  requestData();
+  axios
+    .post('/api/login', {
+      email,
+      password
+    })
+    .then(res => {
+      const sortedGroup = res.data.user.groups.sort((a, b) => {
+        return b.latestUpdateTime - a.latestUpdateTime;
+      });
+      const latestGroup = sortedGroup.slice(0, 1)[0];
+      if (latestGroup) {
+        fetchGroup(latestGroup._id);
+      }
+      dispatch({ type: SET_USER, user: res.data.user });
+      dispatch({ type: NO_ERROR });
+      receiveRequestData();
+    })
+    .catch(err => {
+      dispatch({ type: ERROR });
+      receiveDataFailed();
+      console.error(new Error(err));
+    });
 };
 
 export const updateUser = userId => dispatch => {

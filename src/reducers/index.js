@@ -2,8 +2,10 @@ import { combineReducers } from 'redux';
 import {
   SET_USER,
   LOGOUT_USER,
-  FETCH_CANDIDATES,
   FETCH_UNREAD_PHOTOS,
+  ERROR,
+  NO_ERROR,
+  FETCH_CANDIDATES,
   REQUEST_DATA,
   RECEIVE_REQUEST_DATA,
   RECEIVE_DATA_FAILED,
@@ -25,6 +27,7 @@ const initialState = {
     unreadPhotos: []
   },
   app: {
+    error: false,
     isFetching: false,
     candidates: [],
     openDialog: false
@@ -71,6 +74,16 @@ const userReducer = (state = initialState.user, action) => {
 const appReducer = (state = initialState.app, action) => {
   const { type } = action;
   switch (type) {
+    case ERROR:
+      return {
+        ...state,
+        error: true
+      };
+    case NO_ERROR:
+      return {
+        ...state,
+        error: false
+      };
     case FETCH_CANDIDATES:
       return {
         ...state,

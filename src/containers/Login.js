@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -72,6 +71,17 @@ class Login extends React.Component {
     this.setState(initialState);
   }
 
+  componentDidUpdate() {
+    const { alert } = this.state;
+    const { user, error, history } = this.props;
+    if (user.loggedIn) {
+      history.push('/');
+    }
+    if (error && !alert) {
+      this.setState({ alert: true });
+    }
+  }
+
   handleEmailChange = e => {
     this.setState({
       email: e.target.value
@@ -87,38 +97,8 @@ class Login extends React.Component {
   handleSignUpSubmit = e => {
     e.preventDefault();
     const { email, password } = this.state;
-    const {
-      requestData,
-      fetchGroup,
-      setUser,
-      receiveRequestData,
-      history,
-      receiveDataFailed
-    } = this.props;
-
-    requestData();
-    axios
-      .post('/api/login', {
-        email,
-        password
-      })
-      .then(res => {
-        const sortedGroup = res.data.user.groups.sort((a, b) => {
-          return b.latestUpdateTime - a.latestUpdateTime;
-        });
-        const latestGroup = sortedGroup.slice(0, 1)[0];
-        if (latestGroup) {
-          fetchGroup(latestGroup._id);
-        }
-        setUser(res.data.user);
-        receiveRequestData();
-        history.push('/');
-      })
-      .catch(err => {
-        this.setState({ alert: true });
-        receiveDataFailed();
-        console.error(new Error(err));
-      });
+    const { loginUser } = this.props;
+    loginUser(email, password);
   };
 
   render() {
@@ -201,24 +181,23 @@ class Login extends React.Component {
 Login.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  setUser: PropTypes.func.isRequired,
-  requestData: PropTypes.func,
-  receiveRequestData: PropTypes.func,
-  receiveDataFailed: PropTypes.func,
-  fetchGroup: PropTypes.func
+  loginUser: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => {
+  return {
+    user: state.user,
+    error: state.app.error
+  };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setUser: user => dispatch(actions.setUser(user)),
-    requestData: () => dispatch(actions.requestData()),
-    receiveRequestData: () => dispatch(actions.receiveRequestData()),
-    receiveDataFailed: () => dispatch(actions.receiveDataFailed()),
-    fetchGroup: groupId => dispatch(actions.fetchGroup(groupId))
+    loginUser: (email, password) => dispatch(actions.loginUser(email, password))
   };
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(withStyles(styles)(Login));
