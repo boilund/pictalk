@@ -6,7 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import SignUp from './SignUp';
 import Login from './Login';
 import Album from './Album';
-import CommentPage from './CommentPage';
+import NotificationsPage from './NotificationsPage';
 import PostPage from './PostPage';
 import FavoritePage from '../components/FavoritePage';
 import MyphotoPage from './MyphotoPage';
@@ -30,9 +30,9 @@ const AppRouter = props => {
             component={Album}
           />
           <PrivateRoute
-            path={'/comment'}
+            path={'/notifications'}
             isLoggined={isLoggined}
-            component={CommentPage}
+            component={NotificationsPage}
           />
           <PrivateRoute
             path={'/post'}

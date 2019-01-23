@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import Hidden from '@material-ui/core/Hidden';
 import AddIcon from '@material-ui/icons/Add';
-import ChatBubbleOutline from '@material-ui/icons/ChatBubbleOutline';
+import NotificationsIcon from '@material-ui/icons/NotificationsNone';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import PersonOutline from '@material-ui/icons/PersonOutline';
 import ImageAvatar from './ImageAvatar';
@@ -56,9 +56,9 @@ const BottomMenuBar = props => {
             ) : (
               <LetterAvatar nickname={group.name} color={'default'} />
             )}
-            <Link to="/comment" className={classes.noLinkColor}>
+            <Link to="/notifications" className={classes.noLinkColor}>
               <IconButton color="inherit">
-                <ChatBubbleOutline />
+                <NotificationsIcon />
               </IconButton>
             </Link>
             <Link to="/post" className={classes.noLinkColor}>

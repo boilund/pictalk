@@ -11,7 +11,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
-import ChatBubbleOutline from '@material-ui/icons/ChatBubbleOutline';
+import NotificationsIcon from '@material-ui/icons/NotificationsNone';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import PersonOutline from '@material-ui/icons/PersonOutline';
 import ImageAvatar from './ImageAvatar';
@@ -78,12 +78,12 @@ const SideMenu = props => {
                   <ListItemText inset primary="Add photo" />
                 </MenuItem>
               </Link>
-              <Link to="/comment" className={classes.noUnderLine}>
+              <Link to="/notifications" className={classes.noUnderLine}>
                 <MenuItem className={classes.menuItem}>
                   <ListItemIcon className={classes.icon}>
-                    <ChatBubbleOutline />
+                    <NotificationsIcon />
                   </ListItemIcon>
-                  <ListItemText inset primary="Comment" />
+                  <ListItemText inset primary="Notifications" />
                 </MenuItem>
               </Link>
               <Link to="/favorite" className={classes.noUnderLine}>
