@@ -33,8 +33,9 @@ const styles = theme => ({
 
 class Album extends React.Component {
   componentDidMount() {
-    const { fetchUsers, fetchGroup, group, user } = this.props;
+    const { updateUser, fetchUsers, fetchGroup, group, user } = this.props;
     // fetch data
+    updateUser(user._id);
     fetchUsers(user._id);
     fetchGroup(group._id);
 
@@ -105,6 +106,7 @@ Album.propTypes = {
   isFetching: PropTypes.bool,
   user: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
+  updateUser: PropTypes.func.isRequired,
   fetchUsers: PropTypes.func.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
   fetchGroup: PropTypes.func.isRequired
@@ -120,6 +122,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    updateUser: userId => dispatch(actions.updateUser(userId)),
     fetchUsers: userId => dispatch(actions.fetchUsers(userId)),
     openCreateGroupDialog: boolean =>
       dispatch(actions.openCreateGroupDialog(boolean)),
