@@ -10,7 +10,6 @@ import SideMenu from '../components/SideMenu';
 import CreateGroupDialog from './CreateGroupDialog';
 import Loading from '../components/Loading';
 import PostCard from '../components/PostCard';
-import axios from 'axios';
 import { socket } from '../components/App';
 
 import * as actions from '../actions';
