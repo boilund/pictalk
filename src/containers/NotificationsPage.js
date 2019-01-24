@@ -16,6 +16,7 @@ import ForwardIcon from '@material-ui/icons/Forward';
 import Header from './Header';
 import ImageAvatar from '../components/ImageAvatar';
 import LetterAvatar from '../components/LetterAvatar';
+import PostDialog from '../components/PostDialog';
 import * as actions from '../actions';
 import { connect } from 'react-redux';
 
@@ -46,12 +47,23 @@ const styles = theme => ({
 });
 
 class NotificationsPage extends React.Component {
+  state = { clickedPost: {}, openDialog: false };
+
   componentDidMount() {
     this.props.fetchUnreadPhotos();
   }
 
+  openPhotoDialog(photo) {
+    this.setState({ clickedPost: photo, openDialog: true });
+  }
+
+  closePhotoDialog() {
+    this.setState({ openDialog: false });
+  }
+
   render() {
-    const { classes, unreadPhotos } = this.props;
+    const { classes, unreadPhotos, user } = this.props;
+    const { openDialog, clickedPost } = this.state;
 
     return (
       <Fragment>
@@ -62,12 +74,21 @@ class NotificationsPage extends React.Component {
               <Paper className={classes.paper}>
                 <Grid container spacing={16}>
                   <Grid item xs={12}>
+                    <PostDialog
+                      open={openDialog}
+                      post={clickedPost}
+                      user={user}
+                      closePhotoDialog={() => this.closePhotoDialog()}
+                    />
                     <Typography variant="h6" className={classes.title}>
                       Your unread item is here
                     </Typography>
                     {unreadPhotos.map((item, i) => (
                       <List key={i}>
-                        <ListItem button>
+                        <ListItem
+                          button
+                          onClick={() => this.openPhotoDialog(item)}
+                        >
                           <ListItemAvatar>
                             {item.postedGroup.image ? (
                               <ImageAvatar
@@ -115,7 +136,9 @@ class NotificationsPage extends React.Component {
                           })}
                           <ListItemSecondaryAction>
                             <IconButton aria-label="Forward">
-                              <ForwardIcon />
+                              <ForwardIcon
+                                onClick={() => this.openPhotoDialog(item)}
+                              />
                             </IconButton>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -134,11 +157,14 @@ class NotificationsPage extends React.Component {
 
 NotificationsPage.propTypes = {
   classes: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  unreadPhotos: PropTypes.arrayOf(PropTypes.object),
   fetchUnreadPhotos: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
   return {
+    user: state.user,
     unreadPhotos: state.user.unreadPhotos
   };
 };
