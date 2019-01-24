@@ -14,13 +14,6 @@ export const OPEN_CREATE_GROUP_DIALOG = 'OPEN_CREATE_GROUP_DIALOG';
 export const RESET_GROUP = 'RESET_GROUP';
 export const FETCH_GROUP = 'FETCH_GROUP';
 
-export const setUser = user => {
-  return {
-    type: SET_USER,
-    user
-  };
-};
-
 export const loginUser = (email, password) => dispatch => {
   requestData();
   axios
@@ -65,6 +58,7 @@ export const signUpUser = (email, password) => dispatch => {
       console.error(new Error(err));
     });
 };
+
 export const updateUser = userId => dispatch => {
   axios.get(`/api/user/${userId}`).then(res => {
     if (res.data.success) {
