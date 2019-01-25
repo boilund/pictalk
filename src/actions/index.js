@@ -4,6 +4,7 @@ import { socket } from '../components/App';
 export const SET_USER = 'SET_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const FETCH_UNREAD_PHOTOS = 'FETCH_UNREAD_PHOTOS';
+export const SET_LATEST_GROUP = 'SET_LATEST_GROUP';
 export const ERROR = 'ERROR';
 export const NO_ERROR = 'NO_ERROR';
 export const FETCH_CANDIDATES = 'FETCH_CANDIDATES';
@@ -15,7 +16,7 @@ export const RESET_GROUP = 'RESET_GROUP';
 export const FETCH_GROUP = 'FETCH_GROUP';
 
 export const loginUser = (email, password) => dispatch => {
-  requestData();
+  dispatch({ type: REQUEST_DATA });
   axios
     .post('/api/login', {
       email,
@@ -27,21 +28,21 @@ export const loginUser = (email, password) => dispatch => {
       });
       const latestGroup = sortedGroup.slice(0, 1)[0];
       if (latestGroup) {
-        fetchGroup(latestGroup._id);
+        dispatch({ type: SET_LATEST_GROUP, latestGroup: latestGroup._id });
       }
       dispatch({ type: SET_USER, user: res.data.user });
       dispatch({ type: NO_ERROR });
-      receiveRequestData();
+      dispatch({ type: RECEIVE_REQUEST_DATA });
     })
     .catch(err => {
       dispatch({ type: ERROR });
-      receiveDataFailed();
+      dispatch({ type: RECEIVE_DATA_FAILED });
       console.error(new Error(err));
     });
 };
 
 export const signUpUser = (email, password) => dispatch => {
-  requestData();
+  dispatch({ type: REQUEST_DATA });
   axios
     .post('/api/signup', {
       email,
@@ -50,11 +51,11 @@ export const signUpUser = (email, password) => dispatch => {
     .then(res => {
       dispatch({ type: SET_USER, user: res.data.user });
       dispatch({ type: NO_ERROR });
-      receiveRequestData();
+      dispatch({ type: RECEIVE_REQUEST_DATA });
     })
     .catch(err => {
       dispatch({ type: ERROR });
-      receiveDataFailed();
+      dispatch({ type: RECEIVE_DATA_FAILED });
       console.error(new Error(err));
     });
 };
@@ -132,17 +133,14 @@ export const openCreateGroupDialog = boolean => ({
 export const fetchGroup = groupId => dispatch => {
   socket.emit('joinRoom', { room: groupId });
 
-  dispatch({ type: REQUEST_DATA });
   axios
     .get(`/api/group/${groupId}`)
     .then(res => {
       if (res.data.success) {
         dispatch({ type: FETCH_GROUP, group: res.data.group });
-        dispatch({ type: RECEIVE_REQUEST_DATA });
       }
     })
     .catch(err => {
-      dispatch({ type: RECEIVE_DATA_FAILED });
       console.log(err);
     });
 };

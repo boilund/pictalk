@@ -37,7 +37,7 @@ class Album extends React.Component {
     // fetch data
     updateUser(user._id);
     fetchUsers(user._id);
-    fetchGroup(group._id);
+    fetchGroup(group._id || user.latestGroup);
 
     if (user.loggedIn) {
       socket.off('comment');

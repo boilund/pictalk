@@ -3,6 +3,7 @@ import {
   SET_USER,
   LOGOUT_USER,
   FETCH_UNREAD_PHOTOS,
+  SET_LATEST_GROUP,
   ERROR,
   NO_ERROR,
   FETCH_CANDIDATES,
@@ -24,7 +25,8 @@ const initialState = {
     favorites: [],
     groups: [],
     photos: [],
-    unreadPhotos: []
+    unreadPhotos: [],
+    latestGroup: ''
   },
   app: {
     error: false,
@@ -65,6 +67,11 @@ const userReducer = (state = initialState.user, action) => {
       return {
         ...state,
         unreadPhotos: action.unreadPhotos
+      };
+    case SET_LATEST_GROUP:
+      return {
+        ...state,
+        latestGroup: action.latestGroup
       };
     default:
       return state;
