@@ -24,6 +24,7 @@ import SendIcon from '@material-ui/icons/Send';
 import QuestionAnswer from '@material-ui/icons/QuestionAnswer';
 import ImageAvatar from './ImageAvatar';
 import LetterAvatar from './LetterAvatar';
+import pink from '@material-ui/core/colors/pink';
 import { socket } from '../components/App';
 
 const styles = theme => ({
@@ -73,11 +74,21 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  favorite: {
+    color: pink[500]
+  },
+  notFavorite: {
+    color: 'gray'
   }
 });
 
 class PostCard extends React.Component {
-  state = { expanded: false, comment: '' };
+  state = { expanded: false, comment: '', favorite: false };
+
+  handleFavorite = () => {
+    this.setState({ favorite: !this.state.favorite });
+  };
 
   handleExpandClick = () => {
     this.setState({ expanded: !this.state.expanded });
@@ -103,7 +114,7 @@ class PostCard extends React.Component {
 
   render() {
     const { classes, post, user } = this.props;
-    const { expanded, comment } = this.state;
+    const { expanded, comment, favorite } = this.state;
 
     return (
       <Card className={classes.card}>
@@ -143,8 +154,13 @@ class PostCard extends React.Component {
           </Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
-          <IconButton aria-label="Add to favorites">
-            <FavoriteIcon />
+          <IconButton
+            aria-label="Add to favorites"
+            onClick={() => this.handleFavorite()}
+          >
+            <FavoriteIcon
+              className={favorite ? classes.favorite : classes.notFavorite}
+            />
           </IconButton>
           <IconButton aria-label="Show photo data">
             <CameraIcon />
