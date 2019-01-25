@@ -62,7 +62,7 @@ class NotificationsPage extends React.Component {
   }
 
   render() {
-    const { classes, unreadPhotos, user } = this.props;
+    const { classes, unreadPhotos, user, fetchGroup } = this.props;
     const { openDialog, clickedPost } = this.state;
 
     return (
@@ -79,6 +79,7 @@ class NotificationsPage extends React.Component {
                       post={clickedPost}
                       user={user}
                       closePhotoDialog={() => this.closePhotoDialog()}
+                      fetchGroup={fetchGroup}
                     />
                     <Typography variant="h6" className={classes.title}>
                       Your unread item is here
@@ -159,7 +160,8 @@ NotificationsPage.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   unreadPhotos: PropTypes.arrayOf(PropTypes.object),
-  fetchUnreadPhotos: PropTypes.func.isRequired
+  fetchUnreadPhotos: PropTypes.func.isRequired,
+  fetchGroup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -171,7 +173,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchUnreadPhotos: () => dispatch(actions.fetchUnreadPhotos())
+    fetchUnreadPhotos: () => dispatch(actions.fetchUnreadPhotos()),
+    fetchGroup: groupId => dispatch(actions.fetchGroup(groupId))
   };
 };
 

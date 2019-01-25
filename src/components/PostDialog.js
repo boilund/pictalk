@@ -10,9 +10,24 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 import PostCard from './PostCard';
+import { withRouter } from 'react-router-dom';
 
 const PostDialog = props => {
-  const { fullScreen, open, post, user, closePhotoDialog } = props;
+  const {
+    fullScreen,
+    open,
+    post,
+    user,
+    closePhotoDialog,
+    fetchGroup,
+    history
+  } = props;
+
+  const goToTheGroup = () => {
+    fetchGroup(post.postedGroup._id);
+    // need to wait for a while
+    setTimeout(() => history.push('/'), 500);
+  };
 
   return (
     <Dialog fullScreen={fullScreen} fullWidth={true} maxWidth="md" open={open}>
@@ -23,7 +38,7 @@ const PostDialog = props => {
         <Button autoFocus onClick={closePhotoDialog}>
           Close
         </Button>
-        <Button color="primary" autoFocus>
+        <Button color="primary" autoFocus onClick={() => goToTheGroup()}>
           Go to this group
         </Button>
       </DialogActions>
@@ -32,11 +47,14 @@ const PostDialog = props => {
 };
 
 PostDialog.propTypes = {
+  history: PropTypes.object.isRequired,
   fullScreen: PropTypes.bool,
   open: PropTypes.bool.isRequired,
   post: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  closePhotoDialog: PropTypes.func.isRequired
+  closePhotoDialog: PropTypes.func.isRequired,
+  fetchGroup: PropTypes.func.isRequired
 };
 
-export default withMobileDialog()(PostDialog);
+const routed = withRouter(PostDialog);
+export default withMobileDialog()(routed);

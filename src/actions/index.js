@@ -97,7 +97,6 @@ export const fetchUsers = userId => dispatch => {
 };
 
 export const fetchUnreadPhotos = () => dispatch => {
-  console.log('call!');
   axios
     .get('/api/photo/unread')
     .then(res => {
@@ -133,14 +132,17 @@ export const openCreateGroupDialog = boolean => ({
 export const fetchGroup = groupId => dispatch => {
   socket.emit('joinRoom', { room: groupId });
 
+  dispatch({ type: REQUEST_DATA });
   axios
     .get(`/api/group/${groupId}`)
     .then(res => {
       if (res.data.success) {
         dispatch({ type: FETCH_GROUP, group: res.data.group });
+        dispatch({ type: RECEIVE_REQUEST_DATA });
       }
     })
     .catch(err => {
+      dispatch({ type: RECEIVE_DATA_FAILED });
       console.log(err);
     });
 };
