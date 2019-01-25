@@ -5,6 +5,9 @@ export const SET_USER = 'SET_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const FETCH_UNREAD_PHOTOS = 'FETCH_UNREAD_PHOTOS';
 export const UPDATE_UNREAD_PHOTOS = 'UPDATE_UNREAD_PHOTOS';
+export const FETCH_FAVORITE_PHOTOS = 'FETCH_FAVORITE_PHOTOS';
+export const HANDLE_FAVORITE = 'HANDLE_FAVORITE';
+export const UPDATE_FAVORITE_PHOTOS = 'UPDATE_FAVORITE_PHOTOS';
 export const SET_LATEST_GROUP = 'SET_LATEST_GROUP';
 export const ERROR = 'ERROR';
 export const NO_ERROR = 'NO_ERROR';
@@ -125,6 +128,43 @@ export const deleteReadPhoto = (photo, unreadPhotos) => dispatch => {
         dispatch({
           type: UPDATE_UNREAD_PHOTOS,
           unreadPhotos: res.data.user.unreadPhotos
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const fetchFavoritePhotos = () => dispatch => {
+  axios
+    .get('/api/photo/favorite')
+    .then(res => {
+      if (res.data.success) {
+        dispatch({
+          type: FETCH_FAVORITE_PHOTOS,
+          favorites: res.data.user.favorites
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const handleFavorite = post => ({
+  type: HANDLE_FAVORITE,
+  clickedPost: post
+});
+
+export const updateFavoritePhotos = favorites => dispatch => {
+  axios
+    .post('/api/photo/favorite/update', { favorites })
+    .then(res => {
+      if (res.data.success) {
+        dispatch({
+          type: UPDATE_FAVORITE_PHOTOS,
+          favorites: res.data.user.favorites
         });
       }
     })

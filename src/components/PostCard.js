@@ -84,11 +84,7 @@ const styles = theme => ({
 });
 
 class PostCard extends React.Component {
-  state = { expanded: false, comment: '', favorite: false };
-
-  handleFavorite = () => {
-    this.setState({ favorite: !this.state.favorite });
-  };
+  state = { expanded: false, comment: '' };
 
   handleExpandClick = () => {
     this.setState({ expanded: !this.state.expanded });
@@ -113,8 +109,8 @@ class PostCard extends React.Component {
   };
 
   render() {
-    const { classes, post, user } = this.props;
-    const { expanded, comment, favorite } = this.state;
+    const { classes, post, user, handleFavorite } = this.props;
+    const { expanded, comment } = this.state;
 
     return (
       <Card className={classes.card}>
@@ -156,10 +152,14 @@ class PostCard extends React.Component {
         <CardActions className={classes.actions} disableActionSpacing>
           <IconButton
             aria-label="Add to favorites"
-            onClick={() => this.handleFavorite()}
+            onClick={() => handleFavorite(post)}
           >
             <FavoriteIcon
-              className={favorite ? classes.favorite : classes.notFavorite}
+              className={
+                user.favorites.some(favorite => favorite._id === post._id)
+                  ? classes.favorite
+                  : classes.notFavorite
+              }
             />
           </IconButton>
           <IconButton aria-label="Show photo data">
@@ -253,7 +253,8 @@ class PostCard extends React.Component {
 PostCard.propTypes = {
   classes: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  handleFavorite: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(PostCard);

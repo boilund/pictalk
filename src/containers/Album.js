@@ -55,8 +55,13 @@ class Album extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    const { user, updateFavoritePhotos } = this.props;
+    updateFavoritePhotos(user.favorites);
+  }
+
   render() {
-    const { classes, isFetching, user, group } = this.props;
+    const { classes, isFetching, user, group, handleFavorite } = this.props;
 
     if (isFetching) {
       return <Loading />;
@@ -76,7 +81,12 @@ class Album extends React.Component {
               <Grid item xs={12} md={9}>
                 {group.posts.length ? (
                   group.posts.map((post, i) => (
-                    <PostCard post={post} user={user} key={i} />
+                    <PostCard
+                      post={post}
+                      user={user}
+                      handleFavorite={handleFavorite}
+                      key={i}
+                    />
                   ))
                 ) : (
                   <Typography>Let's post something!</Typography>
@@ -100,7 +110,8 @@ Album.propTypes = {
   updateUser: PropTypes.func.isRequired,
   fetchUsers: PropTypes.func.isRequired,
   fetchGroup: PropTypes.func.isRequired,
-  fetchUnreadPhotos: PropTypes.func.isRequired
+  fetchUnreadPhotos: PropTypes.func.isRequired,
+  handleFavorite: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -116,7 +127,10 @@ const mapDispatchToProps = dispatch => {
     updateUser: userId => dispatch(actions.updateUser(userId)),
     fetchUsers: userId => dispatch(actions.fetchUsers(userId)),
     fetchGroup: groupId => dispatch(actions.fetchGroup(groupId)),
-    fetchUnreadPhotos: () => dispatch(actions.fetchUnreadPhotos())
+    fetchUnreadPhotos: () => dispatch(actions.fetchUnreadPhotos()),
+    handleFavorite: post => dispatch(actions.handleFavorite(post)),
+    updateFavoritePhotos: favorites =>
+      dispatch(actions.updateFavoritePhotos(favorites))
   };
 };
 

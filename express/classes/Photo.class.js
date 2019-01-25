@@ -21,7 +21,6 @@ const PhotoSchema = new Schema({
     default: Date.now()
   },
   description: String,
-  favorite: Number,
   comments: [
     {
       type: Schema.Types.ObjectId,

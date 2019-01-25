@@ -4,6 +4,9 @@ import {
   LOGOUT_USER,
   FETCH_UNREAD_PHOTOS,
   UPDATE_UNREAD_PHOTOS,
+  FETCH_FAVORITE_PHOTOS,
+  HANDLE_FAVORITE,
+  UPDATE_FAVORITE_PHOTOS,
   SET_LATEST_GROUP,
   ERROR,
   NO_ERROR,
@@ -73,6 +76,30 @@ const userReducer = (state = initialState.user, action) => {
       return {
         ...state,
         unreadPhotos: action.unreadPhotos
+      };
+    case FETCH_FAVORITE_PHOTOS:
+      return {
+        ...state,
+        favorites: action.favorites
+      };
+    case HANDLE_FAVORITE:
+      const copy = [...state.favorites];
+      // if you click photo that is already marked favorite remove it
+      // otherwise add it to the list
+      if (copy.some(post => post._id === action.clickedPost._id)) {
+        const index = copy.indexOf(action.clickedPost);
+        copy.splice(index, 1);
+      } else {
+        copy.push(action.clickedPost);
+      }
+      return {
+        ...state,
+        favorites: copy
+      };
+    case UPDATE_FAVORITE_PHOTOS:
+      return {
+        ...state,
+        favorites: action.favorites
       };
     case SET_LATEST_GROUP:
       return {
