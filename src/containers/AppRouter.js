@@ -8,7 +8,7 @@ import Login from './Login';
 import Album from './Album';
 import NotificationsPage from './NotificationsPage';
 import PostPage from './PostPage';
-import FavoritePage from '../components/FavoritePage';
+import FavoritePage from './FavoritePage';
 import MyphotoPage from './MyphotoPage';
 import Settings from './Settings';
 import PrivateRoute from '../components/PrivateRoute';
