@@ -11,11 +11,13 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import NotificationsIcon from '@material-ui/icons/NotificationsNone';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import PersonOutline from '@material-ui/icons/PersonOutline';
 import ImageAvatar from './ImageAvatar';
 import LetterAvatar from './LetterAvatar';
+import pink from '@material-ui/core/colors/pink';
 
 const styles = theme => ({
   sidemenu: {
@@ -41,11 +43,15 @@ const styles = theme => ({
   },
   noUnderLine: {
     textDecoration: 'none'
+  },
+  pink: {
+    color: pink[500]
   }
 });
 
 const SideMenu = props => {
-  const { classes, group } = props;
+  const { classes, user, group } = props;
+
   return (
     <Hidden only={['xs', 'sm']}>
       <Grid item md={3} lg={3}>
@@ -78,7 +84,11 @@ const SideMenu = props => {
               <Link to="/notifications" className={classes.noUnderLine}>
                 <MenuItem className={classes.menuItem}>
                   <ListItemIcon className={classes.icon}>
-                    <NotificationsIcon />
+                    {user.unreadPhotos.length > 0 ? (
+                      <NotificationsActiveIcon className={classes.pink} />
+                    ) : (
+                      <NotificationsIcon />
+                    )}
                   </ListItemIcon>
                   <ListItemText inset primary="Notifications" />
                 </MenuItem>
@@ -109,6 +119,7 @@ const SideMenu = props => {
 
 SideMenu.propTypes = {
   classes: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired
 };
 

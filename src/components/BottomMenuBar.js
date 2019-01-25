@@ -9,11 +9,13 @@ import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import Hidden from '@material-ui/core/Hidden';
 import AddIcon from '@material-ui/icons/Add';
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import NotificationsIcon from '@material-ui/icons/NotificationsNone';
 import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import PersonOutline from '@material-ui/icons/PersonOutline';
 import ImageAvatar from './ImageAvatar';
 import LetterAvatar from './LetterAvatar';
+import pink from '@material-ui/core/colors/pink';
 
 const styles = theme => ({
   appBar: {
@@ -38,11 +40,15 @@ const styles = theme => ({
   },
   noLinkColor: {
     color: 'inherit'
+  },
+  pink: {
+    color: pink[500]
   }
 });
 
 const BottomMenuBar = props => {
-  const { classes, group } = props;
+  const { classes, user, group } = props;
+
   return (
     <Hidden only={['md', 'lg']}>
       <footer className={classes.footer}>
@@ -58,7 +64,11 @@ const BottomMenuBar = props => {
             )}
             <Link to="/notifications" className={classes.noLinkColor}>
               <IconButton color="inherit">
-                <NotificationsIcon />
+                {user.unreadPhotos.length > 0 ? (
+                  <NotificationsActiveIcon className={classes.pink} />
+                ) : (
+                  <NotificationsIcon />
+                )}
               </IconButton>
             </Link>
             <Link to="/post" className={classes.noLinkColor}>
@@ -89,6 +99,7 @@ const BottomMenuBar = props => {
 
 BottomMenuBar.propTypes = {
   classes: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired
 };
 

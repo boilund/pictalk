@@ -49,10 +49,6 @@ const styles = theme => ({
 class NotificationsPage extends React.Component {
   state = { clickedPost: {}, openDialog: false };
 
-  componentDidMount() {
-    this.props.fetchUnreadPhotos();
-  }
-
   openPhotoDialog(photo) {
     this.setState({ clickedPost: photo, openDialog: true });
   }
@@ -160,7 +156,6 @@ NotificationsPage.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   unreadPhotos: PropTypes.arrayOf(PropTypes.object),
-  fetchUnreadPhotos: PropTypes.func.isRequired,
   fetchGroup: PropTypes.func.isRequired
 };
 
@@ -173,7 +168,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchUnreadPhotos: () => dispatch(actions.fetchUnreadPhotos()),
     fetchGroup: groupId => dispatch(actions.fetchGroup(groupId))
   };
 };

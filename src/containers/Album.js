@@ -33,11 +33,19 @@ const styles = theme => ({
 
 class Album extends React.Component {
   componentDidMount() {
-    const { updateUser, fetchUsers, fetchGroup, group, user } = this.props;
+    const {
+      updateUser,
+      fetchUsers,
+      fetchGroup,
+      fetchUnreadPhotos,
+      group,
+      user
+    } = this.props;
     // fetch data
     updateUser(user._id);
     fetchUsers(user._id);
     fetchGroup(group._id || user.latestGroup);
+    fetchUnreadPhotos();
 
     if (user.loggedIn) {
       socket.off('comment');
@@ -48,14 +56,7 @@ class Album extends React.Component {
   }
 
   render() {
-    const {
-      classes,
-      isFetching,
-      user,
-      group,
-      openCreateGroupDialog,
-      fetchGroup
-    } = this.props;
+    const { classes, isFetching, user, group } = this.props;
 
     if (isFetching) {
       return <Loading />;
@@ -81,21 +82,11 @@ class Album extends React.Component {
                   <Typography>Let's post something!</Typography>
                 )}
               </Grid>
-              <SideMenu
-                user={user}
-                group={group}
-                openCreateGroupDialog={openCreateGroupDialog}
-                fetchGroup={fetchGroup}
-              />
+              <SideMenu user={user} group={group} />
             </Grid>
           </div>
         </main>
-        <BottomMenuBar
-          user={user}
-          group={group}
-          openCreateGroupDialog={openCreateGroupDialog}
-          fetchGroup={fetchGroup}
-        />
+        <BottomMenuBar user={user} group={group} />
       </React.Fragment>
     );
   }
@@ -108,8 +99,8 @@ Album.propTypes = {
   group: PropTypes.object.isRequired,
   updateUser: PropTypes.func.isRequired,
   fetchUsers: PropTypes.func.isRequired,
-  openCreateGroupDialog: PropTypes.func.isRequired,
-  fetchGroup: PropTypes.func.isRequired
+  fetchGroup: PropTypes.func.isRequired,
+  fetchUnreadPhotos: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -124,9 +115,8 @@ const mapDispatchToProps = dispatch => {
   return {
     updateUser: userId => dispatch(actions.updateUser(userId)),
     fetchUsers: userId => dispatch(actions.fetchUsers(userId)),
-    openCreateGroupDialog: boolean =>
-      dispatch(actions.openCreateGroupDialog(boolean)),
-    fetchGroup: groupId => dispatch(actions.fetchGroup(groupId))
+    fetchGroup: groupId => dispatch(actions.fetchGroup(groupId)),
+    fetchUnreadPhotos: () => dispatch(actions.fetchUnreadPhotos())
   };
 };
 
