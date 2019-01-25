@@ -147,6 +147,7 @@ app.get('/group/:groupId', loginCheck, groupRoutes.fetchGroup);
 
 const photoRoutes = require('./routes/photo');
 app.get('/photo/unread', loginCheck, photoRoutes.unread);
+app.post('/photo/unread/update', loginCheck, photoRoutes.updateUnread);
 
 const multer = require('multer');
 // Difine storage and file name

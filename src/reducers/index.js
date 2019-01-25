@@ -3,6 +3,7 @@ import {
   SET_USER,
   LOGOUT_USER,
   FETCH_UNREAD_PHOTOS,
+  UPDATE_UNREAD_PHOTOS,
   SET_LATEST_GROUP,
   ERROR,
   NO_ERROR,
@@ -64,6 +65,11 @@ const userReducer = (state = initialState.user, action) => {
         loggedIn: false
       };
     case FETCH_UNREAD_PHOTOS:
+      return {
+        ...state,
+        unreadPhotos: action.unreadPhotos
+      };
+    case UPDATE_UNREAD_PHOTOS:
       return {
         ...state,
         unreadPhotos: action.unreadPhotos

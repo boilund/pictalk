@@ -50,11 +50,14 @@ class NotificationsPage extends React.Component {
   state = { clickedPost: {}, openDialog: false };
 
   openPhotoDialog(photo) {
+    const { deleteReadPhoto, user, unreadPhotos } = this.props;
     this.setState({ clickedPost: photo, openDialog: true });
+    deleteReadPhoto(photo, unreadPhotos);
   }
 
   closePhotoDialog() {
     this.setState({ openDialog: false });
+    this.props.fetchUnreadPhotos();
   }
 
   render() {
@@ -156,7 +159,9 @@ NotificationsPage.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   unreadPhotos: PropTypes.arrayOf(PropTypes.object),
-  fetchGroup: PropTypes.func.isRequired
+  fetchGroup: PropTypes.func.isRequired,
+  deleteReadPhoto: PropTypes.func.isRequired,
+  fetchUnreadPhotos: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -168,7 +173,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchGroup: groupId => dispatch(actions.fetchGroup(groupId))
+    fetchGroup: groupId => dispatch(actions.fetchGroup(groupId)),
+    deleteReadPhoto: (photo, unreadPhotos) =>
+      dispatch(actions.deleteReadPhoto(photo, unreadPhotos)),
+    fetchUnreadPhotos: () => dispatch(actions.fetchUnreadPhotos())
   };
 };
 

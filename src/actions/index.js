@@ -4,6 +4,7 @@ import { socket } from '../components/App';
 export const SET_USER = 'SET_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const FETCH_UNREAD_PHOTOS = 'FETCH_UNREAD_PHOTOS';
+export const UPDATE_UNREAD_PHOTOS = 'UPDATE_UNREAD_PHOTOS';
 export const SET_LATEST_GROUP = 'SET_LATEST_GROUP';
 export const ERROR = 'ERROR';
 export const NO_ERROR = 'NO_ERROR';
@@ -104,6 +105,25 @@ export const fetchUnreadPhotos = () => dispatch => {
       if (res.data.success) {
         dispatch({
           type: FETCH_UNREAD_PHOTOS,
+          unreadPhotos: res.data.user.unreadPhotos
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const deleteReadPhoto = (photo, unreadPhotos) => dispatch => {
+  const index = unreadPhotos.indexOf(photo);
+  unreadPhotos.splice(index, 1);
+
+  axios
+    .post('/api/photo/unread/update', { unreadPhotos })
+    .then(res => {
+      if (res.data.success) {
+        dispatch({
+          type: UPDATE_UNREAD_PHOTOS,
           unreadPhotos: res.data.user.unreadPhotos
         });
       }
