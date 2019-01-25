@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import Hidden from '@material-ui/core/Hidden';
+import Tooltip from '@material-ui/core/Tooltip';
 import AddIcon from '@material-ui/icons/Add';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import NotificationsIcon from '@material-ui/icons/NotificationsNone';
@@ -54,22 +55,28 @@ const BottomMenuBar = props => {
       <footer className={classes.footer}>
         <AppBar position="fixed" color="default" className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
-            {group.image ? (
-              <ImageAvatar
-                alt={group.name}
-                image={`/avatarUploads/${group.image}`}
-              />
-            ) : (
-              <LetterAvatar nickname={group.name} color={'default'} />
-            )}
-            <Link to="/notifications" className={classes.noLinkColor}>
-              <IconButton color="inherit">
-                {user.unreadPhotos.length > 0 ? (
-                  <NotificationsActiveIcon className={classes.pink} />
+            <Tooltip title={group.name} aria-label={group.name}>
+              <div>
+                {group.image ? (
+                  <ImageAvatar
+                    alt={group.name}
+                    image={`/avatarUploads/${group.image}`}
+                  />
                 ) : (
-                  <NotificationsIcon />
+                  <LetterAvatar nickname={group.name} color={'default'} />
                 )}
-              </IconButton>
+              </div>
+            </Tooltip>
+            <Link to="/notifications" className={classes.noLinkColor}>
+              <Tooltip title="Notifications" aria-label="Notifications">
+                <IconButton color="inherit">
+                  {user.unreadPhotos.length > 0 ? (
+                    <NotificationsActiveIcon className={classes.pink} />
+                  ) : (
+                    <NotificationsIcon />
+                  )}
+                </IconButton>
+              </Tooltip>
             </Link>
             <Link to="/post" className={classes.noLinkColor}>
               <Fab
@@ -81,14 +88,18 @@ const BottomMenuBar = props => {
               </Fab>
             </Link>
             <Link to="/favorite" className={classes.noLinkColor}>
-              <IconButton color="inherit">
-                <FavoriteBorder />
-              </IconButton>
+              <Tooltip title="Favorite" aria-label="Favorite">
+                <IconButton color="inherit">
+                  <FavoriteBorder />
+                </IconButton>
+              </Tooltip>
             </Link>
             <Link to="/myphoto" className={classes.noLinkColor}>
-              <IconButton color="inherit">
-                <PersonOutline />
-              </IconButton>
+              <Tooltip title="My photo" aria-label="My photo">
+                <IconButton color="inherit">
+                  <PersonOutline />
+                </IconButton>
+              </Tooltip>
             </Link>
           </Toolbar>
         </AppBar>
