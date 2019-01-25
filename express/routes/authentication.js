@@ -64,6 +64,14 @@ exports.login = (req, res) => {
               path: 'photos',
               populate: { path: 'postedGroup' }
             })
+            .populate({
+              path: 'favorites',
+              populate: { path: 'photographer' }
+            })
+            .populate({
+              path: 'favorites',
+              populate: { path: 'postedGroup' }
+            })
             .exec((err, user) => {
               if (err) console.error(new Error(err));
               res.status(200).json({ success: true, user });
