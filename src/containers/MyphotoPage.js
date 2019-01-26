@@ -7,6 +7,7 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import IconButton from '@material-ui/core/IconButton';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import InfoIcon from '@material-ui/icons/Info';
 import Header from './Header';
 import { connect } from 'react-redux';
@@ -32,12 +33,26 @@ const styles = theme => ({
 const MyphotoPage = props => {
   const { classes, user } = props;
 
+  const getGridListCols = () => {
+    if (isWidthUp('xl', props.width)) {
+      return 4;
+    }
+    if (isWidthUp('sm', props.width)) {
+      return 3;
+    }
+    return 2;
+  };
+
   return (
     <Fragment>
       <Header />
       <main>
         <div className={classes.root}>
-          <GridList cellHeight={180} className={classes.gridList} cols={4}>
+          <GridList
+            cellHeight={180}
+            className={classes.gridList}
+            cols={getGridListCols()}
+          >
             {user.photos.map(photo => (
               <GridListTile key={photo.filename}>
                 <img
@@ -73,7 +88,9 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
+const connected = connect(
   mapStateToProps,
   null
 )(withStyles(styles)(MyphotoPage));
+
+export default withWidth()(connected);
