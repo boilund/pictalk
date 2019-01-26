@@ -1,13 +1,15 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import IconButton from '@material-ui/core/IconButton';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import InfoIcon from '@material-ui/icons/Info';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import pink from '@material-ui/core/colors/pink';
 import Header from './Header';
 
 import * as actions from '../actions';
@@ -26,8 +28,8 @@ const styles = theme => ({
     width: 800,
     height: 'auto'
   },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.54)'
+  favorite: {
+    color: pink[500]
   }
 });
 
@@ -35,6 +37,16 @@ class FavoritePage extends React.Component {
   componentDidMount() {
     this.props.fetchFavoritePhotos();
   }
+
+  getGridListCols = () => {
+    if (isWidthUp('xl', this.props.width)) {
+      return 4;
+    }
+    if (isWidthUp('sm', this.props.width)) {
+      return 3;
+    }
+    return 2;
+  };
 
   render() {
     const { classes, user } = this.props;
@@ -44,15 +56,11 @@ class FavoritePage extends React.Component {
         <Header />
         <main>
           <div className={classes.root}>
-            <Typography
-              variant="h6"
-              align="inherit"
-              color="textPrimary"
-              gutterBottom
+            <GridList
+              cellHeight={180}
+              className={classes.gridList}
+              cols={this.getGridListCols()}
             >
-              FavoritePage
-            </Typography>
-            <GridList cellHeight={180} className={classes.gridList} cols={4}>
               {user.favorites.map(photo => (
                 <GridListTile key={photo.filename}>
                   <img
@@ -61,7 +69,12 @@ class FavoritePage extends React.Component {
                   />
                   <GridListTileBar
                     title={photo.description}
-                    subtitle={<span>in: {photo.postedGroup.name}</span>}
+                    subtitle={
+                      <span>
+                        in: {photo.postedGroup.name}, by:{' '}
+                        {photo.photographer.nickname}
+                      </span>
+                    }
                     actionIcon={
                       <IconButton className={classes.icon}>
                         <InfoIcon />
@@ -95,7 +108,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
+const connected = connect(
   mapStateToProps,
   mapDispatchToProps
 )(withStyles(styles)(FavoritePage));
+
+export default withWidth()(connected);
