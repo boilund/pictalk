@@ -111,7 +111,8 @@ Album.propTypes = {
   fetchUsers: PropTypes.func.isRequired,
   fetchGroup: PropTypes.func.isRequired,
   fetchUnreadPhotos: PropTypes.func.isRequired,
-  handleFavorite: PropTypes.func.isRequired
+  handleFavorite: PropTypes.func.isRequired,
+  updateFavoritePhotos: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
