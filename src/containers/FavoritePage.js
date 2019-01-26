@@ -38,6 +38,11 @@ class FavoritePage extends React.Component {
     this.props.fetchFavoritePhotos();
   }
 
+  componentWillUnmount() {
+    const { user, updateFavoritePhotos } = this.props;
+    updateFavoritePhotos(user.favorites);
+  }
+
   getGridListCols = () => {
     if (isWidthUp('xl', this.props.width)) {
       return 4;
@@ -49,7 +54,7 @@ class FavoritePage extends React.Component {
   };
 
   render() {
-    const { classes, user } = this.props;
+    const { classes, user, handleFavorite } = this.props;
 
     return (
       <Fragment>
@@ -76,8 +81,11 @@ class FavoritePage extends React.Component {
                       </span>
                     }
                     actionIcon={
-                      <IconButton className={classes.icon}>
-                        <InfoIcon />
+                      <IconButton
+                        aria-label="Add to favorites"
+                        onClick={() => handleFavorite(photo)}
+                      >
+                        <FavoriteIcon className={classes.favorite} />
                       </IconButton>
                     }
                   />
@@ -93,7 +101,9 @@ class FavoritePage extends React.Component {
 
 FavoritePage.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  handleFavorite: PropTypes.func.isRequired,
+  updateFavoritePhotos: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -104,7 +114,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchFavoritePhotos: () => dispatch(actions.fetchFavoritePhotos())
+    fetchFavoritePhotos: () => dispatch(actions.fetchFavoritePhotos()),
+    handleFavorite: post => dispatch(actions.handleFavorite(post)),
+    updateFavoritePhotos: favorites =>
+      dispatch(actions.updateFavoritePhotos(favorites))
   };
 };
 
