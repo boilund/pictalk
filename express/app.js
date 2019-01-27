@@ -190,7 +190,10 @@ app.post('/image-upload', upload.array('images', 10), async (req, res) => {
   // save photo id to group
   const postedGroup = await Group.findOneAndUpdate(
     { _id: req.body.groupId },
-    { $push: { posts: newPhoto._id } }
+    {
+      $push: { posts: newPhoto._id },
+      $set: { latestUpdateTime: req.body.latestUpdateTime }
+    }
   );
   // pick members without posted user and save photo id for unreadPhotos
   const otherMembers = postedGroup.members.filter(member => {

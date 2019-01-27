@@ -94,8 +94,10 @@ class PostPage extends React.Component {
   handleSubmit = async () => {
     const { group, history, fetchGroup } = this.props;
     const { formData, description } = this.state;
+    const milliseconds = Date.now();
     formData.append('groupId', group._id);
     formData.append('description', description);
+    formData.append('latestUpdateTime', milliseconds);
 
     this.setState({
       uploading: true,
