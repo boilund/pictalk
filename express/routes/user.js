@@ -12,7 +12,8 @@ exports.user = (req, res) => {
   User.findOne({ _id: req.params._id })
     .populate({
       path: 'groups',
-      populate: { path: 'members' }
+      populate: { path: 'members' },
+      options: { sort: { latestUpdateTime: -1 } }
     })
     .populate({
       path: 'photos',
