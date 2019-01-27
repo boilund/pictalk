@@ -142,7 +142,6 @@ app.get('/users', loginCheck, userRoutes.users);
 app.get('/user/:_id', userRoutes.user);
 
 const groupRoutes = require('./routes/group');
-// app.post('/create-group', loginCheck, groupRoutes.createGroup);
 app.get('/group/:groupId', loginCheck, groupRoutes.fetchGroup);
 app.post(
   '/create-group/noimage',
@@ -172,8 +171,8 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   limits: {
-    // max size of files 10 MB
-    fileSize: 10000000
+    // max size of files 50 MB
+    fileSize: 50000000
   }
 });
 
