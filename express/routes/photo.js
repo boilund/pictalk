@@ -8,7 +8,8 @@ exports.unread = (req, res) => {
     })
     .populate({
       path: 'unreadPhotos',
-      populate: { path: 'postedGroup' }
+      populate: { path: 'postedGroup' },
+      options: { sort: { date: -1 } }
     })
     .exec((err, user) => {
       if (err) console.error(new Error(err));
@@ -28,7 +29,8 @@ exports.updateUnread = (req, res) => {
     })
     .populate({
       path: 'unreadPhotos',
-      populate: { path: 'postedGroup' }
+      populate: { path: 'postedGroup' },
+      options: { sort: { date: -1 } }
     })
     .exec((err, user) => {
       if (err) console.error(new Error(err));
