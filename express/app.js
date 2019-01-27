@@ -144,6 +144,11 @@ app.get('/user/:_id', userRoutes.user);
 const groupRoutes = require('./routes/group');
 // app.post('/create-group', loginCheck, groupRoutes.createGroup);
 app.get('/group/:groupId', loginCheck, groupRoutes.fetchGroup);
+app.post(
+  '/create-group/noimage',
+  loginCheck,
+  groupRoutes.createGroupWithoutImage
+);
 
 const photoRoutes = require('./routes/photo');
 app.get('/photo/unread', loginCheck, photoRoutes.unread);
@@ -236,28 +241,6 @@ app.post('/create-group', avatarUpload.single('file'), (req, res) => {
   const newGroup = new Group({
     name: groupname,
     image: filename,
-    members: members,
-    open: true,
-    latestUpdateTime: latestUpdateTime
-  });
-  newGroup.save().then(group => {
-    res.json({ success: true, groupId: group._id });
-
-    group.members.forEach(member => {
-      User.findOneAndUpdate({ _id: member }, { $push: { groups: group._id } })
-        .then(() => res.status(200))
-        .catch(err => {
-          throw err;
-        });
-    });
-  });
-});
-
-app.post('/create-group/noimage', (req, res) => {
-  const { groupname, members, latestUpdateTime } = req.body;
-
-  const newGroup = new Group({
-    name: groupname,
     members: members,
     open: true,
     latestUpdateTime: latestUpdateTime
