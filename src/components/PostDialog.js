@@ -18,6 +18,7 @@ const PostDialog = props => {
     open,
     post,
     user,
+    handleFavorite,
     closePhotoDialog,
     fetchGroup,
     history
@@ -32,7 +33,7 @@ const PostDialog = props => {
   return (
     <Dialog fullScreen={fullScreen} fullWidth={true} maxWidth="md" open={open}>
       <DialogContent>
-        <PostCard post={post} user={user} />
+        <PostCard post={post} user={user} handleFavorite={handleFavorite} />
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={closePhotoDialog}>
@@ -53,7 +54,8 @@ PostDialog.propTypes = {
   post: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   closePhotoDialog: PropTypes.func.isRequired,
-  fetchGroup: PropTypes.func.isRequired
+  fetchGroup: PropTypes.func.isRequired,
+  handleFavorite: PropTypes.func.isRequired
 };
 
 const routed = withRouter(PostDialog);

@@ -49,6 +49,11 @@ const styles = theme => ({
 class NotificationsPage extends React.Component {
   state = { clickedPost: {}, openDialog: false };
 
+  componentWillUnmount() {
+    const { user, updateFavoritePhotos } = this.props;
+    updateFavoritePhotos(user.favorites);
+  }
+
   openPhotoDialog(photo) {
     const { deleteReadPhoto, user, unreadPhotos } = this.props;
     this.setState({ clickedPost: photo, openDialog: true });
@@ -61,7 +66,13 @@ class NotificationsPage extends React.Component {
   }
 
   render() {
-    const { classes, unreadPhotos, user, fetchGroup } = this.props;
+    const {
+      classes,
+      unreadPhotos,
+      user,
+      fetchGroup,
+      handleFavorite
+    } = this.props;
     const { openDialog, clickedPost } = this.state;
 
     return (
@@ -79,6 +90,7 @@ class NotificationsPage extends React.Component {
                       user={user}
                       closePhotoDialog={() => this.closePhotoDialog()}
                       fetchGroup={fetchGroup}
+                      handleFavorite={handleFavorite}
                     />
                     <Typography variant="h6" className={classes.title}>
                       Your unread item is here
@@ -161,7 +173,9 @@ NotificationsPage.propTypes = {
   unreadPhotos: PropTypes.arrayOf(PropTypes.object),
   fetchGroup: PropTypes.func.isRequired,
   deleteReadPhoto: PropTypes.func.isRequired,
-  fetchUnreadPhotos: PropTypes.func.isRequired
+  fetchUnreadPhotos: PropTypes.func.isRequired,
+  handleFavorite: PropTypes.func.isRequired,
+  updateFavoritePhotos: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -176,7 +190,10 @@ const mapDispatchToProps = dispatch => {
     fetchGroup: groupId => dispatch(actions.fetchGroup(groupId)),
     deleteReadPhoto: (photo, unreadPhotos) =>
       dispatch(actions.deleteReadPhoto(photo, unreadPhotos)),
-    fetchUnreadPhotos: () => dispatch(actions.fetchUnreadPhotos())
+    fetchUnreadPhotos: () => dispatch(actions.fetchUnreadPhotos()),
+    handleFavorite: post => dispatch(actions.handleFavorite(post)),
+    updateFavoritePhotos: favorites =>
+      dispatch(actions.updateFavoritePhotos(favorites))
   };
 };
 
