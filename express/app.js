@@ -253,6 +253,28 @@ app.post('/create-group', avatarUpload.single('file'), (req, res) => {
   });
 });
 
+app.post('/create-group/noimage', (req, res) => {
+  const { groupname, members, latestUpdateTime } = req.body;
+
+  const newGroup = new Group({
+    name: groupname,
+    members: members,
+    open: true,
+    latestUpdateTime: latestUpdateTime
+  });
+  newGroup.save().then(group => {
+    res.json({ success: true, groupId: group._id });
+
+    group.members.forEach(member => {
+      User.findOneAndUpdate({ _id: member }, { $push: { groups: group._id } })
+        .then(() => res.status(200))
+        .catch(err => {
+          throw err;
+        });
+    });
+  });
+});
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   var err = new Error('Not Found');

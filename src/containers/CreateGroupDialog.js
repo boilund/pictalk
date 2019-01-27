@@ -75,22 +75,46 @@ class CreateGroupDialog extends React.Component {
     const { formData, groupName, groupMembers } = this.state;
     const milliseconds = Date.now();
 
-    formData.append('groupname', groupName);
-    groupMembers.forEach(member => {
-      formData.append('members', member._id);
-    });
-    formData.append('latestUpdateTime', milliseconds);
-    this.setState({ formData });
+    if (formData !== {}) {
+      formData.append('groupname', groupName);
+      groupMembers.forEach(member => {
+        formData.append('members', member._id);
+      });
+      formData.append('latestUpdateTime', milliseconds);
+      this.setState({ formData });
 
-    try {
-      const response = await axios.post(`/api/create-group`, formData);
-      if (response.data.success) {
-        updateUser(user._id);
-        fetchGroup(response.data.groupId);
-        openCreateGroupDialog(false);
+      try {
+        const response = await axios.post(`/api/create-group`, formData);
+        if (response.data.success) {
+          updateUser(user._id);
+          fetchGroup(response.data.groupId);
+          openCreateGroupDialog(false);
+        }
+      } catch (error) {
+        console.error(new Error(error));
       }
-    } catch (error) {
-      console.error(new Error(error));
+    } else {
+      // if user don't choose image the group use letter avatar
+      const memberIds = groupMembers.map(member => member._id);
+      const groupObject = {
+        groupname: groupName,
+        members: memberIds,
+        latestUpdateTime: milliseconds
+      };
+
+      try {
+        const response = await axios.post(
+          `/api/create-group/noimage`,
+          groupObject
+        );
+        if (response.data.success) {
+          updateUser(user._id);
+          fetchGroup(response.data.groupId);
+          openCreateGroupDialog(false);
+        }
+      } catch (error) {
+        console.error(new Error(error));
+      }
     }
   };
 
