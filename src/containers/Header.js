@@ -35,7 +35,15 @@ const styles = theme => ({
 });
 
 const Header = props => {
-  const { classes, user, group, openCreateGroupDialog, fetchGroup } = props;
+  const {
+    classes,
+    user,
+    group,
+    openCreateGroupDialog,
+    fetchGroup,
+    toggleDrawerList,
+    openDrawerList
+  } = props;
 
   const handleClick = () => {
     if (user.loggedIn) {
@@ -73,6 +81,8 @@ const Header = props => {
                 group={group}
                 openCreateGroupDialog={openCreateGroupDialog}
                 fetchGroup={fetchGroup}
+                toggleDrawerList={toggleDrawerList}
+                openDrawerList={openDrawerList}
               />
 
               <Tooltip title={user.nickname} aria-label={user.nickname}>
@@ -104,13 +114,16 @@ Header.propTypes = {
   user: PropTypes.object,
   group: PropTypes.object.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
-  fetchGroup: PropTypes.func.isRequired
+  fetchGroup: PropTypes.func.isRequired,
+  toggleDrawerList: PropTypes.func.isRequired,
+  openDrawerList: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => {
   return {
     user: state.user,
-    group: state.group
+    group: state.group,
+    openDrawerList: state.app.openDrawerList
   };
 };
 
@@ -118,7 +131,8 @@ const mapDispatchToProps = dispatch => {
   return {
     openCreateGroupDialog: boolean =>
       dispatch(actions.openCreateGroupDialog(boolean)),
-    fetchGroup: groupId => dispatch(actions.fetchGroup(groupId))
+    fetchGroup: groupId => dispatch(actions.fetchGroup(groupId)),
+    toggleDrawerList: bool => dispatch(actions.toggleDrawerList(bool))
   };
 };
 

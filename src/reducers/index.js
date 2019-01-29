@@ -21,7 +21,8 @@ export const initialState = {
     error: false,
     isFetching: false,
     candidates: [],
-    openDialog: false
+    openDialog: false,
+    openDrawerList: false
   },
   group: {
     _id: '',

@@ -16,6 +16,7 @@ export const REQUEST_DATA = 'REQUEST_DATA';
 export const RECEIVE_REQUEST_DATA = 'RECEIVE_REQUEST_DATA';
 export const RECEIVE_DATA_FAILED = 'RECEIVE_DATA_FAILED';
 export const OPEN_CREATE_GROUP_DIALOG = 'OPEN_CREATE_GROUP_DIALOG';
+export const TOGGLE_DRAWER_LIST = 'TOGGLE_DRAWER_LIST';
 export const RESET_GROUP = 'RESET_GROUP';
 export const FETCH_GROUP = 'FETCH_GROUP';
 
@@ -188,6 +189,11 @@ export const receiveDataFailed = () => ({
 export const openCreateGroupDialog = boolean => ({
   type: OPEN_CREATE_GROUP_DIALOG,
   openDialog: boolean
+});
+
+export const toggleDrawerList = boolean => ({
+  type: TOGGLE_DRAWER_LIST,
+  openDrawerList: boolean
 });
 
 export const fetchGroup = groupId => dispatch => {

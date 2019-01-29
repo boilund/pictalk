@@ -7,7 +7,8 @@ import {
   REQUEST_DATA,
   RECEIVE_REQUEST_DATA,
   RECEIVE_DATA_FAILED,
-  OPEN_CREATE_GROUP_DIALOG
+  OPEN_CREATE_GROUP_DIALOG,
+  TOGGLE_DRAWER_LIST
 } from '../actions';
 
 export const appReducer = (state = initialState.app, action) => {
@@ -47,6 +48,11 @@ export const appReducer = (state = initialState.app, action) => {
       return {
         ...state,
         openDialog: action.openDialog
+      };
+    case TOGGLE_DRAWER_LIST:
+      return {
+        ...state,
+        openDrawerList: action.openDrawerList
       };
     default:
       return state;

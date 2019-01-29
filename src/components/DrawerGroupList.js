@@ -24,97 +24,81 @@ const styles = {
   }
 };
 
-class DrawerGroupList extends React.Component {
-  state = {
-    right: false
-  };
+const DrawerGroupList = props => {
+  const {
+    classes,
+    user,
+    group,
+    openCreateGroupDialog,
+    fetchGroup,
+    history,
+    toggleDrawerList,
+    openDrawerList
+  } = props;
 
-  toggleDrawer = (side, open) => () => {
-    this.setState({
-      [side]: open
-    });
-  };
-
-  changeGroup = groupId => {
-    const { fetchGroup, history } = this.props;
+  const changeGroup = groupId => {
     fetchGroup(groupId);
     history.push('/');
   };
 
-  render() {
-    const {
-      classes,
-      user,
-      group,
-      openCreateGroupDialog,
-      fetchGroup
-    } = this.props;
-
-    const sideList = (
-      <div className={classes.list}>
-        <List>
-          <ListItem button onClick={() => openCreateGroupDialog(true)}>
+  const sideList = (
+    <div className={classes.list}>
+      <List>
+        <ListItem button onClick={() => openCreateGroupDialog(true)}>
+          <ListItemIcon>
+            <AddIcon />
+          </ListItemIcon>
+          <ListItemText>Create Group</ListItemText>
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        {user.groups.map((g, index) => (
+          <ListItem
+            button
+            key={index}
+            selected={g._id === group._id}
+            onClick={() => changeGroup(g._id)}
+          >
             <ListItemIcon>
-              <AddIcon />
+              {g.image ? (
+                <ImageAvatar alt={g.name} image={`/avatarUploads/${g.image}`} />
+              ) : (
+                <LetterAvatar nickname={g.name} color={'default'} />
+              )}
             </ListItemIcon>
-            <ListItemText>Create Group</ListItemText>
+            <ListItemText primary={g.name} />
           </ListItem>
-        </List>
-        <Divider />
-        <List>
-          {user.groups.map((g, index) => (
-            <ListItem
-              button
-              key={index}
-              selected={g._id === group._id}
-              onClick={() => this.changeGroup(g._id)}
-            >
-              <ListItemIcon>
-                {g.image ? (
-                  <ImageAvatar
-                    alt={g.name}
-                    image={`/avatarUploads/${g.image}`}
-                  />
-                ) : (
-                  <LetterAvatar nickname={g.name} color={'default'} />
-                )}
-              </ListItemIcon>
-              <ListItemText primary={g.name} />
-            </ListItem>
-          ))}
-        </List>
-      </div>
-    );
+        ))}
+      </List>
+    </div>
+  );
 
-    return (
-      <div className={classes.root}>
-        <Tooltip title="Change Group" aria-label="Change Group">
-          <IconButton
-            color="inherit"
-            onClick={this.toggleDrawer('right', true)}
-          >
-            <GroupIcon />
-          </IconButton>
-        </Tooltip>
-        <SwipeableDrawer
-          anchor="right"
-          open={this.state.right}
-          onClose={this.toggleDrawer('right', false)}
-          onOpen={this.toggleDrawer('right', true)}
+  return (
+    <div className={classes.root}>
+      <Tooltip title="Change Group" aria-label="Change Group">
+        <IconButton color="inherit" onClick={() => toggleDrawerList(true)}>
+          <GroupIcon />
+        </IconButton>
+      </Tooltip>
+      <SwipeableDrawer
+        anchor="right"
+        open={openDrawerList}
+        onClose={() => toggleDrawerList(false)}
+        onOpen={() => toggleDrawerList(true)}
+      >
+        <div
+          tabIndex={0}
+          role="button"
+          onClick={() => toggleDrawerList(false)}
+          onKeyDown={() => toggleDrawerList(false)}
         >
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.toggleDrawer('right', false)}
-            onKeyDown={this.toggleDrawer('right', false)}
-          >
-            {sideList}
-          </div>
-        </SwipeableDrawer>
-      </div>
-    );
-  }
-}
+          {sideList}
+        </div>
+      </SwipeableDrawer>
+    </div>
+  );
+};
 
 DrawerGroupList.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -122,7 +106,9 @@ DrawerGroupList.propTypes = {
   user: PropTypes.object.isRequired,
   group: PropTypes.object.isRequired,
   openCreateGroupDialog: PropTypes.func.isRequired,
-  fetchGroup: PropTypes.func.isRequired
+  fetchGroup: PropTypes.func.isRequired,
+  toggleDrawerList: PropTypes.func.isRequired,
+  openDrawerList: PropTypes.bool.isRequired
 };
 
 const styled = withStyles(styles)(DrawerGroupList);
