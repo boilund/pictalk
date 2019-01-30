@@ -17,7 +17,8 @@ exports.user = (req, res) => {
     })
     .populate({
       path: 'photos',
-      populate: { path: 'photographer' }
+      populate: { path: 'photographer' },
+      options: { sort: { date: -1 } }
     })
     .populate({
       path: 'photos',
