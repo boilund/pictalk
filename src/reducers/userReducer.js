@@ -29,7 +29,16 @@ export const userReducer = (state = initialState.user, action) => {
     case LOGOUT_USER:
       return {
         ...state,
-        loggedIn: false
+        _id: initialState.user._id,
+        loggedIn: false,
+        nickname: initialState.user.nickname,
+        image: initialState.user.image,
+        avatarColor: initialState.user.avatarColor,
+        favorites: initialState.user.favorites,
+        groups: initialState.user.groups,
+        photos: initialState.user.photos,
+        unreadPhotos: initialState.user.unreadPhotos,
+        latestGroup: initialState.user.latestGroup
       };
     case FETCH_UNREAD_PHOTOS:
       return {
