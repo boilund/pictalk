@@ -49,6 +49,11 @@ const styles = theme => ({
 class NotificationsPage extends React.Component {
   state = { clickedPost: {}, openDialog: false };
 
+  componentDidMount() {
+    const { user, updateUser } = this.props;
+    updateUser(user._id);
+  }
+
   componentWillUnmount() {
     const { user, updateFavoritePhotos } = this.props;
     updateFavoritePhotos(user.favorites);
@@ -171,6 +176,7 @@ NotificationsPage.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   unreadPhotos: PropTypes.arrayOf(PropTypes.object),
+  updateUser: PropTypes.func.isRequired,
   fetchGroup: PropTypes.func.isRequired,
   deleteReadPhoto: PropTypes.func.isRequired,
   fetchUnreadPhotos: PropTypes.func.isRequired,
@@ -187,6 +193,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    updateUser: userId => dispatch(actions.updateUser(userId)),
     fetchGroup: groupId => dispatch(actions.fetchGroup(groupId)),
     deleteReadPhoto: (photo, unreadPhotos) =>
       dispatch(actions.deleteReadPhoto(photo, unreadPhotos)),
