@@ -50,11 +50,6 @@ const AppRouter = props => {
             component={MyphotoPage}
           />
           <PrivateRoute
-            path={'/favorite'}
-            isLoggined={isLoggined}
-            component={FavoritePage}
-          />
-          <PrivateRoute
             path={'/settings'}
             isLoggined={isLoggined}
             component={Settings}
